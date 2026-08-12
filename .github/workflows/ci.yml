@@ -1,0 +1,47 @@
+name: CI Pipeline Forum Safe Space
+
+# Se déclenche lors d'un push ou d'une PR sur la branche main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Récupère le code du dépôt
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # 2. Installe Node.js
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      # --- BACKEND ---
+      - name: Installation des dépendances Backend
+        run: cd backend && npm ci
+
+      - name: Linter Backend
+        run: cd backend && npm run lint --if-present
+
+      - name: Tests unitaires Backend & Couverture
+        run: cd backend && npm test -- --coverage --failFast --coverageThreshold='{"global":{"lines":70}}' --if-present
+
+      # --- FRONTEND ---
+      - name: Installation des dépendances Frontend
+        run: cd frontend && npm ci
+
+      - name: Linter Frontend
+        run: cd frontend && npm run lint --if-present
+
+      - name: Tests unitaires Frontend
+        run: cd frontend && npm test --if-present
