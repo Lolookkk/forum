@@ -1,0 +1,24 @@
+# --- DÉPENDANCES (Ne JAMAIS pusher sur GitHub) ---
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# --- VARIABLES D'ENVIRONNEMENT (Clés secrètes & mots de passe) ---
+.env
+.env.local
+backend/.env
+frontend/.env
+
+# --- DOSSIERS DE BUILD (Fichiers générés) ---
+frontend/dist/
+frontend/build/
+
+# --- LOGS ET ERREURS ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# --- FICHIERS SYSTÈME / ÉDITEUR ---
+.DS_Store
+Thumbs.db
+.vscode/
