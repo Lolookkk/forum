@@ -28,7 +28,7 @@ jobs:
 
       # --- BACKEND ---
       - name: Installation des dépendances Backend
-        run: cd backend && npm ci
+        run: cd backend && npm install
 
       - name: Linter Backend
         run: cd backend && npm run lint --if-present
@@ -38,7 +38,7 @@ jobs:
 
       # --- FRONTEND ---
       - name: Installation des dépendances Frontend
-        run: cd frontend && npm ci
+        run: cd frontend && npm install
 
       - name: Linter Frontend
         run: cd frontend && npm run lint --if-present
