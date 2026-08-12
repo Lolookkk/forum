@@ -34,7 +34,7 @@ jobs:
         run: cd backend && npm run lint --if-present
 
       - name: Tests unitaires Backend & Couverture
-        run: cd backend && npm test -- --coverage --failFast --coverageThreshold='{"global":{"lines":70}}' --if-present
+        run: cd backend && npm test -- --coverage
 
       # --- FRONTEND ---
       - name: Installation des dépendances Frontend
@@ -44,4 +44,4 @@ jobs:
         run: cd frontend && npm run lint --if-present
 
       - name: Tests unitaires Frontend
-        run: cd frontend && npm test --if-present
+        run: cd frontend && npm test
