@@ -16,7 +16,7 @@ const pool = new Pool({
 
 // Réagir quand une connexion est établie
 pool.on('connect', () => {
-  console.log('onnecté à la base de données PostgreSQL (Supabase)');
+  console.log('Connecté à la base de données PostgreSQL (Supabase)');
 });
 
 // Exporter pool pour pouvoir l'utiliser ailleurs
