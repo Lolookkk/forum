@@ -12,6 +12,7 @@ frontend/.env
 # --- DOSSIERS DE BUILD (Fichiers générés) ---
 frontend/dist/
 frontend/build/
+backend/coverage/
 
 # --- LOGS ET ERREURS ---
 *.log

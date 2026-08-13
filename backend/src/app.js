@@ -27,7 +27,10 @@ app.use('/api/posts', postRoutes);
 
 // 5. Middleware d'erreur centralisé (TOUJOURS en dernier)
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+    //console.error(err.stack);
+    console.error("Erreur complète :", err);
+    console.error("Message :", err.message);
+    console.error("Cause :", err.cause);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Erreur serveur interne',
