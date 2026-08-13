@@ -11,7 +11,34 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: forum
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d forum"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
+      - name: Vérifier DATABASE_URL
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "❌ DATABASE_URL n'est PAS définie"
+            exit 1
+          else
+            echo "✅ DATABASE_URL est bien définie"
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       # 1. Récupère le code du dépôt
       - name: Checkout du code
         uses: actions/checkout@v4
@@ -35,6 +62,9 @@ jobs:
 
       - name: Tests unitaires Backend & Couverture
         run: cd backend && npm test -- --coverage
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: test
 
       # --- FRONTEND ---
       - name: Installation des dépendances Frontend
