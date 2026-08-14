@@ -4,11 +4,6 @@ const app = require('../app');
 
 describe('API Authentification - POST /api/auth/register', () => {
 
-    afterAll(async () => {
-        await db.query("DELETE FROM users WHERE email = 'test@example.com'");
-        await db.end();
-    });
-
     it('devrait créer un compte avec succès et retourner un statut 201', async () => {
         const response = await request(app)
         .post('/api/auth/register')
@@ -84,3 +79,65 @@ describe('API Authentification - POST /api/auth/register', () => {
     });
 
 });
+
+describe('GET /api/auth/me', () => {
+
+  // 1. Cas d'erreur : Aucun token fourni dans la requête
+  it('devrait refuser l\'accès (401) si aucun token n\'est fourni', async () => {
+    const response = await request(app)
+      .get('/api/auth/me');
+
+    // TODO: Vérifier que le statut HTTP est 401
+    expect(response.statusCode).toBe(401);
+
+    // TODO: Vérifier que le message d'erreur indique que le token est manquant
+    expect(response.body.message).toBe('Accès refusé : Token manquant');
+  });
+
+  // 2. Cas d'erreur : Token invalide ou corrompu
+  it('devrait refuser l\'accès (403) si le token est invalide', async () => {
+    const response = await request(app)
+      .get('/api/auth/me')
+      // TODO: Ajouter le header Authorization avec un faux token
+      .set('Authorization', 'Bearer faux_token_123');
+
+    // TODO: Vérifier que le statut HTTP est 403
+    expect(response.statusCode).toBe(403);
+
+    // TODO: Vérifier le message de réponse pour token invalide
+    expect(response.body.message).toBe('Accès refusé : Token invalide ou expiré');
+  });
+
+  // 3. Cas de succès : Token valide fourni
+  it('devrait autoriser l\'accès (200) et renvoyer les données utilisateur', async () => {
+
+    // Étape A : Se connecter pour récupérer un vrai token
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'test@example.com',
+        password: 'password123'
+      });
+    
+    const token = loginRes.body.token;
+
+    // Étape B : Appeler la route protégée avec le token valide
+    const response = await request(app)
+      .get('/api/auth/me')
+      // TODO: Ajouter le header Authorization avec le bon format : `Bearer ${token}`
+      .set('Authorization', `Bearer ${token}`);
+
+    // TODO: Vérifier que le statut HTTP est 200
+    expect(response.statusCode).toBe(200);
+    
+
+    // TODO: Vérifier que response.body.user contient bien l'email 'test@example.com'
+    expect(response.body.user.email).toBe('test@example.com');
+  });
+
+});
+
+afterAll(async () => {
+        await db.query("DELETE FROM users WHERE email = 'test@example.com'");
+        await db.end();
+    });
