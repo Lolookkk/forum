@@ -45,4 +45,42 @@ describe('API Authentification - POST /api/auth/register', () => {
 
         expect(response.statusCode).toBe(400);
     });
+
+    //Test de succès (Connexion réussie)
+    it('devrait accepter la connexion sur le compte existant (statut 200)', async () => {
+        const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+            email: 'test@example.com',
+            password: 'password123'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('user');
+        expect(response.body.user).not.toHaveProperty('password_hash');
+    });
+
+    //Test d'erreur : Champs manquants
+    it('devrait refuser la connexion (statut 400)', async () => {
+        const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+            password: 'password123'
+        });
+
+        expect(response.statusCode).toBe(400);
+    });
+
+    //Test d'erreur : Identifiants invalides (Sécurité), envoyer un bon mail mais un mauvais mot de passe
+    it('devrait refuser la connexion avec un mot de passe incorrect (statut 401)', async () => {
+        const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+            email: 'test@example.com',
+            password: 'wrongpassword'
+        });
+
+        expect(response.statusCode).toBe(401);
+    });
+
 });
