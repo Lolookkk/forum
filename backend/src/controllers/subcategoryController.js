@@ -1,4 +1,4 @@
-const subcategoryModel = require('../models/subcategoryModel');
+const subcategoryModel = require("../models/subcategoryModel");
 
 const getSubcategories = async (req, res, next) => {
   try {
@@ -15,7 +15,8 @@ const getSubcategories = async (req, res, next) => {
 const getSubcategoriesByCategory = async (req, res, next) => {
   const { category_id } = req.params;
   try {
-    const subcategories = await subcategoryModel.getAllSubcategoriesByCategory(category_id);
+    const subcategories =
+      await subcategoryModel.getAllSubcategoriesByCategory(category_id);
     res.status(200).json({
       success: true,
       data: subcategories,

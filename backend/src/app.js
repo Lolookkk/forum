@@ -1,13 +1,13 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
 // Import de nos routes
-const categoryRoutes = require('./routes/categoryRoutes');
-const subcategoryRoutes = require('./routes/subcategoryRoutes');
-const topicRoutes = require('./routes/topicRoutes');
-const postRoutes = require('./routes/postRoutes');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const categoryRoutes = require("./routes/categoryRoutes");
+const subcategoryRoutes = require("./routes/subcategoryRoutes");
+const topicRoutes = require("./routes/topicRoutes");
+const postRoutes = require("./routes/postRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // 1. Créer l'application Express
 const app = express();
@@ -17,27 +17,27 @@ app.use(cors());
 app.use(express.json()); // Lire le JSON dans les requêtes
 
 // 3. Route de test basique
-app.get('/', (req, res) => {
-  res.json({ message: 'API Forum Safe Space opérationnelle ! 🚀' });
+app.get("/", (req, res) => {
+  res.json({ message: "API Forum Safe Space opérationnelle ! 🚀" });
 });
 
 // 4. Déclaration des routes de l'API
-app.use('/api/categories', categoryRoutes);
-app.use('/api/subcategories', subcategoryRoutes);
-app.use('/api/topics', topicRoutes);
-app.use('/api/posts', postRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/subcategories", subcategoryRoutes);
+app.use("/api/topics", topicRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // 5. Middleware d'erreur centralisé (TOUJOURS en dernier)
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    // console.error("Erreur complète :", err);
-    // console.error("Message :", err.message);
-    // console.error("Cause :", err.cause);
+  //console.error(err.stack);
+  console.error("Erreur complète :", err);
+  console.error("Message :", err.message);
+  console.error("Cause :", err.cause);
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Erreur serveur interne',
+    message: err.message || "Erreur serveur interne",
   });
 });
 

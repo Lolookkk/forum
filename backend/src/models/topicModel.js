@@ -1,12 +1,26 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
-//On récupère toutes les sous topic d'une sous-catégorie spécifique 
+//On récupère toutes les sous topic d'une sous-catégorie spécifique
 const getAllTopicsBySubcategory = async (subcategory_id) => {
-  const query = 'SELECT * FROM topics WHERE subcategory_id = $1 ORDER BY created_at DESC;';
+  const query =
+    "SELECT * FROM topics WHERE subcategory_id = $1 ORDER BY created_at DESC;";
   const { rows } = await db.query(query, [subcategory_id]);
   return rows;
 };
 
+const createTopic = async (subcategory_id, user_id, title, content) => {
+  const query =
+    "INSERT INTO topics (subcategory_id, user_id, title, content, is_pinned) VALUES ($1, $2, $3, $4, FALSE) RETURNING *;";
+  const { rows } = await db.query(query, [
+    subcategory_id,
+    user_id,
+    title,
+    content,
+  ]);
+  return rows[0];
+};
+
 module.exports = {
   getAllTopicsBySubcategory,
+  createTopic,
 };
