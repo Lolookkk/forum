@@ -1,8 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { getPostsByTopic } = require('../controllers/postController');
+const { getPostsByTopic, postPost } = require("../controllers/postController");
+const authenticateToken = require("../middlewares/authMiddleware");
 
-router.get('/topic/:topic_id', getPostsByTopic);
+router.get("/topic/:topic_id", getPostsByTopic);
+router.post("/post", authenticateToken, postPost);
 
 module.exports = router;
