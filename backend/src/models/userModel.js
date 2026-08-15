@@ -21,8 +21,39 @@ const createUser = async (email, username, password_hash) => {
   return rows[0];
 };
 
+const updateUserEmail = async (userId, newEmail) => {
+  const query = 'UPDATE users SET email = $1 WHERE id = $2 RETURNING id, username, email, role;';
+  const { rows } = await db.query(query, [newEmail, userId]);
+  return rows[0];
+}
+
+const updateUserUsername = async (userId, newUsername) => {
+  const query = 'UPDATE users SET username = $1 WHERE id = $2 RETURNING id, username, email, role;';
+  const { rows } = await db.query(query, [newUsername, userId]);
+  return rows[0];
+}
+
+const updateUserPassword = async (userId, newPasswordHash) => {
+  const result = await db.query(
+    'UPDATE users SET password_hash = $1 WHERE id = $2 RETURNING id, username, email, role;',
+    [newPasswordHash, userId]
+  );
+  return result.rows[0];
+}
+
+const findUserById = async (userId) => {
+  const query = 'SELECT * FROM users WHERE id = $1;';
+  const { rows } = await db.query(query, [userId]);
+  return rows[0];
+}
+
+
 module.exports = {
     findUserByEmailOrUsername,
     createUser,
-    findUserByEmail
+    findUserByEmail,
+    updateUserEmail,
+    updateUserUsername,
+    updateUserPassword,
+    findUserById
 };

@@ -1,6 +1,6 @@
 const request = require('supertest');
-const db = require('../config/db');
-const app = require('../app');
+const db = require('../../config/db');
+const app = require('../../app');
 
 describe('GET /api/categories', () => {
 

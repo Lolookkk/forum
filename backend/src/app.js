@@ -7,6 +7,7 @@ const subcategoryRoutes = require('./routes/subcategoryRoutes');
 const topicRoutes = require('./routes/topicRoutes');
 const postRoutes = require('./routes/postRoutes');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // 1. Créer l'application Express
 const app = express();
@@ -26,13 +27,14 @@ app.use('/api/subcategories', subcategoryRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // 5. Middleware d'erreur centralisé (TOUJOURS en dernier)
 app.use((err, req, res, next) => {
-    //console.error(err.stack);
-    console.error("Erreur complète :", err);
-    console.error("Message :", err.message);
-    console.error("Cause :", err.cause);
+    console.error(err.stack);
+    // console.error("Erreur complète :", err);
+    // console.error("Message :", err.message);
+    // console.error("Cause :", err.cause);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Erreur serveur interne',
