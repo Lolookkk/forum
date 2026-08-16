@@ -20,7 +20,14 @@ const createTopic = async (subcategory_id, user_id, title, content) => {
   return rows[0];
 };
 
+const moveTopic = async (topicId, newSubcategory_id) => {
+  const query = "UPDATE topics SET subcategory_id = $1 WHERE id = $2 RETURNING *;";
+  const { rows } = await db.query(query, [newSubcategory_id, topicId]);
+  return rows[0];
+};
+
 module.exports = {
   getAllTopicsBySubcategory,
   createTopic,
+  moveTopic
 };
