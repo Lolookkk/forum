@@ -50,8 +50,44 @@ const updatePost = async (req, res) => {
   }
 };
 
+const likePost = async (req,res,next) => {
+  try {
+    const {id} = req.params;
+    const user_id = req.user?.id || req.user?.userId;
+
+    const newLike = await postModel.addLike(id, user_id);
+    if (!newLike) {
+      return res.status(409).json({ message: "Vous avez déjà liké ce post" });
+    }
+    res.status(201).json({ message: "Post liké avec succès", like: newLike });
+  } catch (error) {
+    next(error);
+    console.error("❌ likePost error:", error);
+  }
+}
+
+const unlikePost = async (req,res,next) => {
+  try {
+    const {id} = req.params;
+    const user_id = req.user?.id || req.user?.userId;
+
+    const deleteLike = await postModel.removeLike(id, user_id);
+    if (!deleteLike) {
+      return res.status(404).json({ message: "Aucun like à retirer pour ce post" });
+    }
+    res.status(200).json({ message: "Like retiré avec succès"});
+  } catch (error) {
+    next(error);
+    console.error("❌ unlikePost error:", error);
+  }
+}
+
+
+
 module.exports = {
   getPostsByTopic,
   postPost,
-  updatePost
+  updatePost,
+  likePost,
+  unlikePost
 };

@@ -22,8 +22,31 @@ const updateUserPost = async (postId, userId, newContent) => {
   return rows[0];
 };
 
+const addLike = async (postId, userId) => {
+  const query = `
+    INSERT INTO post_likes (post_id, user_id) 
+    VALUES ($1, $2) 
+    ON CONFLICT (user_id, post_id) DO NOTHING 
+    RETURNING *;
+  `;
+  const { rows } = await db.query(query, [postId, userId]);
+  return rows[0];
+};
+
+const removeLike = async (postId, userId) => {
+  const query = `
+    DELETE FROM post_likes 
+    WHERE post_id = $1 AND user_id = $2 
+    RETURNING *;
+  `;
+  const { rows } = await db.query(query, [postId, userId]);
+  return rows[0];
+};
+
 module.exports = {
   getAllPostsByTopic,
   createPost,
-  updateUserPost
+  updateUserPost,
+  addLike,
+  removeLike
 };
