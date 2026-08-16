@@ -106,9 +106,35 @@ const updateUserRole = async (req, res, next) => {
   }
 };
 
+const toggleUserBan = async (req, res, next) => {
+  const { id } = req.params;
+  const { isBanned } = req.body; // true ou false
+
+  if (typeof isBanned !== "boolean") {
+    return res.status(400).json({ message: "Le statut isBanned (boolean) est requis" });
+  }
+
+  try {
+    const updatedUser = await User.setBanStatus(id, isBanned);
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+    }
+
+    const actionText = isBanned ? "banni" : "débanni";
+    return res.status(200).json({
+      message: `Utilisateur ${actionText} avec succès`,
+      user: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   updateUserEmail,
   updateUserUsername,
   updateUserPassword,
-  updateUserRole
+  updateUserRole,
+  toggleUserBan
 };

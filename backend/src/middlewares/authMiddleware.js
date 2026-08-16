@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const db = require("../config/db");
 
 const authenticateToken = (req, res, next) => {
   // 1. Récupérer le header "Authorization" envoyé dans la requête
@@ -18,14 +19,37 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(
     token,
     process.env.JWT_SECRET || "secret_de_dev",
-    (err, userPayload) => {
+    async (err, userPayload) => {
       if (err) {
         return res
           .status(403)
           .json({ message: "Accès refusé : Token invalide ou expiré" });
       }
-      req.user = userPayload;
-      next();
+      
+      try {
+        // Vérification du statut en BDD pour révoquer l'accès immédiatement
+        const { rows } = await db.query(
+          "SELECT is_banned FROM users WHERE id = $1",
+          [userPayload.id]
+        );
+
+        const user = rows[0];
+
+        if (!user) {
+          return res.status(404).json({ message: "Utilisateur introuvable" });
+        }
+
+        if (user.is_banned) {
+          return res.status(403).json({
+            message: "Accès refusé : Votre compte a été banni.",
+          });
+        }
+
+        req.user = userPayload;
+        next();
+      } catch (error) {
+        next(error);
+      }
     },
   );
 };
