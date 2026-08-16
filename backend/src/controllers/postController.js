@@ -29,7 +29,29 @@ const postPost = async (req, res, next) => {
   }
 };
 
+const updatePost = async (req, res) => {
+  const { content } = req.body;
+  if (!content) {
+    return res.status(400).json({ message: "Le champ content est requis" });
+  }
+  try {
+    const updatedPost = await postModel.updateUserPost(req.params.id, req.user.id, content);
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post non trouvé" });
+    }
+
+    res.status(200).json({
+      message: "Contenu mis à jour avec succès",
+      post: updatedPost,
+    });
+  } catch (error) {
+    next(error)
+  }
+};
+
 module.exports = {
   getPostsByTopic,
   postPost,
+  updatePost
 };
