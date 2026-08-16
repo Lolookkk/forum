@@ -1,3 +1,6 @@
+-- 0. Nettoyage complet des tables et réinitialisation des IDs à 1
+TRUNCATE TABLE users, categories, subcategories, topics, posts, zoom_events RESTART IDENTITY CASCADE;
+
 -- 1. Insertion des utilisateurs (mots de passe hachés fictifs)
 INSERT INTO users (username, email, password_hash, role) VALUES
 ('Alice_Admin', 'admin@safespace.fr', '$2b$10$abcdefghijklmnopqrstuu', 'admin'),
@@ -11,8 +14,8 @@ INSERT INTO categories (name, description) VALUES
 ('Vie Quotidienne & Bien-être', 'Conseils, astuces et discussions sur la santé mentale au quotidien'),
 ('Événements & Ateliers', 'Prochains rassemblements et sessions de soutien en visio');
 
--- 3. Insertion des sous-catégories
-INSERT INTO subcategories (category_id, name, description) VALUES
+-- 3. Insertion des sous-catégories 
+INSERT INTO subcategories (category_id, title, description) VALUES
 (1, 'Gestion de l''Anxiété', 'Partagez vos histoires et méthodes pour apaiser l anxiété'),
 (1, 'Relations & Entourage', 'Discussions sur la communication avec les proches et les limites'),
 (2, 'Sommeil & Relaxation', 'Techniques pour retrouver un rythme de sommeil paisible'),
