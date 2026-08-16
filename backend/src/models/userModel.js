@@ -50,6 +50,13 @@ const findUserById = async (userId) => {
   return rows[0];
 };
 
+const updateUserRole = async (userId, newRole) => {
+  const query =
+    "UPDATE users SET role = $1 WHERE id = $2 RETURNING id, username, email, role;";
+  const { rows } = await db.query(query, [newRole, userId]);
+  return rows[0];
+};
+
 module.exports = {
   findUserByEmailOrUsername,
   createUser,
@@ -58,4 +65,5 @@ module.exports = {
   updateUserUsername,
   updateUserPassword,
   findUserById,
+  updateUserRole
 };

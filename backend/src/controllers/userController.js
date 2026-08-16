@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 
-const updateUserEmail = async (req, res) => {
+const updateUserEmail = async (req, res, next) => {
   const { email } = req.body;
   if (!email) {
     return res.status(400).json({ message: "Le champ email est requis" });
@@ -23,7 +23,7 @@ const updateUserEmail = async (req, res) => {
   }
 };
 
-const updateUserUsername = async (req, res) => {
+const updateUserUsername = async (req, res, next) => {
   const { username } = req.body;
   if (!username) {
     return res.status(400).json({ message: "Le champ username est requis" });
@@ -42,10 +42,11 @@ const updateUserUsername = async (req, res) => {
   } catch (error) {
     console.error("❌ updateUserUsername error:", error);
     res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+    next(error);
   }
 };
 
-const updateUserPassword = async (req, res) => {
+const updateUserPassword = async (req, res, next) => {
   const { currentPassword, newPassword } = req.body;
   if (!currentPassword || !newPassword) {
     return res
@@ -78,6 +79,30 @@ const updateUserPassword = async (req, res) => {
   } catch (error) {
     console.error("❌ updateUserPassword error:", error);
     res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+    next(error);
+  }
+};
+
+const updateUserRole = async (req, res, next) => {
+  const userId = req.params.id;
+  const { role } = req.body;
+  if (!role) {
+    return res.status(400).json({ message: "Le nouveau role est requis" });
+  }
+  try {
+    const updatedUser = await User.updateUserRole(userId, role);
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    res.status(200).json({
+      message: "Role mis à jour avec succès",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("❌ updateUserRole error:", error);
+    next(error);
   }
 };
 
@@ -85,4 +110,5 @@ module.exports = {
   updateUserEmail,
   updateUserUsername,
   updateUserPassword,
+  updateUserRole
 };
