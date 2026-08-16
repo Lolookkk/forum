@@ -38,8 +38,66 @@ const getPendingReports = async () => {
   return rows;
 };
 
+// Récupérer un signalement par son ID
+const getReportById = async (reportId) => {
+  const query = 'SELECT * FROM reports WHERE id = $1;';
+  const { rows } = await db.query(query, [reportId]);
+  return rows[0];
+};
+
+// Marquer un signalement comme traité
+const resolveReport = async (reportId, moderatorId) => {
+  const query = `
+    UPDATE reports
+    SET is_resolved = true, moderator_id = $1
+    WHERE id = $2
+    RETURNING *;
+  `;
+  const { rows } = await db.query(query, [moderatorId, reportId]);
+  return rows[0];
+};
+
+// Censurer un post
+const censorPost = async (postId, newContent) => {
+  const query = 'UPDATE posts SET content = $1 WHERE id = $2 RETURNING *;';
+  const { rows } = await db.query(query, [newContent, postId]);
+  return rows[0];
+};
+
+// Censurer un topic (titre et/ou contenu)
+const censorTopic = async (topicId, newTitle, newContent) => {
+  const query = `
+    UPDATE topics
+    SET title = COALESCE($1, title), content = COALESCE($2, content)
+    WHERE id = $3
+    RETURNING *;
+  `;
+  const { rows } = await db.query(query, [newTitle, newContent, topicId]);
+  return rows[0];
+};
+
+// Supprimer un post
+const deletePost = async (postId) => {
+  const query = 'DELETE FROM posts WHERE id = $1 RETURNING *;';
+  const { rows } = await db.query(query, [postId]);
+  return rows[0];
+};
+
+// Supprimer un topic
+const deleteTopic = async (topicId) => {
+  const query = 'DELETE FROM topics WHERE id = $1 RETURNING *;';
+  const { rows } = await db.query(query, [topicId]);
+  return rows[0];
+};
+
 module.exports = {
   createTopicReport,
   createPostReport,
-  getPendingReports
+  getPendingReports,
+  getReportById,
+  resolveReport,
+  censorPost,
+  censorTopic,
+  deletePost,
+  deleteTopic
 };

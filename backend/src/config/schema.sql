@@ -62,12 +62,19 @@ CREATE TABLE reports (
     id SERIAL PRIMARY KEY,
     reporter_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     moderator_id INT NULL REFERENCES users(id) ON DELETE SET NULL,
-    topic_id INT NULL REFERENCES topics(id) ON DELETE CASCADE,
-    post_id INT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    topic_id INT NULL REFERENCES topics(id) ON DELETE SET NULL,
+    post_id INT NULL REFERENCES posts(id) ON DELETE SET NULL,
     reason TEXT NOT NULL,
     is_resolved BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-    CHECK((topic_id IS NOT NULL AND post_id IS NULL) OR (topic_id IS NULL AND post_id IS NOT NULL)));
+    CHECK (
+        (topic_id IS NOT NULL AND post_id IS NULL)
+        OR
+        (topic_id IS NULL AND post_id IS NOT NULL)
+        OR
+        (topic_id IS NULL AND post_id IS NULL AND is_resolved = TRUE)
+    )
+);
 
 CREATE TABLE zoom_events (
     id SERIAL PRIMARY KEY,
