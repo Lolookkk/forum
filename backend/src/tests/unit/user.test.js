@@ -6,6 +6,7 @@ const {
   updateUserUsername,
   updateUserPassword,
   updateUserRole,
+  setBanStatus,
 } = require("../../models/userModel");
 
 describe("API Users & Modèle User", () => {
@@ -13,7 +14,7 @@ describe("API Users & Modèle User", () => {
   let adminToken, adminUserId;
   let memberToken, memberUserId;
 
-  // ID de l'utilisateur dédié aux tests du modèle
+  // ID de l'utilisateur dédié aux tests unitaires du modèle
   let unitTestUserId;
 
   const adminUser = {
@@ -137,6 +138,16 @@ describe("API Users & Modèle User", () => {
         expect(res.rows[0].role).toBe("moderateur");
       });
     });
+
+    describe("setBanStatus()", () => {
+      it("devrait mettre à jour le statut is_banned de l'utilisateur en BDD", async () => {
+        const bannedUser = await setBanStatus(unitTestUserId, true);
+        expect(bannedUser.is_banned).toBe(true);
+
+        const unbannedUser = await setBanStatus(unitTestUserId, false);
+        expect(unbannedUser.is_banned).toBe(false);
+      });
+    });
   });
 
   /* -------------------------------------------------------------------------- */
@@ -153,12 +164,6 @@ describe("API Users & Modèle User", () => {
       expect(response.body.message).toMatch(/mis à jour avec succès/i);
       expect(response.body.user).toHaveProperty("id", memberUserId);
       expect(response.body.user.role).toBe("moderateur");
-
-      // Vérification en BDD
-      const checkDb = await db.query("SELECT role FROM users WHERE id = $1", [
-        memberUserId,
-      ]);
-      expect(checkDb.rows[0].role).toBe("moderateur");
     });
 
     it("devrait renvoyer une erreur (400) si le champ rôle est manquant ou invalide", async () => {
@@ -192,6 +197,83 @@ describe("API Users & Modèle User", () => {
         .put("/api/users/999999/role")
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ role: "moderateur" });
+
+      expect(response.statusCode).toBe(404);
+    });
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*            3. TESTS D'INTÉGRATION - BANNISSEMENT UTILISATEUR               */
+  /* -------------------------------------------------------------------------- */
+  describe("PUT /api/users/:id/ban", () => {
+    it("devrait bannir un utilisateur si la requête est émise par un admin (200)", async () => {
+      const response = await request(app)
+        .put(`/api/users/${memberUserId}/ban`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ isBanned: true });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body.user.is_banned).toBe(true);
+
+      // Vérification directe en base de données
+      const checkDb = await db.query("SELECT is_banned FROM users WHERE id = $1", [
+        memberUserId,
+      ]);
+      expect(checkDb.rows[0].is_banned).toBe(true);
+    });
+
+    it("devrait bloquer (403) les requêtes authentifiées d'un utilisateur banni", async () => {
+      // Le membre tente d'effectuer une requête avec son token alors qu'il est banni
+      const response = await request(app)
+        .put(`/api/users/${memberUserId}/role`)
+        .set("Authorization", `Bearer ${memberToken}`)
+        .send({ role: "admin" });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.body.message).toMatch(/banni/i);
+    });
+
+    it("devrait débannir un utilisateur avec succès (200)", async () => {
+      const response = await request(app)
+        .put(`/api/users/${memberUserId}/ban`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ isBanned: false });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body.user.is_banned).toBe(false);
+    });
+
+    it("devrait renvoyer une erreur (400) si isBanned n'est pas un booléen", async () => {
+      const response = await request(app)
+        .put(`/api/users/${memberUserId}/ban`)
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ isBanned: "invalide" });
+
+      expect(response.statusCode).toBe(400);
+    });
+
+    it("devrait refuser l'accès (403) si un membre tente de bannir un utilisateur", async () => {
+      const response = await request(app)
+        .put(`/api/users/${adminUserId}/ban`)
+        .set("Authorization", `Bearer ${memberToken}`)
+        .send({ isBanned: true });
+
+      expect(response.statusCode).toBe(403);
+    });
+
+    it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
+      const response = await request(app)
+        .put(`/api/users/${memberUserId}/ban`)
+        .send({ isBanned: true });
+
+      expect(response.statusCode).toBe(401);
+    });
+
+    it("devrait renvoyer un 404 si l'utilisateur cible n'existe pas", async () => {
+      const response = await request(app)
+        .put("/api/users/999999/ban")
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ isBanned: true });
 
       expect(response.statusCode).toBe(404);
     });

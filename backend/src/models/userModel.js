@@ -57,6 +57,14 @@ const updateUserRole = async (userId, newRole) => {
   return rows[0];
 };
 
+const setBanStatus = async (userId, isBanned) => {
+  const query =
+    "UPDATE users SET is_banned = $1 WHERE id = $2 RETURNING id, username, email, is_banned;";
+  const { rows } = await db.query(query, [isBanned, userId]);
+  return rows[0];
+};
+
+
 module.exports = {
   findUserByEmailOrUsername,
   createUser,
@@ -65,5 +73,6 @@ module.exports = {
   updateUserUsername,
   updateUserPassword,
   findUserById,
-  updateUserRole
+  updateUserRole,
+  setBanStatus
 };
