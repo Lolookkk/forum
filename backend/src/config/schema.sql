@@ -22,7 +22,7 @@ CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-    display_order INT DEFAULT 0 NOT NULL
+    display_order SERIAL NOT NULL
 );
 
 CREATE TABLE subcategories (
@@ -30,7 +30,7 @@ CREATE TABLE subcategories (
     category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     title VARCHAR(100) NOT NULL,
     description TEXT,
-    display_order INT DEFAULT 0 NOT NULL
+    display_order SERIAL NOT NULL
 );
 
 CREATE TABLE topics (
