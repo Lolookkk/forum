@@ -19,7 +19,7 @@ const updateUserEmail = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ updateUserEmail error:", error);
-    res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+    next(error);
   }
 };
 

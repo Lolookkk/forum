@@ -15,7 +15,15 @@ const createPost = async (topic_id, user_id, content) => {
   return rows[0];
 };
 
+const updateUserPost = async (postId, userId, newContent) => {
+  const query = "UPDATE posts SET content = $1 WHERE id = $2 AND user_id = $3 RETURNING *;";
+  // $1 = newContent, $2 = postId, $3 = userId
+  const { rows } = await db.query(query, [newContent, postId, userId]);
+  return rows[0];
+};
+
 module.exports = {
   getAllPostsByTopic,
   createPost,
+  updateUserPost
 };

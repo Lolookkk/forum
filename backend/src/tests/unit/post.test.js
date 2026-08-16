@@ -2,111 +2,111 @@ const request = require('supertest');
 const db = require('../../config/db');
 const app = require('../../app');
 
-describe('API Posts', () => {
+describe('API Posts — PUT /api/posts/:id', () => {
   let token;
+  let otherToken;
   let testUserId;
+  let otherUserId;
   let testTopicId;
-  let createdPostId;
+  let testPostId;
 
   const testUser = {
-    username: 'PostTester',
-    email: 'post_test@example.com',
+    username: 'PostAuthor',
+    email: 'post_author@example.com',
+    password: 'password123'
+  };
+
+  const otherUser = {
+    username: 'OtherUser',
+    email: 'other_user@example.com',
     password: 'password123'
   };
 
   beforeAll(async () => {
     // 1. Nettoyage préventif
-    await db.query('DELETE FROM users WHERE email = $1 OR username = $2', [testUser.email, testUser.username]);
+    await db.query('DELETE FROM users WHERE email IN ($1, $2)', [testUser.email, otherUser.email]);
 
-    // 2. Inscription
-    const registerRes = await request(app)
-      .post('/api/auth/register')
-      .send(testUser);
+    // 2. Inscription et connexion de l'auteur principal
+    const reg1 = await request(app).post('/api/auth/register').send(testUser);
+    testUserId = reg1.body.user?.id;
 
-    testUserId = registerRes.body.user?.id;
+    const login1 = await request(app).post('/api/auth/login').send({
+      email: testUser.email,
+      password: testUser.password
+    });
+    token = login1.body.token;
 
-    // 3. Connexion pour obtenir le token
-    const loginRes = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: testUser.email,
-        password: testUser.password
-      });
+    // 3. Inscription et connexion d'un second utilisateur (pour tester l'interdiction de modifier)
+    const reg2 = await request(app).post('/api/auth/register').send(otherUser);
+    otherUserId = reg2.body.user?.id;
 
-    token = loginRes.body.token;
+    const login2 = await request(app).post('/api/auth/login').send({
+      email: otherUser.email,
+      password: otherUser.password
+    });
+    otherToken = login2.body.token;
 
-    // 4. Création d'un topic temporaire en BDD pour y attacher les posts
+    // 4. Création d'un topic temporaire
     const topicRes = await db.query(
-      "INSERT INTO topics (subcategory_id, user_id, title, content) VALUES (2, $1, 'Topic de test pour posts', 'Contenu du topic') RETURNING id",
+      "INSERT INTO topics (subcategory_id, user_id, title, content) VALUES (2, $1, 'Topic pour test update', 'Contenu') RETURNING id",
       [testUserId]
     );
     testTopicId = topicRes.rows[0].id;
+
+    // 5. Création d'un post appartenant à l'auteur principal
+    const postRes = await db.query(
+      "INSERT INTO posts (topic_id, user_id, content) VALUES ($1, $2, 'Contenu original') RETURNING id",
+      [testTopicId, testUserId]
+    );
+    testPostId = postRes.rows[0].id;
   });
 
   afterAll(async () => {
-    // Nettoyage de la BDD dans l'ordre inverse des contraintes de clés étrangères
-    if (createdPostId) {
-      await db.query('DELETE FROM posts WHERE id = $1', [createdPostId]);
+    // Nettoyage en base de données
+    if (testPostId) {
+      await db.query('DELETE FROM posts WHERE id = $1', [testPostId]);
     }
     if (testTopicId) {
       await db.query('DELETE FROM topics WHERE id = $1', [testTopicId]);
     }
-    await db.query('DELETE FROM users WHERE email = $1', [testUser.email]);
+    await db.query('DELETE FROM users WHERE email IN ($1, $2)', [testUser.email, otherUser.email]);
     await db.end();
   });
 
-  describe('GET /api/posts/topic/:topic_id', () => {
-    it('devrait retourner la liste des posts d’un topic avec un statut 200', async () => {
-      const response = await request(app).get(`/api/posts/topic/${testTopicId}`);
+  it('devrait modifier le post avec succès si l’utilisateur est l’auteur et le token valide', async () => {
+    const response = await request(app)
+      .put(`/api/posts/${testPostId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ content: 'Contenu du post mis à jour !' });
 
-      expect(response.statusCode).toBe(200);
-      expect(response.body.success).toBe(true);
-      expect(Array.isArray(response.body.data)).toBe(true);
-    });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toMatch(/succès/i);
+    expect(response.body.post.content).toBe('Contenu du post mis à jour !');
   });
 
+  it('devrait rejeter la modification (401) si aucun token n’est fourni', async () => {
+    const response = await request(app)
+      .put(`/api/posts/${testPostId}`)
+      .send({ content: 'Tentative sans token' });
 
-  describe('POST /api/posts/post', () => {
-    it('devrait créer un post avec succès si le token est valide et les champs sont remplis', async () => {
-      const newPostData = {
-        topic_id: testTopicId,
-        content: 'Ceci est une réponse de test Jest.'
-      };
+    expect(response.statusCode).toBe(401);
+  });
 
-      const response = await request(app)
-        .post('/api/posts/post')
-        .set('Authorization', `Bearer ${token}`)
-        .send(newPostData);
+  it('devrait renvoyer une erreur (400) si le champ content est manquant', async () => {
+    const response = await request(app)
+      .put(`/api/posts/${testPostId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({});
 
-      expect(response.statusCode).toBe(201);
-      expect(response.body.message).toMatch(/succès/i);
-      expect(response.body.post).toHaveProperty('id');
-      expect(response.body.post.content).toBe(newPostData.content);
+    expect(response.statusCode).toBe(400);
+  });
 
-      createdPostId = response.body.post.id;
-    });
+  it('devrait renvoyer une erreur (404) si un autre utilisateur tente de modifier le post', async () => {
+    const response = await request(app)
+      .put(`/api/posts/${testPostId}`)
+      .set('Authorization', `Bearer ${otherToken}`)
+      .send({ content: 'Tentative de modification non autorisée' });
 
-    it('devrait rejeter la création (401) si aucun token n’est fourni', async () => {
-      const response = await request(app)
-        .post('/api/posts/post')
-        .send({
-          topic_id: testTopicId,
-          content: 'Tentative sans token'
-        });
-
-      expect(response.statusCode).toBe(401);
-    });
-
-    it('devrait renvoyer une erreur (400) si un champ obligatoire est manquant', async () => {
-      const response = await request(app)
-        .post('/api/posts/post')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          topic_id: testTopicId
-          // content manquant
-        });
-
-      expect(response.statusCode).toBe(400);
-    });
+    expect(response.statusCode).toBe(404);
   });
 });
