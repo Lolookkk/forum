@@ -29,7 +29,7 @@ const postPost = async (req, res, next) => {
   }
 };
 
-const updatePost = async (req, res) => {
+const updatePost = async (req, res, next) => {
   const { content } = req.body;
   if (!content) {
     return res.status(400).json({ message: "Le champ content est requis" });
