@@ -8,6 +8,7 @@ const topicRoutes = require("./routes/topicRoutes");
 const postRoutes = require("./routes/postRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const reportRoutes = require('./routes/reportRoute');
 
 // 1. Créer l'application Express
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/topics", topicRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use('/api/reports', reportRoutes);
 
 // 5. Middleware d'erreur centralisé (TOUJOURS en dernier)
 app.use((err, req, res, next) => {
