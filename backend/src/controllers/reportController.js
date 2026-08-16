@@ -42,7 +42,21 @@ const reportPost = async (req, res, next) => {
   }
 };
 
+const getReportsDashboard = async (req, res, next) => {
+    try {
+      const reports = await reportModel.getPendingReports();
+      res.status(200).json({
+        success: true,
+        data: reports,
+      });
+    } catch (error) {
+      next(error);
+      console.error("❌ getReportsDashboard error:", error);
+    }
+};
+
 module.exports = {
   reportTopic,
   reportPost,
+  getReportsDashboard
 };
