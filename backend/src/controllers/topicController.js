@@ -36,7 +36,30 @@ const postTopic = async (req, res, next) => {
   }
 };
 
+const moveTopic = async (req, res, next) => {
+    try {
+      const { id } = req.params; // ID du topic transmis dans l'URL
+      const { subcategoryId } = req.body; // ID de la nouvelle sous-catégorie transmis dans le body
+      if (!subcategoryId) {
+        return res.status(400).json({ message: "L'id de la nouvelle sous-catégorie est requis" });
+      }
+      const updatedTopic = await topicModel.moveTopic( id,subcategoryId);
+  
+      if (!updatedTopic) {
+        return res.status(404).json({ message: "Sujet introuvable" });
+      }
+  
+      res.status(200).json({
+        message: "Sujet déplacé avec succès",
+        topic: updatedTopic,
+      });
+    } catch (error) {
+      next(error)
+    }
+};
+
 module.exports = {
   getTopicsBySubcategory,
   postTopic,
+  moveTopic
 };
