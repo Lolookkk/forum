@@ -1,56 +1,26 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import TopicRow from "../components/forum/TopicRow";
 import Sidebar from "../components/layout/Sidebar";
+import { getTopics } from "../services/topicService";
 import "./Home.css";
 
 export default function Home() {
-  const dummyTopics = [
-    {
-      id: 1,
-      icon: "🌱",
-      title: "Conseils pour l'anxiété sociale au travail",
-      author: "Claire",
-      category: "Psychologie",
-      replies: 15,
-      views: 234,
-    },
-    {
-      id: 2,
-      icon: "🐦",
-      title: "Timidité et premières rencontres amoureuses",
-      author: "Claire",
-      category: "Relations",
-      replies: 15,
-      views: 234,
-    },
-    {
-      id: 3,
-      icon: "🪴",
-      title: "Ateliers de peinture pour se détendre",
-      author: "Claire",
-      category: "Loisirs",
-      replies: 8,
-      views: 234,
-    },
-    {
-      id: 4,
-      icon: "🪴",
-      title: "Gérer une attaque de panique en public",
-      author: "Claire",
-      category: "Bien-être",
-      replies: 12,
-      views: 234,
-    },
-    {
-      id: 5,
-      icon: "🐞",
-      title: "Affirmation de soi : mes petits pas de la semaine",
-      author: "Claire",
-      category: "Psychologie",
-      replies: 3,
-      views: 256,
-    },
-  ];
+  const [topics, setTopics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    getTopics()
+      .then((data) => {
+        console.log("Données reçues de l'API :", data); // 👈 Regarde ce qui s'affiche dans ta console !
+        setTopics(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="home-container">
@@ -65,8 +35,18 @@ export default function Home() {
             <span>Statistiques</span>
           </div>
 
-          {/* Injection de chaque sujet via le composant TopicRow */}
-          {dummyTopics.map((topic) => (
+          {/* Affichage pendant le chargement */}
+          {loading && <div className="state-message">Chargement des sujets...</div>}
+
+          {/* Affichage en cas d'erreur backend */}
+          {error && <div className="state-message error">{error}</div>}
+
+          {/* Affichage de la liste une fois chargée */}
+          {!loading && !error && topics.length === 0 && (
+            <div className="state-message">Aucun sujet pour le moment.</div>
+          )}
+
+          {!loading && !error && topics.map((topic) => (
             <TopicRow key={topic.id} topic={topic} />
           ))}
         </div>

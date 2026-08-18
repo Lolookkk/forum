@@ -1,4 +1,4 @@
-import React from "react";
+
 
 export default function TopicRow({ topic }) {
   return (
@@ -13,7 +13,7 @@ export default function TopicRow({ topic }) {
       </div>
 
       {/* Badge de catégorie */}
-      <div className="category-badge">{topic.category}</div>
+      <div className="category-badge">{topic.subcategory}</div>
 
       {/* Statistiques (Réponses & Vues) */}
       <div className="topic-stats">
