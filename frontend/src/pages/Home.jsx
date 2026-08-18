@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import TopicRow from "../components/forum/TopicRow";
-import Sidebar from "../components/layout/Sidebar";
+import Sidebar from "../components/forum/HomeSidebar";
 import { getTopics } from "../services/topicService";
 import "./Home.css";
 

@@ -1,11 +1,11 @@
 /* Structure principale du site */
-.app-container {
+/* .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
+} */
 
 /* Zone de contenu dynamique sous la Navbar */
-.app-content {
+/* .app-content {
   flex: 1;
-}
+} */

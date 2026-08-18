@@ -1,0 +1,66 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 70px;
+  padding: 0 1.5rem;
+  background-color: #A09D8B;
+  position: sticky;
+  top: 0;
+  z-index: 100; /* S'assure que la topbar passe par-dessus le contenu */
+}
+
+.topbar-subnav {
+  display: flex;
+}
+
+.subnav-link {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  color: #e5e1d5;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.subnav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.subnav-link.active {
+  background-color: #c3c0ad;
+  border-bottom: 3px solid #e5e1d5;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-input {
+  display: flex;
+  gap: 5px;
+  border: 1px solid #a09d8b;
+  background-color: #e5e1d5;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.btn {
+  background-color: #e5c365;
+  color: #3f3f3e;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
