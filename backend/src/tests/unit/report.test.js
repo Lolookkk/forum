@@ -66,10 +66,10 @@ describe('API Reports — /api/reports', () => {
   /* -------------------------------------------------------------------------- */
   /*                         1. SIGNALEMENT DE TOPIC                            */
   /* -------------------------------------------------------------------------- */
-  describe('POST /api/reports/topics/:id', () => {
+  describe('POST /api/topics/:id/reports', () => {
     it('devrait signaler un topic avec succès si le token et le motif sont fournis', async () => {
       const response = await request(app)
-        .post(`/api/reports/topics/${testTopicId}`)
+        .post(`/api/topics/${testTopicId}/reports`)
         .set('Authorization', `Bearer ${token}`)
         .send({ reason: 'Contenu haineux ou hors sujet' });
 
@@ -84,7 +84,7 @@ describe('API Reports — /api/reports', () => {
 
     it('devrait renvoyer une erreur (400) si le motif (reason) est manquant', async () => {
       const response = await request(app)
-        .post(`/api/reports/topics/${testTopicId}`)
+        .post(`/api/topics/${testTopicId}/reports`)
         .set('Authorization', `Bearer ${token}`)
         .send({});
 
@@ -94,7 +94,7 @@ describe('API Reports — /api/reports', () => {
 
     it('devrait rejeter le signalement (401) si aucun token n’est fourni', async () => {
       const response = await request(app)
-        .post(`/api/reports/topics/${testTopicId}`)
+        .post(`/api/topics/${testTopicId}/reports`)
         .send({ reason: 'Tentative sans token' });
 
       expect(response.statusCode).toBe(401);
@@ -104,10 +104,10 @@ describe('API Reports — /api/reports', () => {
   /* -------------------------------------------------------------------------- */
   /*                          2. SIGNALEMENT DE POST                            */
   /* -------------------------------------------------------------------------- */
-  describe('POST /api/reports/posts/:id', () => {
+  describe('POST /api/posts/:id/reports', () => {
     it('devrait signaler un post avec succès si le token et le motif sont fournis', async () => {
       const response = await request(app)
-        .post(`/api/reports/posts/${testPostId}`)
+        .post(`/api/posts/${testPostId}/reports`)
         .set('Authorization', `Bearer ${token}`)
         .send({ reason: 'Insultes dans ce message' });
 
@@ -122,7 +122,7 @@ describe('API Reports — /api/reports', () => {
 
     it('devrait renvoyer une erreur (400) si le motif (reason) est manquant', async () => {
       const response = await request(app)
-        .post(`/api/reports/posts/${testPostId}`)
+        .post(`/api/posts/${testPostId}/reports`)
         .set('Authorization', `Bearer ${token}`)
         .send({ reason: '   ' });
 
@@ -132,7 +132,7 @@ describe('API Reports — /api/reports', () => {
 
     it('devrait rejeter le signalement (401) si aucun token n’est fourni', async () => {
       const response = await request(app)
-        .post(`/api/reports/posts/${testPostId}`)
+        .post(`/api/posts/${testPostId}/reports`)
         .send({ reason: 'Tentative sans token' });
 
       expect(response.statusCode).toBe(401);

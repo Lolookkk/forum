@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const { getSubcategoriesByCategory, getSubcategories, createSubCategory, reorderSubCategories, updateSubCategory,deleteSubCategory} = require("../controllers/subcategoryController");
+const { getSubcategories, createSubCategory, reorderSubCategories, updateSubCategory,deleteSubCategory} = require("../controllers/subcategoryController");
+const { getTopicsBySubcategory } = require("../controllers/topicController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
 router.get("/", getSubcategories);
-router.get("/category/:category_id", getSubcategoriesByCategory);
+router.get("/:subcategory_id/topics", getTopicsBySubcategory);
 
 router.post(
   "/",
@@ -15,7 +16,6 @@ router.post(
   createSubCategory
 );
 
-// ⚠️ Placé impérativement avant /:id
 router.put(
   "/reorder",
   authenticateToken,
