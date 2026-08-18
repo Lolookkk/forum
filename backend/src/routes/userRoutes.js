@@ -11,9 +11,9 @@ const {
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
-router.put("/email", authenticateToken, updateUserEmail);
-router.put("/username", authenticateToken, updateUserUsername);
-router.put("/password", authenticateToken, updateUserPassword);
+router.put("/me/email", authenticateToken, updateUserEmail);
+router.put("/me/username", authenticateToken, updateUserUsername);
+router.put("/me/password", authenticateToken, updateUserPassword);
 
 //admin
 router.put("/:id/role",authenticateToken,requireRole('admin'), updateUserRole);

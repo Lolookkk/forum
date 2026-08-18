@@ -87,7 +87,7 @@ describe("API Subcategories (/api/subcategories)", () => {
 
     it("devrait retourner la liste des sous-catégories d'une catégorie avec un statut 200", async () => {
       const response = await request(app).get(
-        `/api/subcategories/category/${testCategoryId}`
+        `/api/categories/${testCategoryId}/subcategories`
       );
 
       expect(response.statusCode).toBe(200);

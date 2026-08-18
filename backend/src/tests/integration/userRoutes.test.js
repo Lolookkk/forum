@@ -41,10 +41,10 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
     await db.end();
   });
 
-  describe("PUT /api/users/email", () => {
+  describe("PUT /api/users/me/email", () => {
     it("devrait modifier l'email avec succès si le token est valide", async () => {
       const res = await request(app)
-        .put("/api/users/email")
+        .put("/api/users/me/email")
         .set("Authorization", `Bearer ${token}`)
         .send({ email: "nouveau_email@example.com" });
 
@@ -55,7 +55,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
       const res = await request(app)
-        .put("/api/users/email")
+        .put("/api/users/me/email")
         .send({ email: "sans_token@example.com" });
 
       expect(res.statusCode).toBe(401);
@@ -63,7 +63,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait rejeter la requête (401/403) si le token est invalide", async () => {
       const res = await request(app)
-        .put("/api/users/email")
+        .put("/api/users/me/email")
         .set("Authorization", "Bearer token_invalide_12345")
         .send({ email: "bad_token@example.com" });
 
@@ -72,7 +72,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait renvoyer une erreur (400) si le champ email est manquant", async () => {
       const res = await request(app)
-        .put("/api/users/email")
+        .put("/api/users/me/email")
         .set("Authorization", `Bearer ${token}`)
         .send({});
 
@@ -80,10 +80,10 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
     });
   });
 
-  describe("PUT /api/users/username", () => {
+  describe("PUT /api/users/me/username", () => {
     it("devrait modifier le pseudo avec succès si le token est valide", async () => {
       const res = await request(app)
-        .put("/api/users/username")
+        .put("/api/users/me/username")
         .set("Authorization", `Bearer ${token}`)
         .send({ username: "nouveau_nom" });
 
@@ -94,7 +94,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
       const res = await request(app)
-        .put("/api/users/username")
+        .put("/api/users/me/username")
         .send({ username: "nom_sans_token" });
 
       expect(res.statusCode).toBe(401);
@@ -102,7 +102,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait renvoyer une erreur (400) si le champ username est manquant", async () => {
       const res = await request(app)
-        .put("/api/users/username")
+        .put("/api/users/me/username")
         .set("Authorization", `Bearer ${token}`)
         .send({});
 
@@ -113,10 +113,10 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
   /* -------------------------------------------------------------------------- */
   /*                     3. MODIFICATION DU MOT DE PASSE                         */
   /* -------------------------------------------------------------------------- */
-  describe("PUT /api/users/password", () => {
+  describe("PUT /api/users/me/password", () => {
     it("devrait modifier le mot de passe avec succès si le mot de passe actuel est bon", async () => {
       const res = await request(app)
-        .put("/api/users/password")
+        .put("/api/users/me/password")
         .set("Authorization", `Bearer ${token}`)
         .send({
           currentPassword: testUser.password, // 'password123'
@@ -128,7 +128,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
     });
 
     it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
-      const res = await request(app).put("/api/users/password").send({
+      const res = await request(app).put("/api/users/me/password").send({
         currentPassword: "NouveauPassword123!",
         newPassword: "AutrePassword123!",
       });
@@ -138,7 +138,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait renvoyer une erreur (400/401) si l'ancien mot de passe est incorrect", async () => {
       const res = await request(app)
-        .put("/api/users/password")
+        .put("/api/users/me/password")
         .set("Authorization", `Bearer ${token}`)
         .send({
           currentPassword: "MauvaisMotDePasse",
@@ -150,7 +150,7 @@ describe("Tests d'intégration — API Utilisateur (/api/users)", () => {
 
     it("devrait renvoyer une erreur (400) si un des champs est manquant", async () => {
       const res = await request(app)
-        .put("/api/users/password")
+        .put("/api/users/me/password")
         .set("Authorization", `Bearer ${token}`)
         .send({
           currentPassword: "NouveauPassword123!",

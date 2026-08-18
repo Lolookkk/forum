@@ -66,9 +66,9 @@ describe("API Topics — /api/topics", () => {
   /* -------------------------------------------------------------------------- */
   /*                      1. LECTURE DES SUJETS PAR SOUS-CATÉGORIE              */
   /* -------------------------------------------------------------------------- */
-  describe("GET /api/topics/subcategory/:id", () => {
+  describe("GET /api/subcategories/:subcategory_id/topics", () => {
     it("devrait retourner la liste des topics d’une sous-catégorie avec un statut 200", async () => {
-      const response = await request(app).get("/api/topics/subcategory/2");
+      const response = await request(app).get("/api/subcategories/2/topics");
 
       expect(response.statusCode).toBe(200);
       expect(response.body.success).toBe(true);
@@ -79,7 +79,7 @@ describe("API Topics — /api/topics", () => {
   /* -------------------------------------------------------------------------- */
   /*                      2. CRÉATION D'UN SUJET (MEMBRE)                        */
   /* -------------------------------------------------------------------------- */
-  describe("POST /api/topics/post", () => {
+  describe("POST /api/topics", () => {
     it("devrait créer un topic avec succès si le token est valide et les champs sont remplis", async () => {
       const newTopicData = {
         subcategory_id: 2,
@@ -88,7 +88,7 @@ describe("API Topics — /api/topics", () => {
       };
 
       const response = await request(app)
-        .post("/api/topics/post")
+        .post("/api/topics")
         .set("Authorization", `Bearer ${memberToken}`)
         .send(newTopicData);
 
@@ -102,7 +102,7 @@ describe("API Topics — /api/topics", () => {
     });
 
     it("devrait rejeter la création (401) si aucun token n’est fourni", async () => {
-      const response = await request(app).post("/api/topics/post").send({
+      const response = await request(app).post("/api/topics").send({
         subcategory_id: 2,
         title: "Test Sans Token",
         content: "Contenu",
@@ -113,7 +113,7 @@ describe("API Topics — /api/topics", () => {
 
     it("devrait renvoyer une erreur (400) si un champ obligatoire est manquant", async () => {
       const response = await request(app)
-        .post("/api/topics/post")
+        .post("/api/topics")
         .set("Authorization", `Bearer ${memberToken}`)
         .send({
           subcategory_id: 2,
