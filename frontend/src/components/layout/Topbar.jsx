@@ -27,7 +27,8 @@ export default function Topbar() {
       {/* Partie droite : Recherche et Profil */}
       <div className="topbar-actions">
         <input type="search" placeholder="Rechercher un sujet..." className="search-input" />
-        <button className="btn-login">Connexion</button>
+        <button className="btn btn-login">Connexion</button>
+        <button className="btn btn-register">Inscription</button>
       </div>
     </header>
   );

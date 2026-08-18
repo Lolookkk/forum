@@ -4,9 +4,6 @@ import "./LeftNav.css";
 export default function LeftNav() {
   return (
     <aside className="left-nav">
-      <div className="nav-logo">
-        <h2>Safe Space</h2>
-      </div>
 
       <nav className="nav-menu">
         <NavLink to="/" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
