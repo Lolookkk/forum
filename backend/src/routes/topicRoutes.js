@@ -3,13 +3,16 @@ const router = express.Router();
 
 const {
   postTopic,
-  moveTopic
+  moveTopic,
+  getTwentyFirstTopics,
 } = require("../controllers/topicController");
+
 const { getPostsByTopic } = require("../controllers/postController");
 const { reportTopic } = require("../controllers/reportController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
+router.get("/", getTwentyFirstTopics);
 router.post("/", authenticateToken, postTopic);
 router.get("/:topic_id/posts", getPostsByTopic);
 router.post("/:topic_id/reports", authenticateToken, reportTopic);

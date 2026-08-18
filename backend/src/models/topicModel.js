@@ -1,5 +1,21 @@
 const db = require("../config/db");
 
+const getTwentyMostRecentTopics = async () => {
+  const query = `
+    SELECT 
+      t.*,
+      u.username AS author, 
+      s.title AS subcategory 
+    FROM topics t
+    LEFT JOIN users u ON t.user_id = u.id
+    LEFT JOIN subcategories s ON t.subcategory_id = s.id
+    ORDER BY t.created_at DESC 
+    LIMIT 20;
+  `;
+  const { rows } = await db.query(query);
+  return rows;
+};
+
 //On récupère toutes les sous topic d'une sous-catégorie spécifique
 const getAllTopicsBySubcategory = async (subcategory_id) => {
   const query =
@@ -29,5 +45,6 @@ const moveTopic = async (topicId, newSubcategory_id) => {
 module.exports = {
   getAllTopicsBySubcategory,
   createTopic,
-  moveTopic
+  moveTopic,
+  getTwentyMostRecentTopics,
 };

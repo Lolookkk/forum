@@ -1,0 +1,236 @@
+/* -------------------------------------------------------------------------- */
+/* LAYOUT GLOBAL                                                              */
+/* -------------------------------------------------------------------------- */
+
+.home-container {
+  display: flex;
+  gap: 20px;
+  max-width: 2500px;
+  margin: 0 auto; 
+  padding: 20px;
+  background-color: #faf7f0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #2b2b2b;
+}
+
+/* -------------------------------------------------------------------------- */
+/* FLUX PRINCIPAL (GAUCHE)                                                     */
+/* -------------------------------------------------------------------------- */
+
+.main-content {
+  flex: 3; /* Occupe ~75 % de l'espace */
+}
+
+.main-content h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  color: #2b2b2b;
+}
+
+/* Encart du tableau */
+.topics-card {
+  background-color: #faf7f0;
+  border: 1px solid #a09d8b;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* En-tête du tableau */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #e5e1d5;
+  border-bottom: 1px solid #a09d8b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #4a483f;
+}
+
+/* Ligne individuelle de sujet */
+.topic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #a09d8b;
+  background: #faf7f0;
+  gap: 15px;
+}
+
+.topic-row:last-child {
+  border-bottom: none;
+}
+
+/* Alignement icône + texte */
+.topic-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 2;
+}
+
+
+/* Conteneur Titre + Author */
+.topic-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.topic-icon {
+  font-size: 2rem; /* Ajuste la taille si c'est un emoji (ex: 🌱, 🐞) */
+  width: 28px;       /* Ajuste la largeur si c'est un SVG / composant d'icône */
+  height: 28px;      /* Ajuste la hauteur si c'est un SVG / composant d'icône */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;    /* Empêche l'icône de s'écraser si le titre du sujet est long */
+}
+
+.topic-title {
+  font-weight: 700;
+  color: #2b2b2b;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+
+/* Badge pilule de catégorie */
+.category-badge {
+  background-color: #e5c365;
+  color: #2b2b2b;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 4px 14px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+
+/* Statistiques (Réponses & Vues) */
+.topic-stats {
+  font-size: 0.8rem;
+  color: #4a483f;
+  text-align: right;
+  flex: 1;
+  font-weight: 600;
+}
+
+.views-count {
+  color: #6e6b5d;
+  font-size: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* BARRE LATÉRALE (DROITE)                                                    */
+/* -------------------------------------------------------------------------- */
+
+.sidebar {
+  flex: 1; /* Occupe ~25 % de l'espace */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Bouton d'action principal */
+.btn-create-topic {
+  background-color: #90A181;
+  color: #faf7f0;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.btn-create-topic:hover {
+  opacity: 0.9;
+}
+
+/* Encart promotionnel / Ateliers */
+.sidebar-banner {
+  background-color: #ebdcb9;
+  border: 1px solid #a09d8b;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.sidebar-banner h3 {
+  font-size: 0.85rem;
+  color: #4a483f;
+  margin-bottom: 5px;
+}
+
+.sidebar-banner p {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #2b2b2b;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.banner-icon {
+  font-size: 1.8rem;
+}
+
+/* Cartes de statistiques et widgets */
+.sidebar-card {
+  background-color: #e5e1d5;
+  border: 1px solid #a09d8b;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.sidebar-card h3 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2b2b2b;
+  margin: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.85rem;
+  color: #4a483f;
+}
+
+/* Barre de recherche */
+.search-box {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #a09d8b;
+  border-radius: 6px;
+  background-color: #faf7f0;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.btn-search {
+  background-color: #90A181;
+  color: #faf7f0;
+  border: none;
+  border-radius: 6px;
+  padding: 0 10px;
+  cursor: pointer;
+}
