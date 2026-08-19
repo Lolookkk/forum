@@ -39,14 +39,6 @@ export default function Sidebar() {
         <h3>NOUVEAUX MEMBRES</h3>
       </div>
 
-      {/* Bloc Recherche */}
-      <div className="sidebar-card">
-        <h3>RECHERCHE</h3>
-        <div className="search-box">
-          <input type="text" placeholder="Rechercher..." />
-          <button className="btn-search">🔍</button>
-        </div>
-      </div>
 
       {/* Bouton de création */}
       <button className="btn-create-topic">
