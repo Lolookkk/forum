@@ -16,17 +16,17 @@ INSERT INTO categories (name, slug,description) VALUES
 ('Événements & Ateliers', 'evenements-ateliers','Prochains rassemblements et sessions de soutien en visio');
 
 -- 3. Insertion des sous-catégories
-INSERT INTO subcategories (category_id, title, description) VALUES
-(1, 'Gestion de l''Anxiété', 'Partagez vos histoires et méthodes pour apaiser l''anxiété'),
-(1, 'Dépression & Baisse de Moral', 'Un espace d''écoute pour traverser les moments de doute et de solitude'),
-(1, 'Relations & Entourage', 'Discussions sur la communication avec les proches et les limites'),
-(2, 'Sommeil & Relaxation', 'Techniques pour retrouver un rythme de sommeil paisible'),
-(2, 'Développement Personnel', 'Exercices de confiance en soi, gratitude et gestion des émotions'),
-(2, 'Travail & Épuisement', 'Échanger autour du burn-out, du stress pro et de la reconversion'),
-(3, 'Art & Écriture Thérapies', 'Partagez vos dessins, poèmes et textes libérateurs'),
-(3, 'Partage d''Expériences Positives', 'Vos petites victoires et moments d''inspiration du quotidien'),
-(4, 'Ateliers Zoom', 'Sessions d''éveil et échanges organisés en direct'),
-(4, 'Rencontres & Entraide', 'Initiatives locales et groupes de parole entre membres');
+INSERT INTO subcategories (category_id, title, slug, description) VALUES
+(1, 'Gestion de l''Anxiété', 'anxiety', 'Partagez vos histoires et méthodes pour apaiser l''anxiété'),
+(1, 'Dépression & Baisse de Moral','depression', 'Un espace d''écoute pour traverser les moments de doute et de solitude'),
+(1, 'Relations & Entourage', 'relations','Discussions sur la communication avec les proches et les limites'),
+(2, 'Sommeil & Relaxation', 'sleep','Techniques pour retrouver un rythme de sommeil paisible'),
+(2, 'Développement Personnel','personal-dev', 'Exercices de confiance en soi, gratitude et gestion des émotions'),
+(2, 'Travail & Épuisement', 'work','Échanger autour du burn-out, du stress pro et de la reconversion'),
+(3, 'Art & Écriture Thérapies','art', 'Partagez vos dessins, poèmes et textes libérateurs'),
+(3, 'Partage d''Expériences Positives','positives-experiences', 'Vos petites victoires et moments d''inspiration du quotidien'),
+(4, 'Ateliers Zoom','zoom' ,'Sessions d''éveil et échanges organisés en direct'),
+(4, 'Rencontres & Entraide','meeting', 'Initiatives locales et groupes de parole entre membres');
 
 -- 4. Insertion des 30 sujets (topics)
 INSERT INTO topics (subcategory_id, user_id, title, content, is_pinned) VALUES

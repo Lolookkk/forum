@@ -7,6 +7,12 @@ const getAllSubcategories = async () => {
   return rows;
 };
 
+const getSubcategoryBySlug = async (slug) => {
+  const query = "SELECT * FROM subcategories WHERE slug = $1;";
+  const { rows } = await db.query(query, [slug]);
+  return rows[0];
+};
+
 //On récupère toutes les sous catégories d'une catégorie spécifique
 const getAllSubcategoriesByCategory = async (category_id) => {
   const query =
@@ -73,4 +79,5 @@ module.exports = {
   updateSubCategory,
   deleteSubCategory,
   reorderSubCategories,
+  getSubcategoryBySlug,
 };

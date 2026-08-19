@@ -30,6 +30,7 @@ CREATE TABLE subcategories (
     id SERIAL PRIMARY KEY,
     category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     title VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL,
     description TEXT,
     display_order SERIAL NOT NULL
 );

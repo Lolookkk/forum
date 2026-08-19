@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { getSubcategories, createSubCategory, reorderSubCategories, updateSubCategory,deleteSubCategory} = require("../controllers/subcategoryController");
+const { getSubcategories, createSubCategory, reorderSubCategories, updateSubCategory,deleteSubCategory, getSubcategoryBySlug} = require("../controllers/subcategoryController");
 const { getTopicsBySubcategory } = require("../controllers/topicController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
 router.get("/", getSubcategories);
 router.get("/:subcategory_id/topics", getTopicsBySubcategory);
+router.get("/:slug", getSubcategoryBySlug);
 
 router.post(
   "/",

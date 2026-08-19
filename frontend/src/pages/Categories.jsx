@@ -81,10 +81,7 @@ export default function Categories() {
                 cat.subcategories.map((subCat) => (
                   <div key={subCat.id} className="topic-row">
                     <div className="topic-info">
-                      <span className="topic-title">{subCat.name}</span>
-                    </div>
-                    <div className="topic-category">
-                      {subCat.description || "Aucune description"}
+                      <span className="topic-title">{subCat.title}</span>
                     </div>
                     <div className="topic-stats">
                       {subCat.topics_count ?? 0} sujets

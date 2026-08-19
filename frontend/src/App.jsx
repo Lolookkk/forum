@@ -9,6 +9,7 @@ import Members from "./pages/Members";
 import Resources from "./pages/Resources";
 import Numbers from "./pages/Numbers";
 import CategoryDetail from "./pages/CategoryDetail";
+import SubcategoryDetail from "./pages/SubcategoryDetail";
 import './App.css'
 
 function App() {
@@ -22,10 +23,12 @@ function App() {
           <Route path="announcements" element={<Announcements />} />
           <Route path="categories" element={<Categories />} />
           <Route path="categories/:slug" element={<CategoryDetail />} />
+          <Route path="/categories/:categorySlug/:slug" element={<SubcategoryDetail />} />
           <Route path="events" element={<UpcomingEvents />} />
           <Route path="events/past" element={<PastEvents />} />
           <Route path="resources" element={<Resources />} />
           <Route path="resources/numbers" element={<Numbers />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
