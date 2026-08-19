@@ -88,12 +88,14 @@ describe("API Categories (/api/categories)", () => {
         .set("Authorization", `Bearer ${adminToken}`)
         .send({
           name: "Test Catégorie Alpha",
+          slug: "alpha",
           description: "Description de la catégorie alpha",
         });
 
       expect(response.statusCode).toBe(201);
       expect(response.body.category).toHaveProperty("id");
       expect(response.body.category.name).toBe("Test Catégorie Alpha");
+      expect(response.body.category.slug).toBe("alpha");
 
       createdCategoryId = response.body.category.id;
     });
@@ -113,6 +115,7 @@ describe("API Categories (/api/categories)", () => {
         .set("Authorization", `Bearer ${memberToken}`)
         .send({
           name: "Test Catégorie Interdite",
+          slug:"interdit",
           description: "Tentative membre",
         });
 
@@ -122,7 +125,7 @@ describe("API Categories (/api/categories)", () => {
     it("devrait rejeter la requête (401) sans token", async () => {
       const response = await request(app)
         .post("/api/categories")
-        .send({ name: "Anonyme", description: "Sans token" });
+        .send({ name: "Anonyme", slug:"anonyme", description: "Sans token" });
 
       expect(response.statusCode).toBe(401);
     });

@@ -5,27 +5,37 @@ import { getCategories } from "../../services/categoryService";
 
 export default function Topbar() {
   const location = useLocation();
-  const [categories, setCategories] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
 
   const isHomeSection = ["/", "/announcements", "/members"].includes(location.pathname);
   const isCategoriesSection = location.pathname.startsWith("/categories");
 
+  // État dérivé : on est en chargement si on est sur la section catégories, 
+  // qu'on n'a pas encore de données et qu'aucune erreur n'est survenue.
+  const isLoading = isCategoriesSection && categories.length === 0 && !error;
+
   useEffect(() => {
-    // Exécute l'appel API uniquement sur la section catégories et si on n'a pas encore de données
-    if (isCategoriesSection && categories == null) {
+    let isMounted = true;
+
+    if (isCategoriesSection && categories.length === 0 && !error) {
       getCategories()
         .then((data) => {
-          setCategories(Array.isArray(data) ? data : []);
-          setLoading(false);
+          if (isMounted) {
+            setCategories(Array.isArray(data) ? data : []);
+          }
         })
         .catch((err) => {
-          setError(err.message);
-          setLoading(false);
+          if (isMounted) {
+            setError(err.message);
+          }
         });
     }
-  }, [isCategoriesSection, categories]);
+
+    return () => {
+      isMounted = false; // Nettoyage en cas de démontage du composant pendant le fetch
+    };
+  }, [isCategoriesSection, categories.length, error]);
 
   return (
     <header className="topbar">
@@ -52,10 +62,10 @@ export default function Topbar() {
               Toutes
             </NavLink>
 
-            {loading && <span className="subnav-loading">Chargement...</span>}
+            {isLoading && <span className="subnav-loading">Chargement...</span>}
             {error && <span className="subnav-error">Erreur</span>}
 
-            {!loading &&
+            {!isLoading &&
               !error &&
               categories.map((cat) => (
                 <NavLink

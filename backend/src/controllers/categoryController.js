@@ -1,3 +1,4 @@
+const slugify = require("slugify");
 const categoryModel = require("../models/categoryModel");
 
 const getCategories = async (req, res, next) => {
@@ -12,16 +13,34 @@ const getCategories = async (req, res, next) => {
   }
 };
 
+const getCategoryBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const category = await categoryModel.getCategoryBySlug(slug);
+
+    if (!category) {
+      return res.status(404).json({ message: "Catégorie non trouvée" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: category,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createCategory = async (req, res, next) => {
   try {
-    const { name, description } = req.body;
+    const { name, slug, description } = req.body;
 
     const user_id = req.user?.id || req.user?.userId;
 
-    if (!name || !description) {
+    if (!name || !slug || !description) {
       return res.status(400).json({ message: "Tous les champs sont requis" });
     }
-    const newCategory = await categoryModel.createCategory(name, description);
+    const newCategory = await categoryModel.createCategory(name,slug,  description);
     res.status(201).json({ message: "Category créée avec succès", category: newCategory });
   } catch (error) {
     next(error);
@@ -98,5 +117,6 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
-  reorderCategories
+  reorderCategories,
+  getCategoryBySlug
 };

@@ -1,45 +1,84 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import Sidebar from "../components/forum/HomeSidebar";
+import { getCategoryBySlug, getSubcategoriesByCategory } from "../services/categoryService";
+import "./Home.css"; // Réutilise les mêmes styles que Home.jsx
 
 export default function CategoryDetail() {
-  // 1. Récupère la valeur réelle du :slug dans l'URL (ex: "anxiete")
-  const { slug } = useParams(); 
-  
-  const [topics, setTopics] = useState([]);
+  const { slug } = useParams();
+
+  const [category, setCategory] = useState(null);
+  const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // 2. Recharge les données à chaque fois que le slug change dans l'URL
-    const fetchCategoryTopics = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/categories/${slug}`);
-        const data = await response.json();
-        setTopics(data);
-      } catch (error) {
-        console.error("Erreur de chargement", error);
-      } finally {
+    // 1. Récupération de la catégorie via le slug
+    getCategoryBySlug(slug)
+      .then((catData) => {
+        setCategory(catData);
+        // 2. Récupération des sous-catégories via l'ID de la catégorie
+        return getSubcategoriesByCategory(catData.id);
+      })
+      .then((subData) => {
+        setSubcategories(subData);
         setLoading(false);
-      }
-    };
-
-    fetchCategoryTopics();
-  }, [slug]); // Se déclenche quand l'utilisateur change d'onglet/catégorie
-
-  if (loading) return <p>Chargement des sujets...</p>;
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [slug]);
 
   return (
-    <div>
-    <h1 style={{ textTransform: "capitalize" }}>{slug}</h1>
+    <div className="home-container">
+      {/* Colonne Gauche : Flux principal */}
+      <main className="main-content">
+        <h2 style={{ textTransform: "uppercase" }}>
+          {category?.name || slug}
+        </h2>
 
-    {/* On utilise enfin la variable 'topics' ici */}
-    <div className="topics-list">
-      {topics.map((topic) => (
-        <article key={topic.id} className="topic-card">
-          <h3>{topic.title}</h3>
-        </article>
-      ))}
+        <div className="topics-card">
+          <div className="table-header">
+            <span>Sous-catégorie</span>
+            <span>Description</span>
+            <span>Sujets</span>
+          </div>
+
+          {/* Affichage pendant le chargement */}
+          {loading && (
+            <div className="state-message">Chargement des sous-catégories...</div>
+          )}
+
+          {/* Affichage en cas d'erreur backend */}
+          {error && <div className="state-message error">{error}</div>}
+
+          {/* Affichage si la liste est vide */}
+          {!loading && !error && subcategories.length === 0 && (
+            <div className="state-message">Aucune sous-catégorie pour le moment.</div>
+          )}
+
+          {/* Affichage de la liste des sous-catégories */}
+          {!loading &&
+            !error &&
+            subcategories.map((subCat) => (
+              <div key={subCat.id} className="topic-row">
+                <div className="topic-info">
+                  <span className="topic-title">{subCat.name}</span>
+                </div>
+                <div className="topic-category">
+                  {subCat.description || "Aucune description"}
+                </div>
+                <div className="topic-stats">
+                  {subCat.topics_count ?? 0} sujets
+                </div>
+              </div>
+            ))}
+        </div>
+      </main>
+
+      {/* Colonne Droite : Sidebar */}
+      <Sidebar />
     </div>
-  </div>
   );
 }
