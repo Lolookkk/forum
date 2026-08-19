@@ -1,0 +1,45 @@
+.top-banner {
+  width: 100%;
+  background-color: #eae3d6;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #dcd3c1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.banner-logo .sunflower {
+  height: 120px;
+  width: auto;
+  display: block;
+}
+
+.banner-title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.banner-title {
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #90A181;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 0.4rem 0;
+}
+
+.banner-subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 1px;
+  margin: 0;
+}
