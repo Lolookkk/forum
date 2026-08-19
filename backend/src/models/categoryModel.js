@@ -12,10 +12,10 @@ const getCategoryBySlug = async (slug) => {
   return rows[0];
 };
 
-const createCategory = async (name, description) => {
+const createCategory = async (name, slug, description) => {
   const query =
-    "INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *;";
-  const { rows } = await db.query(query, [name, description]);
+    "INSERT INTO categories (name,slug, description) VALUES ($1, $2, $3) RETURNING *;";
+  const { rows } = await db.query(query, [name,slug, description]);
   return rows[0];
 };
 

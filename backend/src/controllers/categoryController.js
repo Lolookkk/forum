@@ -33,14 +33,14 @@ const getCategoryBySlug = async (req, res, next) => {
 
 const createCategory = async (req, res, next) => {
   try {
-    const { name, description } = req.body;
+    const { name, slug, description } = req.body;
 
     const user_id = req.user?.id || req.user?.userId;
 
-    if (!name || !description) {
+    if (!name || !slug || !description) {
       return res.status(400).json({ message: "Tous les champs sont requis" });
     }
-    const newCategory = await categoryModel.createCategory(name, description);
+    const newCategory = await categoryModel.createCategory(name,slug,  description);
     res.status(201).json({ message: "Category créée avec succès", category: newCategory });
   } catch (error) {
     next(error);

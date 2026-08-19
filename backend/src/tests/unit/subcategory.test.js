@@ -29,7 +29,7 @@ describe("API Subcategories (/api/subcategories)", () => {
 
     // 2. Création d'une catégorie de test pour rattachera les sous-catégories
     const catRes = await db.query(
-      "INSERT INTO categories (name, description) VALUES ('Catégorie Test Subcat', 'Description test') RETURNING id;"
+      "INSERT INTO categories (name,slug, description) VALUES ('Catégorie Test Subcat','test', 'Description test') RETURNING id;"
     );
     testCategoryId = catRes.rows[0].id;
 
