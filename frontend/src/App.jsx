@@ -8,6 +8,7 @@ import Announcements from "./pages/Announcements";
 import Members from "./pages/Members";
 import Resources from "./pages/Resources";
 import Numbers from "./pages/Numbers";
+import CategoryDetail from "./pages/CategoryDetail";
 import './App.css'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="members" element={<Members />} />
           <Route path="announcements" element={<Announcements />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="categories/:slug" element={<CategoryDetail />} />
           <Route path="events" element={<UpcomingEvents />} />
           <Route path="events/past" element={<PastEvents />} />
           <Route path="resources" element={<Resources />} />

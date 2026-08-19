@@ -1,15 +1,36 @@
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./Topbar.css";
+import { getCategories } from "../../services/categoryService";
 
 export default function Topbar() {
   const location = useLocation();
-  // Les routes qui partagent les onglets de l'accueil
+  const [categories, setCategories] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const isHomeSection = ["/", "/announcements", "/members"].includes(location.pathname);
+  const isCategoriesSection = location.pathname.startsWith("/categories");
+
+  useEffect(() => {
+    // Exécute l'appel API uniquement sur la section catégories et si on n'a pas encore de données
+    if (isCategoriesSection && categories == null) {
+      getCategories()
+        .then((data) => {
+          setCategories(Array.isArray(data) ? data : []);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }
+  }, [isCategoriesSection, categories]);
 
   return (
     <header className="topbar">
       <div className="topbar-subnav">
-        {/* Onglets affichés si on est sur la page Accueil */}
+        {/* Onglets Accueil */}
         {isHomeSection && (
           <>
             <NavLink to="/" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
@@ -24,7 +45,31 @@ export default function Topbar() {
           </>
         )}
 
-        {/* Onglets affichés si on est sur la page Events */}
+        {/* Onglets Catégories dynamiques */}
+        {isCategoriesSection && (
+          <>
+            <NavLink to="/categories" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
+              Toutes
+            </NavLink>
+
+            {loading && <span className="subnav-loading">Chargement...</span>}
+            {error && <span className="subnav-error">Erreur</span>}
+
+            {!loading &&
+              !error &&
+              categories.map((cat) => (
+                <NavLink
+                  key={cat.id}
+                  to={`/categories/${cat.slug}`}
+                  className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}
+                >
+                  {cat.name}
+                </NavLink>
+              ))}
+          </>
+        )}
+
+        {/* Onglets Événements */}
         {location.pathname.startsWith("/events") && (
           <>
             <NavLink to="/events" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
@@ -36,7 +81,7 @@ export default function Topbar() {
           </>
         )}
 
-        {/* Onglets affichés si on est sur la page Ressources */}
+        {/* Onglets Ressources */}
         {location.pathname.startsWith("/resources") && (
           <>
             <NavLink to="/resources" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
@@ -49,7 +94,6 @@ export default function Topbar() {
         )}
       </div>
 
-      {/* Partie droite : Recherche et Profil */}
       <div className="topbar-actions">
         <input type="search" placeholder="Rechercher un sujet..." className="search-input" />
         <button className="btn btn-login">Connexion</button>
