@@ -6,6 +6,12 @@ const getAllCategories = async () => {
   return rows; //tableau d'objets javascript
 };
 
+const getCategoryBySlug = async (slug) => {
+  const query = "SELECT * FROM categories WHERE slug = $1;";
+  const { rows } = await db.query(query, [slug]);
+  return rows[0];
+};
+
 const createCategory = async (name, description) => {
   const query =
     "INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *;";
@@ -57,5 +63,6 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
-  reorderCategories
+  reorderCategories,
+  getCategoryBySlug
 };

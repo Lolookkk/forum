@@ -9,10 +9,10 @@ INSERT INTO users (username, email, password_hash, role) VALUES
 ('Samy_S', 'samy@yahoo.fr', '$2b$10$abcdefghijklmnopqrstuu', 'membre');
 
 -- 2. Insertion des catégories principales
-INSERT INTO categories (name, description) VALUES
-('Soutien & Écoute', 'Espaces de parole bienveillants pour échanger sur vos difficultés'),
-('Vie Quotidienne & Bien-être', 'Conseils, astuces et discussions sur la santé mentale au quotidien'),
-('Événements & Ateliers', 'Prochains rassemblements et sessions de soutien en visio');
+INSERT INTO categories (name, slug, description) VALUES
+('Soutien & Écoute', 'soutien-ecoute', 'Espaces de parole bienveillants pour échanger sur vos difficultés'),
+('Vie Quotidienne & Bien-être', vie-quotidienne, 'Conseils, astuces et discussions sur la santé mentale au quotidien'),
+('Événements & Ateliers',evenements-ateliers, 'Prochains rassemblements et sessions de soutien en visio');
 
 -- 3. Insertion des sous-catégories 
 INSERT INTO subcategories (category_id, title, description) VALUES

@@ -1,3 +1,4 @@
+const slugify = require("slugify");
 const categoryModel = require("../models/categoryModel");
 
 const getCategories = async (req, res, next) => {
@@ -9,6 +10,24 @@ const getCategories = async (req, res, next) => {
     });
   } catch (error) {
     next(error); // Transmet l'erreur au middleware global Express
+  }
+};
+
+const getCategoryBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const category = await categoryModel.getCategoryBySlug(slug);
+
+    if (!category) {
+      return res.status(404).json({ message: "Catégorie non trouvée" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: category,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -98,5 +117,6 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
-  reorderCategories
+  reorderCategories,
+  getCategoryBySlug
 };
