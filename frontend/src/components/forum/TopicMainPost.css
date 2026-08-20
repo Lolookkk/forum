@@ -1,0 +1,40 @@
+.topic-main-card {
+  background-color: #FAF7F0;
+  border: 1px solid #3F3F3E;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.topic-header {
+  background-color: #e5c365;
+  padding: 20px 24px 16px 24px;
+  border-bottom: 1px solid #3F3F3E;
+}
+
+.topic-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #3F3F3E;
+  margin: 0 0 8px 0;
+}
+
+.topic-meta {
+  font-size: 0.82rem;
+  color: #3F3F3E;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.topic-author strong {
+  color: #3F3F3E;
+}
+
+.topic-content {
+  padding: 24px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #3F3F3E;
+  white-space: pre-line;
+}
