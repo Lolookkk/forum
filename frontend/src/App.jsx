@@ -10,6 +10,7 @@ import Resources from "./pages/Resources";
 import Numbers from "./pages/Numbers";
 import CategoryDetail from "./pages/CategoryDetail";
 import SubcategoryDetail from "./pages/SubcategoryDetail";
+import TopicDetail from "./pages/TopicDetail";
 import './App.css'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="events/past" element={<PastEvents />} />
           <Route path="resources" element={<Resources />} />
           <Route path="resources/numbers" element={<Numbers />} />
+          <Route path="topics/:topicSlug" element={<TopicDetail />} />
 
         </Route>
       </Routes>

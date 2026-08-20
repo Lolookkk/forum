@@ -16,6 +16,26 @@ const getTwentyMostRecentTopics = async () => {
   return rows;
 };
 
+
+const getTopicInformationById = async (id) => {
+  const query = `
+    SELECT 
+      t.*,
+      u.username AS author
+    FROM topics t
+    LEFT JOIN users u ON t.user_id = u.id
+    WHERE t.id = $1;
+  `;
+  const { rows } = await db.query(query, [id]); // On passe [id] ici
+  return rows[0];
+};
+
+const getTopicBySlug = async (slug) => {
+  const query = "SELECT * FROM topics WHERE slug = $1;";
+  const { rows } = await db.query(query, [slug]);
+  return rows[0];
+};
+
 //On récupère toutes les sous topic d'une sous-catégorie spécifique
 const getAllTopicsBySubcategory = async (subcategory_id) => {
   const query =
@@ -47,4 +67,6 @@ module.exports = {
   createTopic,
   moveTopic,
   getTwentyMostRecentTopics,
+  getTopicInformationById,
+  getTopicBySlug,
 };

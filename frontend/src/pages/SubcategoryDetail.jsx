@@ -5,7 +5,7 @@ import { getSubcategoryBySlug, getTopicsBySubcategory } from "../services/subcat
 import "./Home.css"; // Réutilise les mêmes styles que Home.jsx
 
 export default function SubcategoryDetail() {
-  const { slug, categorySlug } = useParams();
+  const { slug } = useParams();
 
   const [subcategory, setSubcategory] = useState(null);
   const [topics, setTopics] = useState([]);
@@ -63,7 +63,7 @@ export default function SubcategoryDetail() {
             topics.map((topic) => (
               <div key={topic.id} className="topic-row">
                 <div className="topic-info">
-                  <Link to={`/categories/${categorySlug}/${slug}/${topic.slug}`}>
+                  <Link to={`/topics/${topic.slug}`}>
                     <span className="topic-title">{topic.title}</span>
                   </Link>
                 </div>

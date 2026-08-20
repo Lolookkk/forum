@@ -12,6 +12,20 @@ const getTwentyFirstTopics = async (req, res, next) => {
   }
 };
 
+
+const getTopicInformationById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const topic = await topicModel.getTopicInformationById(id);
+    res.status(200).json({
+      success: true,
+      data: topic,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getTopicsBySubcategory = async (req, res, next) => {
   const { subcategory_id } = req.params;
   try {
@@ -19,6 +33,25 @@ const getTopicsBySubcategory = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: topics,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const getTopicBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const topic = await topicModel.getTopicBySlug(slug);
+
+    if (!topic) {
+      return res.status(404).json({ message: "Sujet non trouvé" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: topic,
     });
   } catch (error) {
     next(error);
@@ -74,5 +107,7 @@ module.exports = {
   getTopicsBySubcategory,
   postTopic,
   moveTopic,
-  getTwentyFirstTopics
+  getTwentyFirstTopics,
+  getTopicBySlug,
+  getTopicInformationById
 };
