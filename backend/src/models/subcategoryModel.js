@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const slugify = require("slugify");
 
 //On récupère TOUTES les sous catégories
 const getAllSubcategories = async () => {
@@ -22,12 +23,16 @@ const getAllSubcategoriesByCategory = async (category_id) => {
 };
 
 const createSubCategory = async (category_id, title, description) => {
+  const slug =
+    slugify(title, { lower: true, strict: true, locale: "fr" }) +
+    "-" +
+    Date.now().toString(36);
   const query = `
-    INSERT INTO subcategories (category_id, title, description) 
-    VALUES ($1, $2, $3) 
+    INSERT INTO subcategories (category_id, title, slug, description) 
+    VALUES ($1, $2, $3, $4) 
     RETURNING *;
   `;
-  const { rows } = await db.query(query, [category_id, title, description]);
+  const { rows } = await db.query(query, [category_id, title, slug, description]);
   return rows[0];
 };
 

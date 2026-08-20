@@ -32,7 +32,7 @@ describe('API Reports — /api/reports', () => {
 
     // 3. Création d'un topic de test à signaler
     const topicRes = await db.query(
-      "INSERT INTO topics (subcategory_id, user_id, title, content) VALUES (2, $1, 'Topic à signaler', 'Contenu inapproprié') RETURNING id",
+      "INSERT INTO topics (subcategory_id, user_id, title, slug, content) VALUES (2, $1, 'Topic à signaler', 'topic-a-signaler-' || extract(epoch from now())::int, 'Contenu inapproprié') RETURNING id",
       [testUserId]
     );
     testTopicId = topicRes.rows[0].id;

@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const slugify = require("slugify");
 
 const getTwentyMostRecentTopics = async () => {
   const query = `
@@ -45,12 +46,17 @@ const getAllTopicsBySubcategory = async (subcategory_id) => {
 };
 
 const createTopic = async (subcategory_id, user_id, title, content) => {
+  const slug =
+    slugify(title, { lower: true, strict: true, locale: "fr" }) +
+    "-" +
+    Date.now().toString(36);
   const query =
-    "INSERT INTO topics (subcategory_id, user_id, title, content, is_pinned) VALUES ($1, $2, $3, $4, FALSE) RETURNING *;";
+    "INSERT INTO topics (subcategory_id, user_id, title, slug, content, is_pinned) VALUES ($1, $2, $3, $4, $5, FALSE) RETURNING *;";
   const { rows } = await db.query(query, [
     subcategory_id,
     user_id,
     title,
+    slug,
     content,
   ]);
   return rows[0];
