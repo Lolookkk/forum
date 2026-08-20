@@ -1,0 +1,90 @@
+.reply-form-card {
+  background-color: #FAF7F0;
+  border: 1px solid #3F3F3E;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.reply-form-header {
+  background-color: #eae3d6;
+  padding: 20px 24px 16px 24px;
+  border-bottom: 1px solid #3F3F3E;
+}
+
+.reply-form-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3F3F3E;
+}
+
+.reply-form-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reply-form-textarea {
+  width: 100%;
+  background-color: #FAF7F0;
+  border: 1px solid #3F3F3E;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #3F3F3E;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.reply-form-textarea:focus {
+  outline: none;
+  background-color: #FFFFFF;
+  border-color: #3F3F3E;
+  box-shadow: 0 0 0 2px rgba(63, 63, 62, 0.15);
+}
+
+.reply-form-textarea::placeholder {
+  color: #7a7873;
+}
+
+.reply-form-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reply-form-submit {
+  background-color: #3F3F3E;
+  color: #FAF7F0;
+  border: 1px solid #3F3F3E;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reply-form-submit:hover:not(:disabled) {
+  background-color: #eae3d6;
+  color: #3F3F3E;
+}
+
+.reply-form-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reply-form-error {
+  background-color: #fce8e6;
+  border: 1px solid #3F3F3E;
+  color: #8a2525;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}

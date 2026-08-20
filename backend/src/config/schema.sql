@@ -30,6 +30,7 @@ CREATE TABLE subcategories (
     id SERIAL PRIMARY KEY,
     category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     title VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL,
     description TEXT,
     display_order SERIAL NOT NULL
 );
@@ -39,6 +40,7 @@ CREATE TABLE topics (
     subcategory_id INT NOT NULL REFERENCES subcategories(id) ON DELETE CASCADE,
     user_id INT REFERENCES users(id) ON DELETE SET NULL,
     title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'publie' CHECK(status IN ('publie', 'signale', 'masque', 'supprime')),
     report_count INT DEFAULT 0 NOT NULL,

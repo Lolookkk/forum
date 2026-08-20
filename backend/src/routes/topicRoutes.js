@@ -5,18 +5,22 @@ const {
   postTopic,
   moveTopic,
   getTwentyFirstTopics,
+  getTopicInformationById,
 } = require("../controllers/topicController");
 
 const { getPostsByTopic } = require("../controllers/postController");
 const { reportTopic } = require("../controllers/reportController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
+const { getTopicBySlug } = require("../controllers/topicController");
 
 router.get("/", getTwentyFirstTopics);
 router.post("/", authenticateToken, postTopic);
 router.get("/:topic_id/posts", getPostsByTopic);
 router.post("/:topic_id/reports", authenticateToken, reportTopic);
-
+router.get("/:slug",getTopicBySlug);
 router.put('/:id/move',authenticateToken,requireRole('moderateur', 'admin'),moveTopic);
+router.get("/infos/:id", getTopicInformationById);
+
 
 module.exports = router;

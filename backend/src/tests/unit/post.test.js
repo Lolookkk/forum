@@ -48,7 +48,7 @@ describe('API Posts', () => {
 
     // 4. Création d'un topic temporaire
     const topicRes = await db.query(
-      "INSERT INTO topics (subcategory_id, user_id, title, content) VALUES (2, $1, 'Topic pour tests', 'Contenu') RETURNING id",
+      "INSERT INTO topics (subcategory_id, user_id, title, slug, content) VALUES (2, $1, 'Topic pour tests', 'topic-pour-tests-' || extract(epoch from now())::int, 'Contenu') RETURNING id",
       [testUserId]
     );
     testTopicId = topicRes.rows[0].id;

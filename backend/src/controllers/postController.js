@@ -13,6 +13,20 @@ const getPostsByTopic = async (req, res, next) => {
   }
 };
 
+
+const getAllPostsWithAuthorByTopic = async (req, res, next) => {
+  const { topic_id } = req.params;
+  try {
+    const posts = await postModel.getAllPostsWithAuthorByTopic(topic_id);
+    res.status(200).json({
+      success: true,
+      data: posts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const postPost = async (req, res, next) => {
   try {
     const { topic_id, content } = req.body;
@@ -89,5 +103,6 @@ module.exports = {
   postPost,
   updatePost,
   likePost,
-  unlikePost
+  unlikePost,
+  getAllPostsWithAuthorByTopic
 };

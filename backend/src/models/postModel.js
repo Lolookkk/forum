@@ -8,6 +8,18 @@ const getAllPostsByTopic = async (topic_id) => {
   return rows;
 };
 
+const getAllPostsWithAuthorByTopic = async (id) => {
+  const query = `
+    SELECT p.*, u.username AS author 
+    FROM posts p 
+    LEFT JOIN users u ON p.user_id = u.id 
+    WHERE p.topic_id = $1 
+    ORDER BY p.created_at ASC;
+  `;
+  const { rows } = await db.query(query, [id]); 
+  return rows;
+};
+
 const createPost = async (topic_id, user_id, content) => {
   const query =
     "INSERT INTO posts (topic_id, user_id, content) VALUES ($1, $2, $3) RETURNING *;";
@@ -48,5 +60,6 @@ module.exports = {
   createPost,
   updateUserPost,
   addLike,
-  removeLike
+  removeLike,
+  getAllPostsWithAuthorByTopic
 };

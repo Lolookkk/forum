@@ -1,10 +1,17 @@
 const db = require("../config/db");
+const slugify = require("slugify");
 
 //On récupère TOUTES les sous catégories
 const getAllSubcategories = async () => {
   const query = "SELECT * FROM subcategories ORDER BY display_order ASC;";
   const { rows } = await db.query(query);
   return rows;
+};
+
+const getSubcategoryBySlug = async (slug) => {
+  const query = "SELECT * FROM subcategories WHERE slug = $1;";
+  const { rows } = await db.query(query, [slug]);
+  return rows[0];
 };
 
 //On récupère toutes les sous catégories d'une catégorie spécifique
@@ -16,12 +23,16 @@ const getAllSubcategoriesByCategory = async (category_id) => {
 };
 
 const createSubCategory = async (category_id, title, description) => {
+  const slug =
+    slugify(title, { lower: true, strict: true, locale: "fr" }) +
+    "-" +
+    Date.now().toString(36);
   const query = `
-    INSERT INTO subcategories (category_id, title, description) 
-    VALUES ($1, $2, $3) 
+    INSERT INTO subcategories (category_id, title, slug, description) 
+    VALUES ($1, $2, $3, $4) 
     RETURNING *;
   `;
-  const { rows } = await db.query(query, [category_id, title, description]);
+  const { rows } = await db.query(query, [category_id, title, slug, description]);
   return rows[0];
 };
 
@@ -73,4 +84,5 @@ module.exports = {
   updateSubCategory,
   deleteSubCategory,
   reorderSubCategories,
+  getSubcategoryBySlug,
 };

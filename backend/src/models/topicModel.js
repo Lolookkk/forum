@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const slugify = require("slugify");
 
 const getTwentyMostRecentTopics = async () => {
   const query = `
@@ -16,6 +17,26 @@ const getTwentyMostRecentTopics = async () => {
   return rows;
 };
 
+
+const getTopicInformationById = async (id) => {
+  const query = `
+    SELECT 
+      t.*,
+      u.username AS author
+    FROM topics t
+    LEFT JOIN users u ON t.user_id = u.id
+    WHERE t.id = $1;
+  `;
+  const { rows } = await db.query(query, [id]); // On passe [id] ici
+  return rows[0];
+};
+
+const getTopicBySlug = async (slug) => {
+  const query = "SELECT * FROM topics WHERE slug = $1;";
+  const { rows } = await db.query(query, [slug]);
+  return rows[0];
+};
+
 //On récupère toutes les sous topic d'une sous-catégorie spécifique
 const getAllTopicsBySubcategory = async (subcategory_id) => {
   const query =
@@ -25,12 +46,17 @@ const getAllTopicsBySubcategory = async (subcategory_id) => {
 };
 
 const createTopic = async (subcategory_id, user_id, title, content) => {
+  const slug =
+    slugify(title, { lower: true, strict: true, locale: "fr" }) +
+    "-" +
+    Date.now().toString(36);
   const query =
-    "INSERT INTO topics (subcategory_id, user_id, title, content, is_pinned) VALUES ($1, $2, $3, $4, FALSE) RETURNING *;";
+    "INSERT INTO topics (subcategory_id, user_id, title, slug, content, is_pinned) VALUES ($1, $2, $3, $4, $5, FALSE) RETURNING *;";
   const { rows } = await db.query(query, [
     subcategory_id,
     user_id,
     title,
+    slug,
     content,
   ]);
   return rows[0];
@@ -47,4 +73,6 @@ module.exports = {
   createTopic,
   moveTopic,
   getTwentyMostRecentTopics,
+  getTopicInformationById,
+  getTopicBySlug,
 };

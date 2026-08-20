@@ -12,6 +12,25 @@ const getSubcategories = async (req, res, next) => {
   }
 };
 
+const getSubcategoryBySlug = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const subcategory = await subCategoryModel.getSubcategoryBySlug(slug);
+
+    if (!subcategory) {
+      return res.status(404).json({ message: "Sous-catégorie non trouvée" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: subcategory,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 const getSubcategoriesByCategory = async (req, res, next) => {
   const { category_id } = req.params;
   try {
@@ -128,4 +147,5 @@ module.exports = {
   updateSubCategory,
   deleteSubCategory,
   reorderSubCategories,
+  getSubcategoryBySlug,
 };

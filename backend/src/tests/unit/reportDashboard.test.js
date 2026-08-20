@@ -110,9 +110,9 @@ describe('API Reports', () => {
     const topicRes = await db.query(
       `
         INSERT INTO topics
-          (subcategory_id, user_id, title, content)
+          (subcategory_id, user_id, title, slug, content)
         VALUES
-          (2, $1, 'Topic douteux', 'Contenu à vérifier')
+          (2, $1, 'Topic douteux', 'topic-douteux-' || extract(epoch from now())::int, 'Contenu à vérifier')
         RETURNING id
       `,
       [memberUserId]
