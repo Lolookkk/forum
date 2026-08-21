@@ -43,6 +43,7 @@ const register = async (req, res, next) => {
           id: newUser.id,
           email: newUser.email,
           username: newUser.username,
+          role: newUser.role
         },
       });
   } catch (error) {
@@ -94,7 +95,7 @@ const login = async (req, res, next) => {
       .status(200)
       .json({
         token,
-        user: { id: user.id, email: user.email, username: user.username },
+        user: { id: user.id, email: user.email, username: user.username, role: user.role },
       });
   } catch (error) {
     next(error);
