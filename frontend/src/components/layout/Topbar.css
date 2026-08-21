@@ -64,3 +64,59 @@
 .btn:hover {
   opacity: 0.9;
 }
+
+/* ---------- Bloc utilisateur connecté ---------- */
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e5c365;
+  color: #3f3f3e;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-greeting-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.user-greeting-label {
+  font-size: 0.72rem;
+  color: #e5e1d5;
+  opacity: 0.75;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.user-greeting-name {
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Boutons auth : largeur adaptée au contenu */
+.btn-login,
+.btn-register,
+.btn-logout {
+  width: auto;
+  padding: 12px 20px;
+  white-space: nowrap;
+}
