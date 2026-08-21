@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import "./Topbar.css";
 import { getCategories } from "../../services/categoryService";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Topbar() {
   const location = useLocation();
+  const { user, logout, isAuthenticated } = useAuth();
+
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
 
@@ -106,8 +109,34 @@ export default function Topbar() {
 
       <div className="topbar-actions">
         <input type="search" placeholder="Rechercher un sujet..." className="search-input" />
-        <button className="btn btn-login">Connexion</button>
-        <button className="btn btn-register">Inscription</button>
+        
+        {isAuthenticated ? (
+          <>
+            <div className="user-greeting">
+              <div className="user-avatar" aria-hidden="true">
+                {user?.username?.[0]?.toUpperCase() || "?"}
+              </div>
+              <div className="user-greeting-text">
+                <span className="user-greeting-label">Bonjour,</span>
+                <span className="user-greeting-name">{user?.username}</span>
+              </div>
+            </div>
+            <button onClick={logout} className="btn btn-logout">
+              Déconnexion
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="btn btn-login">
+              Connexion
+            </Link>
+            <Link to="/register" className="btn btn-register">
+              Inscription
+            </Link>
+          </>
+        )}
+
+
       </div>
     </header>
   );
