@@ -34,6 +34,7 @@ export default function CategoryDetail() {
     <div className="home-container">
       {/* Colonne Gauche : Flux principal */}
       <main className="main-content">
+        <h1 className="page-title">{category?.name || slug}</h1>
         <h2 style={{ textTransform: "uppercase" }}>
           {category?.name || slug}
         </h2>

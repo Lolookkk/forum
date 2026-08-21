@@ -34,6 +34,7 @@ export default function SubcategoryDetail() {
     <div className="home-container">
       {/* Colonne Gauche : Flux principal */}
       <main className="main-content">
+        <h1 className="page-title">{subcategory?.title || slug}</h1>
         <h2 style={{ textTransform: "uppercase" }}>
           {subcategory?.title || slug}
         </h2>

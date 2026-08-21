@@ -21,7 +21,7 @@ const HEADER_STYLES = {
 export default function Numbers() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col gap-16">
-      <h1 className="text-3xl font-extrabold text-[#3F3F3E]">
+      <h1 className="page-title">
         Tous les numéros utiles
       </h1>
 

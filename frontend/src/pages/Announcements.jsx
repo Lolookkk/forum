@@ -23,7 +23,7 @@ export default function Announcements() {
 
   return (
     <div className="announcements-page">
-      <h1>Annonces officielles</h1>
+      <h1 className="page-title">Annonces officielles</h1>
 
       {/* Seul l'admin verra ce formulaire */}
       
