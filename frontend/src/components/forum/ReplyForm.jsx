@@ -1,38 +1,23 @@
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { createPost } from "../../services/postService";
 import "./ReplyForm.css";
 
-export default function ReplyForm({ topicId, onReplyAdded }) {
+export default function ReplyForm({ topicId, onReplyAdded }) { // 👈 Prop ajoutée
+  const { token } = useAuth();
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) return;
-
-    setSubmitting(true);
     setError(null);
+    setSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          topic_id: topicId,
-          content: content.trim(),
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Erreur lors de l'envoi de la réponse.");
-      }
-
+      await createPost(topicId, content, token);
       setContent("");
-      if (onReplyAdded) {
-        onReplyAdded(result.post || result.data || result);
-      }
+      if (onReplyAdded) onReplyAdded(); // 👈 Notifie le parent qu'il faut rafraîchir les réponses
     } catch (err) {
       setError(err.message);
     } finally {
@@ -44,7 +29,7 @@ export default function ReplyForm({ topicId, onReplyAdded }) {
     <form className="reply-form" onSubmit={handleSubmit}>
       <h3 className="reply-form-title">Laisser une réponse</h3>
 
-      {error && <div className="reply-form-error">{error}</div>}
+      {error && <div className="form-error form-error--inline">{error}</div>}
 
       <div className="reply-form-body">
         <textarea
@@ -61,7 +46,7 @@ export default function ReplyForm({ topicId, onReplyAdded }) {
       <div className="reply-form-footer">
         <button
           type="submit"
-          className="reply-form-submit"
+          className="btn btn-primary"
           disabled={submitting || !content.trim()}
         >
           {submitting ? "Envoi..." : "Publier la réponse"}
