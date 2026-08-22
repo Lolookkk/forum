@@ -7,7 +7,7 @@
   background-color: var(--color-bg-cream);
   border: 1px solid var(--color-border-taupe);
   border-radius: var(--radius-3xl);
-  padding: 100px;
+  padding: 20px;
   box-shadow: var(--shadow-md);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
