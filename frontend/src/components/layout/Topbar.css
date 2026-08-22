@@ -4,10 +4,10 @@
   align-items: stretch;
   height: 70px;
   padding: 0 1.5rem;
-  background-color: #A09D8B;
+  background-color: var(--color-border-taupe);
   position: sticky;
   top: 0;
-  z-index: 100; /* S'assure que la topbar passe par-dessus le contenu */
+  z-index: 100;
 }
 
 .topbar-subnav {
@@ -18,10 +18,10 @@
   display: flex;
   align-items: center;
   padding: 0 1.5rem;
-  color: #e5e1d5;
-  font-weight: 700;
+  color: var(--color-bg-light);
+  font-weight: var(--fw-bold);
   text-decoration: none;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 .subnav-link:hover {
@@ -29,8 +29,8 @@
 }
 
 .subnav-link.active {
-  background-color: #c3c0ad;
-  border-bottom: 3px solid #e5e1d5;
+  background-color: var(--color-taupe-light);
+  border-bottom: 3px solid var(--color-bg-light);
 }
 
 .topbar-actions {
@@ -42,23 +42,23 @@
 .search-input {
   display: flex;
   gap: 5px;
-  border: 1px solid #a09d8b;
-  background-color: #e5e1d5;
-  border-radius: 10px;
+  border: 1px solid var(--color-border-taupe);
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-lg);
   padding: 14px;
 }
 
 .btn {
-  background-color: #e5c365;
-  color: #3f3f3e;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
   padding: 15px;
   border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
   cursor: pointer;
   width: 100%;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .btn:hover {
@@ -74,17 +74,17 @@
   padding: 0.5rem 0.9rem;
   background-color: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .user-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  background-color: #e5c365;
-  color: #3f3f3e;
-  font-weight: 800;
-  font-size: 0.95rem;
+  border-radius: var(--radius-circle);
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,17 +98,17 @@
 }
 
 .user-greeting-label {
-  font-size: 0.72rem;
-  color: #e5e1d5;
+  font-size: var(--fs-xs);
+  color: var(--color-bg-light);
   opacity: 0.75;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.02em;
 }
 
 .user-greeting-name {
-  font-size: 0.95rem;
-  color: #ffffff;
-  font-weight: 700;
+  font-size: var(--fs-md);
+  color: var(--color-bg-white);
+  font-weight: var(--fw-bold);
   letter-spacing: 0.01em;
 }
 

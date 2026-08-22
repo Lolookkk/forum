@@ -1,23 +1,23 @@
 .reply-form-card {
-  background-color: #FAF7F0;
-  border: 1px solid #3F3F3E;
-  border-radius: 12px;
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-primary-dark);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   margin-top: 24px;
   margin-bottom: 24px;
 }
 
 .reply-form-header {
-  background-color: #eae3d6;
+  background-color: var(--color-bg-beige);
   padding: 20px 24px 16px 24px;
-  border-bottom: 1px solid #3F3F3E;
+  border-bottom: 1px solid var(--color-primary-dark);
 }
 
 .reply-form-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #3F3F3E;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-dark);
 }
 
 .reply-form-body {
@@ -29,24 +29,24 @@
 
 .reply-form-textarea {
   width: 100%;
-  background-color: #FAF7F0;
-  border: 1px solid #3F3F3E;
-  border-radius: 8px;
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-primary-dark);
+  border-radius: var(--radius-md);
   padding: 16px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   line-height: 1.6;
-  color: #3F3F3E;
+  color: var(--color-primary-dark);
   resize: vertical;
   box-sizing: border-box;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
 .reply-form-textarea:focus {
   outline: none;
-  background-color: #FFFFFF;
-  border-color: #3F3F3E;
-  box-shadow: 0 0 0 2px rgba(63, 63, 62, 0.15);
+  background-color: var(--color-bg-white);
+  border-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-focus-dark);
 }
 
 .reply-form-textarea::placeholder {
@@ -59,20 +59,20 @@
 }
 
 .reply-form-submit {
-  background-color: #3F3F3E;
-  color: #FAF7F0;
-  border: 1px solid #3F3F3E;
-  border-radius: 6px;
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-cream);
+  border: 1px solid var(--color-primary-dark);
+  border-radius: var(--radius-sm);
   padding: 10px 20px;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .reply-form-submit:hover:not(:disabled) {
-  background-color: #eae3d6;
-  color: #3F3F3E;
+  background-color: var(--color-bg-beige);
+  color: var(--color-primary-dark);
 }
 
 .reply-form-submit:disabled {
@@ -81,10 +81,10 @@
 }
 
 .reply-form-error {
-  background-color: #fce8e6;
-  border: 1px solid #3F3F3E;
-  color: #8a2525;
+  background-color: var(--color-error-bg-alt);
+  border: 1px solid var(--color-primary-dark);
+  color: var(--color-error-text);
   padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base-sm);
 }

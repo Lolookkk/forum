@@ -6,37 +6,18 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 24px 64px 24px;
-  color: #2b2b2b;
-  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--color-text-body);
+  font-family: var(--font-family-base);
 }
 
-.announcements-page h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #3f3f3e;
-  margin-bottom: 32px;
-  letter-spacing: -0.02em;
-  position: relative;
-  padding-bottom: 16px;
-}
-
-.announcements-page h1::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 80px;
-  height: 4px;
-  border-radius: 999px;
-  background-color: #e5c365;
-}
+/* NOTE : .page-title est défini globalement dans index.css */
 
 /* -------------------------------------------------------------------------- */
-/* FORMULAIRE ADMIN (conteneur général)                                       */
+/* FORMULAIRE ADMIN                                                           */
 /* -------------------------------------------------------------------------- */
 
 .announcements-page > form,
-.announcements-page > .announce-card {
+.announcements-page > .form-card {
   margin-bottom: 48px;
 }
 
@@ -51,28 +32,27 @@
 }
 
 .announcement-card {
-  background-color: #faf7f0;
-  border: 1px solid #a09d8b;
-  border-radius: 16px;
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow: 0 1px 2px rgba(63, 63, 62, 0.04);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
 }
 
 .announcement-card:hover {
-  box-shadow: 0 8px 24px rgba(63, 63, 62, 0.08);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
 }
 
-/* Bandeau supérieur (titre + badge officiel) */
 .announcement-card h2 {
-  background-color: #e5c365;
-  color: #3f3f3e;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
   padding: 18px 28px;
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
   letter-spacing: -0.01em;
-  border-bottom: 1px solid #a09d8b;
+  border-bottom: 1px solid var(--color-border-taupe);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -83,22 +63,20 @@
   font-size: 1.2rem;
 }
 
-/* Corps de l'annonce */
 .announcement-card p {
   padding: 24px 28px 8px 28px;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   line-height: 1.7;
-  color: #3f3f3e;
+  color: var(--color-primary-dark);
   white-space: pre-line;
 }
 
-/* Pied de carte : auteur + date */
 .announcement-card small {
   display: block;
   padding: 12px 28px 22px 28px;
-  font-size: 0.78rem;
-  color: #6e6b5d;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--color-text-subtle);
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.01em;
 }
 
@@ -111,10 +89,10 @@
   display: block;
   padding: 48px 24px;
   text-align: center;
-  background-color: #e5e1d5;
-  border: 1px dashed #a09d8b;
-  border-radius: 12px;
-  color: #4a483f;
-  font-weight: 600;
-  font-size: 0.9rem;
+  background-color: var(--color-bg-light);
+  border: 1px dashed var(--color-border-taupe);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
 }

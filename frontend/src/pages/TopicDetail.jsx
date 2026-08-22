@@ -39,6 +39,7 @@ export default function TopicDetail() {
   return (
     <div className="home-container">
       <main className="main-content">
+        {topic && <h1 className="page-title">{topic.title}</h1>}
         {loading && <div className="state-message">Chargement du sujet...</div>}
         {error && <div className="state-message error">{error}</div>}
 

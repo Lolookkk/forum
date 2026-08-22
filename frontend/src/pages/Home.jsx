@@ -26,6 +26,7 @@ export default function Home() {
     <div className="home-container">
       {/* Colonne Gauche : Flux principal */}
       <main className="main-content">
+        <h1 className="page-title">Accueil</h1>
         <h2>DERNIERS SUJETS CRÉÉS</h2>
 
         <div className="topics-card">

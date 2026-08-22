@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { createAnnounce } from "../../services/announcementService";
-import "./AdminAddAnnounces.css";
 
 export default function AdminAddAnnonce({ onAnnounceAdded }) {
   const { user, token } = useAuth();
@@ -33,12 +32,15 @@ export default function AdminAddAnnonce({ onAnnounceAdded }) {
   };
 
   return (
-    <div className="announce-card">
-      <h2 className="announce-title">Créer une annonce</h2>
-      {error && <div className="announce-error">{error}</div>}
+    <div className="form-card form-card--md form-card--center">
+      <h2 className="form-header form-header--sage">
+        <span aria-hidden="true" style={{ fontSize: "1.2rem" }}>✍️</span>
+        Créer une annonce
+      </h2>
+      {error && <div className="form-error">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="announce-form">
-        <div className="announce-form-group">
+      <form onSubmit={handleSubmit} className="form-body">
+        <div className="form-group">
           <label>Titre</label>
           <input
             type="text"
@@ -48,7 +50,7 @@ export default function AdminAddAnnonce({ onAnnounceAdded }) {
           />
         </div>
 
-        <div className="announce-form-group">
+        <div className="form-group">
           <label>Contenu</label>
           <textarea
             value={content}
@@ -58,7 +60,7 @@ export default function AdminAddAnnonce({ onAnnounceAdded }) {
           />
         </div>
 
-        <button type="submit" className="announce-submit" disabled={submitting}>
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
           {submitting ? "Création..." : "Publier l'annonce"}
         </button>
       </form>

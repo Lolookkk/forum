@@ -1,28 +1,377 @@
 @import "tailwindcss";
 
-/* 1. Reset universel des marges et du box-sizing */
+/* ============================================================
+   VARIABLES GLOBALES — Design System
+   ============================================================ */
+:root {
+  /* ---------- Couleurs de base ---------- */
+  --color-bg-page: #faf9f6;
+  --color-bg-cream: #faf7f0;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #e5e1d5;
+  --color-bg-beige: #eae3d6;
+  --color-bg-sand: #ebdcb9;
+
+  /* ---------- Couleurs sémantiques ---------- */
+  --color-primary-dark: #3f3f3e;
+  --color-accent-yellow: #e5c365;
+  --color-accent-sage: #90a181;
+  --color-border-taupe: #a09d8b;
+
+  /* ---------- Variantes claires ---------- */
+  --color-taupe-light: #c3c0ad;
+  --color-sand-light: #d3c5a6;
+  --color-beige-light: #dcd3c1;
+
+  /* ---------- Textes ---------- */
+  --color-text-dark: #3f3f3e;
+  --color-text-body: #2b2b2b;
+  --color-text-muted: #4a483f;
+  --color-text-subtle: #6e6b5d;
+  --color-text-placeholder: #9b988a;
+
+  /* ---------- Erreurs ---------- */
+  --color-error-bg: #f9ece8;
+  --color-error-bg-alt: #fce8e6;
+  --color-error-border: #e6b8ae;
+  --color-error-text: #8a2525;
+
+  /* ---------- Border-radius ---------- */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* ---------- Ombres ---------- */
+  --shadow-sm: 0 1px 2px rgba(63, 63, 62, 0.04);
+  --shadow-md: 0 2px 8px rgba(63, 63, 62, 0.06);
+  --shadow-lg: 0 8px 24px rgba(63, 63, 62, 0.08);
+  --shadow-focus-yellow: 0 0 0 3px rgba(229, 195, 101, 0.2);
+  --shadow-focus-dark: 0 0 0 2px rgba(63, 63, 62, 0.15);
+
+  /* ---------- Typographies ---------- */
+  --font-family-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.78rem;
+  --fs-base-sm: 0.85rem;
+  --fs-base: 0.9rem;
+  --fs-md: 0.95rem;
+  --fs-lg: 1rem;
+  --fs-xl: 1.1rem;
+  --fs-2xl: 1.15rem;
+  --fs-3xl: 1.3rem;
+  --fs-title-page: 2rem;
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* ---------- Espacements ---------- */
+  --space-input-y: 12px;
+  --space-input-x: 14px;
+  --space-form-body: 28px;
+  --space-card-header-y: 22px;
+  --space-card-header-x: 28px;
+
+  /* ---------- Transitions ---------- */
+  --transition-fast: 0.1s ease;
+  --transition-base: 0.2s ease;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* 2. Configuration de la page entière */
 html, body, #root {
   width: 100%;
   min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #faf9f6; /* Couleur de fond globale de ton forum */
-  color: #2c2c2c;
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg-page);
+  color: var(--color-text-body);
   -webkit-font-smoothing: antialiased;
 }
 
-/* 3. Sécurité pour les images et boutons */
 img {
   max-width: 100%;
   display: block;
 }
 
-button, input, select {
+button, input, select, textarea {
   font: inherit;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ============================================================
+   WRAPPER DE PAGE STANDARD — .page-wrapper
+   ============================================================ */
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px 24px;
+}
+
+/* ============================================================
+   TITRES DE PAGE — .page-title
+   ============================================================ */
+.page-title {
+  font-size: var(--fs-title-page);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  margin-bottom: 32px;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent-yellow);
+}
+
+/* ============================================================
+   CARTES DE FORMULAIRE — .form-card
+   ============================================================ */
+.form-card {
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-3xl);
+  width: 100%;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.form-card--sm { max-width: 420px; }
+.form-card--md { max-width: 560px; }
+.form-card--lg { max-width: 720px; }
+.form-card--center { margin: 0 auto; }
+
+/* ============================================================
+   EN-TÊTE DE CARTE FORMULAIRE — .form-header
+   ============================================================ */
+.form-header {
+  margin: 0;
+  padding: var(--space-card-header-y) var(--space-card-header-x);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--color-border-taupe);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-header--sage {
+  background-color: var(--color-accent-sage);
+  color: var(--color-bg-cream);
+}
+
+.form-header--yellow {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
+}
+
+.form-header--beige {
+  background-color: var(--color-bg-beige);
+  color: var(--color-primary-dark);
+  text-align: center;
+  justify-content: center;
+}
+
+.form-header--light {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   CORPS DE FORMULAIRE — .form-body
+   ============================================================ */
+.form-body {
+  padding: var(--space-form-body);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ============================================================
+   CHAMPS DE FORMULAIRE — .form-group
+   ============================================================ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: var(--fs-base-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-lg);
+  padding: var(--space-input-y) var(--space-input-x);
+  font-size: var(--fs-md);
+  color: var(--color-primary-dark);
+  transition: border-color var(--transition-base),
+              background-color var(--transition-base),
+              box-shadow var(--transition-base);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.form-group input::placeholder,
+.form-group select::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-yellow);
+  box-shadow: var(--shadow-focus-yellow);
+  background-color: var(--color-bg-white);
+}
+
+/* ============================================================
+   BOUTONS — .btn + modifieurs
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: var(--fw-bold);
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              transform var(--transition-fast),
+              opacity var(--transition-base);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Bouton PRINCIPAL ---- */
+.btn-primary {
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-cream);
+  border-radius: var(--radius-xl);
+  padding: 14px 24px;
+  font-size: var(--fs-base);
+  margin-top: 4px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #53514f;
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ---- Bouton SAGE ---- */
+.btn-sage {
+  background-color: var(--color-accent-sage);
+  color: var(--color-bg-cream);
+  border-radius: var(--radius-md);
+  padding: 15px;
+  font-size: var(--fs-base);
+  width: 100%;
+}
+
+.btn-sage:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* ---- Bouton JAUNE ---- */
+.btn-yellow {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-md);
+  padding: 15px;
+  font-size: var(--fs-base);
+  width: 100%;
+}
+
+.btn-yellow:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn--fit {
+  width: auto;
+  padding: 12px 20px;
+}
+
+/* ============================================================
+   ERREURS DE FORMULAIRE — .form-error
+   ============================================================ */
+.form-error {
+  margin: 20px var(--space-form-body) 0 var(--space-form-body);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error-text);
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-base-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.form-error--inline {
+  margin: 0;
+}
+
+/* ============================================================
+   FOOTER DE CARTE AUTH
+   ============================================================ */
+.form-footer {
+  padding: 0 var(--space-form-body) var(--space-form-body) var(--space-form-body);
+  margin: 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--color-primary-dark);
+}
+
+.form-footer a {
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
 }

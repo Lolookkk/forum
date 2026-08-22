@@ -47,6 +47,7 @@ export default function Categories() {
     <div className="home-container">
       {/* Colonne Gauche : Liste globale des catégories */}
       <main className="main-content">
+        <h1 className="page-title">Catégories</h1>
         <h2>TOUTES LES CATÉGORIES</h2>
 
         {/* Message de chargement */}

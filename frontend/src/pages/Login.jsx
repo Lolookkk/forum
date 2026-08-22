@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
-import "./Auth.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,14 +18,8 @@ export default function Login() {
     setSubmitting(true);
 
     try {
-
-      // 1. Connexion
       const loginData = await loginUser(email, password);
-
-      // 2. Stockage du token et de l'utilisateur dans le State
       login(loginData.user, loginData.token);
-
-      // 3. Redirection vers l'accueil
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -36,12 +29,17 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2 className="auth-title">Créer un compte</h2>
-        {error && <div className="auth-error">{error}</div>}
+    <div className="page-wrapper">
+      <h1 className="page-title">Connexion</h1>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+      <div className="form-card form-card--md form-card--center">
+        <h2 className="form-header form-header--sage">
+          <span aria-hidden="true" style={{ fontSize: "1.2rem" }}>🔐</span>
+          Se connecter
+        </h2>
+        {error && <div className="form-error">{error}</div>}
+
+        <form onSubmit={handleSubmit} className="form-body">
 
           <div className="form-group">
             <label>Adresse e-mail</label>
@@ -63,10 +61,14 @@ export default function Login() {
             />
           </div>
 
-          <button type="submit" className="auth-submit" disabled={submitting}>
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             {submitting ? "Connexion au compte..." : "Se connecter"}
           </button>
         </form>
+
+        <p className="form-footer">
+          Pas encore de compte ? <Link to="/register">Créer un compte</Link>
+        </p>
       </div>
     </div>
   );

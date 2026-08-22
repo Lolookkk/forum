@@ -1,8 +1,8 @@
 .top-banner {
   width: 100%;
-  background-color: #eae3d6;
+  background-color: var(--color-bg-beige);
   padding: 1.5rem 2rem;
-  border-bottom: 2px solid #dcd3c1;
+  border-bottom: 2px solid var(--color-beige-light);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,8 +28,8 @@
 
 .banner-title {
   font-size: 3.8rem;
-  font-weight: 900;
-  color: #90A181;
+  font-weight: var(--fw-black);
+  color: var(--color-accent-sage);
   letter-spacing: 8px;
   text-transform: uppercase;
   line-height: 1;
@@ -37,8 +37,8 @@
 }
 
 .banner-subtitle {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
   color: #6b7280;
   letter-spacing: 1px;
   margin: 0;
