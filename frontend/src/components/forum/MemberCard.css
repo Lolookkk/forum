@@ -1,0 +1,85 @@
+/* ============================================================
+   CARTE MEMBRE — MemberCard.css
+   ============================================================ */
+
+/* Conteneur principal */
+.member-card {
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-3xl);
+  padding: 100px;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.member-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Encart / Bannière d'alignement */
+.member-card-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+/* Avatar / Photo de profil */
+.member-avatar-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-circle);
+  background-color: var(--color-bg-beige);
+  border: 2px solid var(--color-accent-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.member-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.member-avatar-placeholder {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+}
+
+/* Bloc texte */
+.member-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.member-name {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.01em;
+}
+
+.member-role {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  background-color: var(--color-accent-sage);
+  color: var(--color-bg-cream);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.member-joined-date {
+  font-size: var(--fs-sm);
+  color: var(--color-text-subtle);
+  margin-top: 2px;
+}

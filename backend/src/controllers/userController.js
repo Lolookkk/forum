@@ -1,6 +1,21 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.getAllUsers();
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+getAllUsers
+
 const updateUserEmail = async (req, res, next) => {
   const { email } = req.body;
   if (!email) {
@@ -136,5 +151,6 @@ module.exports = {
   updateUserUsername,
   updateUserPassword,
   updateUserRole,
-  toggleUserBan
+  toggleUserBan,
+  getAllUsers
 };
