@@ -48,7 +48,6 @@ export default function Categories() {
       {/* Colonne Gauche : Liste globale des catégories */}
       <main className="main-content">
         <h1 className="page-title">Catégories</h1>
-        <h2>TOUTES LES CATÉGORIES</h2>
 
         {/* Message de chargement */}
         {loading && <div className="state-message">Chargement des catégories...</div>}
@@ -67,10 +66,7 @@ export default function Categories() {
           categories.map((cat) => (
             <div key={cat.id} className="topics-card" style={{ marginBottom: "2rem" }}>
               <div className="table-header">
-                <Link 
-                  to={`/categories/${cat.slug}`} 
-                  style={{ color: "inherit", textDecoration: "none", fontWeight: "bold" }}
-                >
+                <Link to={`/categories/${cat.slug}`} >
                   {cat.name}
                 </Link>
                 <span>{cat.subcategories.length} sous-catégories</span>
@@ -82,7 +78,9 @@ export default function Categories() {
                 cat.subcategories.map((subCat) => (
                   <div key={subCat.id} className="topic-row">
                     <div className="topic-info">
-                      <span className="topic-title">{subCat.title}</span>
+                      <Link to={`/categories/${cat.slug}/${subCat.slug}`}>
+                        <span>{subCat.title}</span>
+                      </Link>
                     </div>
                     <div className="topic-stats">
                       {subCat.topics_count ?? 0} sujets
