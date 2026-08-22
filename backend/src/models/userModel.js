@@ -1,5 +1,10 @@
 const db = require("../config/db");
 
+const getAllUsers = async () => {
+  const query = "SELECT * FROM users ORDER BY username ASC;";
+  const { rows } = await db.query(query);
+  return rows; 
+};
 //On cherche un utilisateur par son email ou son username (pour vérifier si il existe déjà)
 const findUserByEmailOrUsername = async (email, username) => {
   const query = "SELECT * FROM users WHERE email = $1 OR username = $2;";
@@ -74,5 +79,6 @@ module.exports = {
   updateUserPassword,
   findUserById,
   updateUserRole,
-  setBanStatus
+  setBanStatus,
+  getAllUsers
 };
