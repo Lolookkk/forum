@@ -1,0 +1,78 @@
+/* ============================================================
+   PAGE PROFIL — ProfileDetail.css
+   ============================================================ */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-field-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.profile-field-value {
+  font-size: var(--fs-md);
+  color: var(--color-text-body);
+  line-height: 1.5;
+}
+
+.profile-field-value--highlight {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary-dark);
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.profile-stat-box {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  text-align: center;
+}
+
+.profile-stat-number {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  display: block;
+}
+
+.profile-stat-label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+}
+
+.profile-stat-total {
+  background-color: var(--color-bg-beige);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  text-align: center;
+}
+
+.profile-stat-total-number {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  color: var(--color-primary-dark);
+}

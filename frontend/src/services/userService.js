@@ -11,3 +11,15 @@ export const getMembers = async () => {
 
   return result.data ;
 };
+
+export const getPublicProfile = async (username) => {
+  const response = await fetch(`${API_URL}/${username}`);
+  console.log("réponse dans service", response);
+  if (!response.ok) {
+    throw new Error("Impossible de récupérer le profil.");
+  }
+  
+  const result = await response.json(); 
+  
+  return result.data ;
+};

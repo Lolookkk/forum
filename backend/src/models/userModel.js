@@ -12,6 +12,69 @@ const findUserByEmailOrUsername = async (email, username) => {
   return rows[0]; // retourne undefined si pas d'utilisateur trouvé
 };
 
+const getAllActivityOfUser = async (username) => {
+  const query = `
+    SELECT * FROM (
+      -- 1. Les sujets (topics) créés par l'utilisateur
+      SELECT 
+        'topic' AS type,
+        t.id AS activity_id,
+        t.title AS topic_title,
+        t.slug AS topic_slug,
+        t.content AS content,
+        t.created_at AS created_at,
+        s.id AS subcategory_id,
+        s.slug AS subcategory_slug,
+        s.title AS subcategory_title
+      FROM topics t
+      JOIN users u ON t.user_id = u.id
+      JOIN subcategories s ON t.subcategory_id = s.id
+      WHERE u.username = $1 AND t.status = 'publie'
+
+      UNION ALL
+
+      -- 2. Les messages (posts) publiés par l'utilisateur
+      SELECT 
+        'post' AS type,
+        p.id AS activity_id,
+        t.title AS topic_title,
+        t.slug AS topic_slug,
+        p.content AS content,
+        p.created_at AS created_at,
+        s.id AS subcategory_id,
+        s.slug AS subcategory_slug,
+        s.title AS subcategory_title
+      FROM posts p
+      JOIN users u ON p.user_id = u.id
+      JOIN topics t ON p.topic_id = t.id
+      JOIN subcategories s ON t.subcategory_id = s.id
+      WHERE u.username = $1 AND p.status = 'publie'
+    ) combined_activity
+    ORDER BY created_at DESC;
+  `;
+
+  const { rows } = await db.query(query, [username]);
+  return rows;
+};
+
+
+const displayPublicProfilUser = async (username) => {
+  const query = `
+    SELECT 
+      u.username, 
+      u.role, 
+      u.description, 
+      u.created_at,
+      (SELECT COUNT(*) FROM topics WHERE user_id = u.id) AS topics_count,
+      (SELECT COUNT(*) FROM posts WHERE user_id = u.id) AS posts_count
+    FROM users u
+    WHERE u.username = $1;
+  `;
+
+  const { rows } = await db.query(query, [username]);
+  return rows[0]; // retourne undefined si l'utilisateur n'existe pas
+};
+
 //On cherche un utilisateur par son email
 const findUserByEmail = async (email) => {
   const query = "SELECT * FROM users WHERE email = $1;";
@@ -80,5 +143,7 @@ module.exports = {
   findUserById,
   updateUserRole,
   setBanStatus,
-  getAllUsers
+  getAllUsers,
+  displayPublicProfilUser,
+  getAllActivityOfUser
 };

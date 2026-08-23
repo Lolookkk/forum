@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MemberCard from "../components/forum/MemberCard"; // Ajuste le chemin si besoin
 import { getMembers } from "../services/userService";   // Ajuste le chemin du service
 import "./Members.css";
+import { Link } from "react-router-dom";
 
 export default function Members() {
   const [users, setUsers] = useState([]);
@@ -43,7 +44,9 @@ export default function Members() {
       {!loading && !error && users.length > 0 && (
         <div className="members-grid">
           {users.map((member) => (
-            <MemberCard key={member.id} member={member} />
+            <Link to={`/profile/${member.username}`}>
+              <MemberCard key={member.id} member={member} />
+            </Link>
           ))}
         </div>
       )}
