@@ -12,6 +12,7 @@ import CategoryDetail from "./pages/CategoryDetail";
 import SubcategoryDetail from "./pages/SubcategoryDetail";
 import TopicDetail from "./pages/TopicDetail";
 import Register from "./pages/Register";
+import ProfileDetail from "./pages/ProfileDetail";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import './App.css'
@@ -36,6 +37,7 @@ function App() {
             <Route path="topics/:topicSlug" element={<TopicDetail />} />
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
+            <Route path="profile/:username" element={<ProfileDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

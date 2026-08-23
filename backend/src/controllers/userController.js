@@ -14,7 +14,62 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-getAllUsers
+// const getAllActivityOfUser = async (req, res, next) => {
+//   try {
+//     const publications = await User.getAllActivityOfUser();
+//     res.status(200).json({
+//       success: true,
+//       data: publications,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
+// const displayPublicProfilUser = async (req, res, next) => {
+//   try {
+//     const {username} = req.params;
+//     const user = await User.displayPublicProfilUser(username);
+//     res.status(200).json({
+//       success: true,
+//       data: user,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+const getAllActivityOfUser = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+
+    // Exécution simultanée des deux requêtes SQL
+    const [profile, activity] = await Promise.all([
+      User.displayPublicProfilUser(username),
+      User.getAllActivityOfUser(username)
+    ]);
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Utilisateur non trouvé."
+      });
+    }
+
+
+    return res.status(200).json({
+      success: true,
+      message: "Profil et activité récupérés avec succès.",
+      data: {
+        ...profile,
+        activity // Contient le tableau complet combinant topics et posts
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const updateUserEmail = async (req, res, next) => {
   const { email } = req.body;
@@ -152,5 +207,6 @@ module.exports = {
   updateUserPassword,
   updateUserRole,
   toggleUserBan,
-  getAllUsers
+  getAllUsers,
+  getAllActivityOfUser,
 };

@@ -112,15 +112,17 @@ export default function Topbar() {
         
         {isAuthenticated ? (
           <>
+          <Link to >
             <div className="user-greeting">
               <div className="user-avatar" aria-hidden="true">
                 {user?.username?.[0]?.toUpperCase() || "?"}
               </div>
               <div className="user-greeting-text">
-                <span className="user-greeting-label">Bonjour,</span>
+                <span className="user-greeting-label">Mon profil</span>
                 <span className="user-greeting-name">{user?.username}</span>
               </div>
             </div>
+          </Link>
             <button onClick={logout} className="btn btn-logout">
               Déconnexion
             </button>

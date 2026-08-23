@@ -7,12 +7,14 @@ const {
   updateUserPassword,
   updateUserRole,
   toggleUserBan,
-  getAllUsers
+  getAllUsers,
+  getAllActivityOfUser
 } = require("../controllers/userController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
 router.get("/", getAllUsers);
+router.get("/:username", getAllActivityOfUser);
 
 router.put("/me/email", authenticateToken, updateUserEmail);
 router.put("/me/username", authenticateToken, updateUserUsername);
