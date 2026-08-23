@@ -6,10 +6,13 @@ const getTwentyMostRecentTopics = async () => {
     SELECT 
       t.*,
       u.username AS author, 
-      s.title AS subcategory 
+      s.title AS subcategory,
+      s.slug AS subcategory_slug,
+      c.slug AS category_slug
     FROM topics t
     LEFT JOIN users u ON t.user_id = u.id
-    LEFT JOIN subcategories s ON t.subcategory_id = s.id
+    JOIN subcategories s ON t.subcategory_id = s.id
+    JOIN categories c ON s.category_id = c.id
     ORDER BY t.created_at DESC 
     LIMIT 20;
   `;
@@ -22,9 +25,13 @@ const getTopicInformationById = async (id) => {
   const query = `
     SELECT 
       t.*,
-      u.username AS author
+      u.username AS author,
+      s.slug AS subcategory_slug,
+      c.slug AS category_slug
     FROM topics t
     LEFT JOIN users u ON t.user_id = u.id
+    JOIN subcategories s ON t.subcategory_id = s.id
+    JOIN categories c ON s.category_id = c.id
     WHERE t.id = $1;
   `;
   const { rows } = await db.query(query, [id]); // On passe [id] ici
