@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 
 export default function TopicRow({ topic }) {
   return (
@@ -7,13 +7,21 @@ export default function TopicRow({ topic }) {
       <div className="topic-left">
         <div className="topic-icon">{topic.icon}</div>
         <div className="topic-details">
-          <span className="topic-title">{topic.title}</span>
-          <span className="topic-author">{topic.author}</span>
+          <Link to = {`/topics/${topic.slug}`} >
+            <span className="topic-title">{topic.title}</span>
+          </Link>
+          <Link to = {`/profile/${topic.author}`}>
+            <span className="topic-author">{topic.author}</span>
+          </Link>
+          
         </div>
       </div>
 
       {/* Badge de catégorie */}
-      <div className="category-badge">{topic.subcategory}</div>
+      <Link to={`/categories/${topic.category_slug}/${topic.subcategory_slug}`}>
+        <div className="category-badge">{topic.subcategory}</div>
+      </Link>
+      
 
       {/* Statistiques (Réponses & Vues) */}
       <div className="topic-stats">
