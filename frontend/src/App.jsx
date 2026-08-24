@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import ProfileDetail from "./pages/ProfileDetail";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import FicheDetail from "./pages/FicheDetail";
 import './App.css'
 
 function App() {
@@ -38,6 +39,8 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
             <Route path="profile/:username" element={<ProfileDetail />} />
+            <Route path="fiches/:slug" element={<FicheDetail />} />
+            FicheDetail
           </Route>
         </Routes>
       </BrowserRouter>
