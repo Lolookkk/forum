@@ -36,10 +36,9 @@ export default function FicheDetail() {
   
   return (
     <div className="w-full max-w-full mx-auto px-6 md:px-12 py-8">
-      <article>
-      <ReactMarkdown>{fiche.content || ""}</ReactMarkdown>
-    </article>
+      <article className="prose prose-stone prose-headings:text-[var(--color-primary-dark)] prose-a:text-[var(--color-accent-sage)] prose-strong:text-[var(--color-primary-dark)] max-w-none">
+        <ReactMarkdown>{fiche.content || ""}</ReactMarkdown>
+      </article>
     </div>
-    
   );
 }
