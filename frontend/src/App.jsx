@@ -16,6 +16,7 @@ import ProfileDetail from "./pages/ProfileDetail";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import FicheDetail from "./pages/FicheDetail";
+import FicheForm from "./pages/FicheForm";
 import './App.css'
 
 function App() {
@@ -40,7 +41,8 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="profile/:username" element={<ProfileDetail />} />
             <Route path="fiches/:slug" element={<FicheDetail />} />
-            FicheDetail
+            <Route path="/resources/new" element={<FicheForm />} />
+            <Route path="/resources/edit/:slug" element={<FicheForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
