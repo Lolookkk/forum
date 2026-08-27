@@ -17,6 +17,9 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import FicheDetail from "./pages/FicheDetail";
 import FicheForm from "./pages/FicheForm";
+import UsefulNumberForm from "./pages/UsefulNumberForm";
+import NumberCategoryForm from "./pages/NumberCategoryForm";
+
 import './App.css'
 
 function App() {
@@ -43,6 +46,10 @@ function App() {
             <Route path="fiches/:slug" element={<FicheDetail />} />
             <Route path="/resources/new" element={<FicheForm />} />
             <Route path="/resources/edit/:slug" element={<FicheForm />} />
+            <Route path="/numbers/new" element={<UsefulNumberForm />} />
+            <Route path="/numbers/edit/:id" element={<UsefulNumberForm />} />
+            <Route path="/numbers/categories/new" element={<NumberCategoryForm />} />
+            <Route path="/numbers/categories/edit/:id" element={<NumberCategoryForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

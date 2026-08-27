@@ -1,10 +1,24 @@
 import { MessageCircle } from "lucide-react";
 import "./UsefulNumberCard.css";
+import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { deleteUsefulNumber } from "../../services/usefulnumberService";
 
-export default function UsefulNumberCard({ item, categoryName }) {
+export default function UsefulNumberCard({ item, categoryName, onDelete }) {
+  const { user, token } = useAuth();
   if (!item) return null;
 
-  // Association de la classe de thème selon la catégorie
+  const handleDelete = async () => {
+    if (!window.confirm("Es-tu sûr de vouloir supprimer ce numéro ?")) return;
+
+    try {
+      await deleteUsefulNumber(item.id, token);
+      if (onDelete) onDelete(item.id); // Notifie le parent avec l'ID supprimé
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   const themeClass =
     categoryName === "Urgences psy & crise"
       ? "useful-card--urgence"
@@ -14,9 +28,7 @@ export default function UsefulNumberCard({ item, categoryName }) {
 
   return (
     <article className={`useful-card ${themeClass}`}>
-      {/* Encart supérieur pastel */}
       <div className="useful-card__top">
-        {/* En-tête : Badge horaires & Chat */}
         <div className="useful-card__header">
           <span className="useful-card__badge">{item.badge}</span>
 
@@ -25,7 +37,6 @@ export default function UsefulNumberCard({ item, categoryName }) {
               <MessageCircle className="useful-card__chat-icon" />
               <span className="useful-card__chat-label">Chat</span>
 
-              {/* Tooltip au survol */}
               <div className="useful-card__tooltip">
                 {item.chat}
                 <div className="useful-card__tooltip-arrow" />
@@ -34,17 +45,14 @@ export default function UsefulNumberCard({ item, categoryName }) {
           )}
         </div>
 
-        {/* Titre du service & Numéro */}
         <div className="useful-card__main">
           <h3 className="useful-card__title">{item.name}</h3>
           <p className="useful-card__number">{item.number}</p>
         </div>
 
-        {/* Flèche d'indication */}
         <div className="useful-card__arrow">→</div>
       </div>
 
-      {/* Encart inférieur blanc : Description + Bouton */}
       <div className="useful-card__bottom">
         <p className="useful-card__description">{item.description}</p>
 
@@ -57,6 +65,17 @@ export default function UsefulNumberCard({ item, categoryName }) {
           >
             Visiter
           </a>
+        )}
+
+        {user?.role === "admin" && (
+          <div className="admin-actions-bar">
+            <Link to={`/numbers/edit/${item.id}`} className="btn-admin-edit">
+              ✏️ Modifier
+            </Link>
+            <button onClick={handleDelete} className="btn-admin-delete">
+              🗑️ Supprimer
+            </button>
+          </div>
         )}
       </div>
     </article>
