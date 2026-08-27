@@ -1,0 +1,79 @@
+/* ============================================================
+   CARTE DE FICHE RESSOURCE — .fiche-card
+   ============================================================ */
+
+.fiche-card {
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-2xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
+}
+
+.fiche-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-accent-yellow);
+}
+
+/* En-tête : Cercle pour l'icône */
+.fiche-card__header {
+  margin-bottom: 16px;
+}
+
+.fiche-card__icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-circle);
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-taupe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.fiche-card__icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Corps de la carte */
+.fiche-card__body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.fiche-card__title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.fiche-card__description {
+  font-size: var(--fs-base-sm);
+  color: var(--color-text-subtle);
+  line-height: 1.55;
+}
+
+/* Pied de carte : Bouton */
+.fiche-card__footer {
+  margin-top: auto;
+}
+
+.fiche-card__btn {
+  width: 100%;
+  text-align: center;
+}

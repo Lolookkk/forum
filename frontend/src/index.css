@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@plugin "@tailwindcss/typography";
 /* ============================================================
    VARIABLES GLOBALES — Design System
    ============================================================ */
@@ -86,11 +86,11 @@
 
 /* ============================================================
    RESET & BASE
+   Tailwind v4 Preflight gère déjà box-sizing, margin reset, etc.
+   On garde uniquement les reset complémentaires non gérés par Preflight.
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body, #root {

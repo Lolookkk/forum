@@ -1,0 +1,213 @@
+/* ============================================================
+   CARTE DES NUMÉROS UTILES — .useful-card
+   ============================================================ */
+
+/* Enveloppe externe blanche */
+.useful-card {
+  background-color: var(--color-bg-white);
+  border-radius: 28px;
+  padding: 8px;
+  border: 1px solid var(--color-bg-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+}
+
+.useful-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Encart supérieur coloré */
+.useful-card__top {
+  border-radius: var(--radius-3xl);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 190px;
+  transition: background-color var(--transition-base);
+}
+
+/* ---------- Thèmes basés sur index.css ---------- */
+
+/* 1. Urgences psy & crise */
+.useful-card--urgence .useful-card__top {
+  background-color: var(--color-error-bg);
+}
+.useful-card--urgence .useful-card__top:hover {
+  background-color: var(--color-error-bg-alt);
+}
+.useful-card--urgence .useful-card__badge {
+  background-color: var(--color-error-border);
+  color: var(--color-error-text);
+}
+
+/* 2. Santé mentale & Écoute */
+.useful-card--sante .useful-card__top {
+  background-color: var(--color-bg-cream);
+}
+.useful-card--sante .useful-card__top:hover {
+  background-color: var(--color-bg-sand);
+}
+.useful-card--sante .useful-card__badge {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
+}
+
+/* 3. Thème par défaut */
+.useful-card--default .useful-card__top {
+  background-color: var(--color-bg-beige);
+}
+.useful-card--default .useful-card__top:hover {
+  background-color: var(--color-beige-light);
+}
+.useful-card--default .useful-card__badge {
+  background-color: var(--color-border-taupe);
+  color: var(--color-bg-white);
+}
+
+/* ---------- En-tête de la carte ---------- */
+.useful-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.useful-card__badge {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+}
+
+/* Badge Chat */
+.useful-card__chat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--color-taupe-light);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  cursor: pointer;
+}
+
+.useful-card__chat-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary-dark);
+}
+
+.useful-card__chat-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary-dark);
+}
+
+/* Tooltip Chat (survol) */
+.useful-card__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  display: none;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-white);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: var(--shadow-lg);
+}
+
+.useful-card__chat:hover .useful-card__tooltip {
+  display: flex;
+}
+
+.useful-card__tooltip-arrow {
+  position: absolute;
+  bottom: -4px;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-primary-dark);
+  transform: rotate(45deg);
+}
+
+/* ---------- Titre & Numéro ---------- */
+.useful-card__main {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.useful-card__title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-primary-dark);
+}
+
+.useful-card__number {
+  font-size: var(--fs-title-page);
+  font-weight: var(--fw-black);
+  color: var(--color-text-dark);
+  margin-top: 4px;
+}
+
+/* Flèche d'indication */
+.useful-card__arrow {
+  display: flex;
+  justify-content: flex-end;
+  color: var(--color-text-placeholder);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-regular);
+}
+
+/* ---------- Encart inférieur blanc ---------- */
+.useful-card__bottom {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.useful-card__description {
+  font-size: var(--fs-xs);
+  color: var(--color-text-subtle);
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.useful-card__btn {
+  background-color: var(--color-primary-dark);
+  color: var(--color-bg-white);
+  font-size: var(--fs-base-sm);
+  font-weight: var(--fw-bold);
+  padding: 12px 32px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: background-color var(--transition-base), transform var(--transition-fast);
+}
+
+.useful-card__btn:hover {
+  background-color: #53514f;
+}
+
+.useful-card__btn:active {
+  transform: translateY(1px);
+}
