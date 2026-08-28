@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Sidebar from "../components/forum/HomeSidebar";
 import { getCategories, getSubcategoriesByCategory } from "../services/categoryService";
 import "./Home.css";
+import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
+import Sidebar from "../components/sidebar/Sidebar";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -92,8 +93,14 @@ export default function Categories() {
           ))}
       </main>
 
-      {/* Colonne Droite : Sidebar */}
-      <Sidebar />
+      <Sidebar>
+        <ServiceBannerWidget
+          title="SERVICE :"
+          description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
+          icon="🌻"
+          />
+         <CreateTopicButton />
+      </Sidebar>
     </div>
   );
 }
