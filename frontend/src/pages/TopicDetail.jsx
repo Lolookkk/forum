@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import Sidebar from "../components/forum/HomeSidebar";
 import { getTopicBySlug, getTopicInformationById } from "../services/topicService";
 import { getAllPostsWithAuthorByTopic } from "../services/postService";
 import { useAuth } from "../hooks/useAuth";
@@ -8,6 +7,8 @@ import TopicMainPost from "../components/forum/TopicMainPost";
 import ReplyCard from "../components/forum/ReplyCard";
 import ReplyForm from "../components/forum/ReplyForm";
 import "./Home.css";
+import Sidebar from "../components/sidebar/Sidebar";
+import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 
 export default function TopicDetail() {
   const { topicSlug } = useParams();
@@ -81,7 +82,14 @@ export default function TopicDetail() {
         )}
       </main>
 
-      <Sidebar />
+      <Sidebar>
+                    <ServiceBannerWidget
+                      title="SERVICE :"
+                      description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
+                      icon="🌻"
+                      />
+                     <CreateTopicButton />
+                  </Sidebar>
     </div>
   );
 }

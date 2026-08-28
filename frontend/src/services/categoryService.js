@@ -34,3 +34,92 @@ export const getCategoryBySlug = async (slug) => {
   return result.data;
 };
 
+export const getForumCategories = async () => {
+  const response = await fetch(`${API_URL}/categories/tree`);
+
+  if (!response.ok) {
+    throw new Error("Impossible de récupérer les catégories du forum.");
+  }
+
+  const result = await response.json();
+  return result.data;
+};
+
+// ==========================================
+// ACTIONS ADMIN (CRÉATION, MODIFICATION, SUPPRESSION)
+// ==========================================
+
+export const createCategory = async (categoryData, token) => {
+  const response = await fetch(`${API_URL}/categories`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(categoryData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de créer la catégorie.");
+  }
+
+  return result.category;
+};
+
+export const updateCategory = async (id, categoryData, token) => {
+  const response = await fetch(`${API_URL}/categories/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(categoryData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de modifier la catégorie.");
+  }
+
+  return result.category;
+};
+
+export const deleteCategory = async (id, token) => {
+  const response = await fetch(`${API_URL}/categories/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de supprimer la catégorie.");
+  }
+
+  return result;
+};
+
+export const reorderCategories = async (categoriesOrder, token) => {
+  const response = await fetch(`${API_URL}/categories/reorder`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ categories: categoriesOrder }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de réordonner les catégories.");
+  }
+
+  return result.categories;
+};

@@ -28,3 +28,22 @@ export async function getTopicInformationById(topicId) {
   const result = await response.json();
   return result.data; // Extraction de data
 }
+
+export const createTopic = async (topicData, token) => {
+  const response = await fetch(`${API_URL}/topics`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(topicData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de créer le sujet.");
+  }
+
+  return result.topic;
+};

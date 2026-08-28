@@ -1,5 +1,6 @@
 const slugify = require("slugify");
 const categoryModel = require("../models/categoryModel");
+const subcategoryModel = require("../models/subcategoryModel");
 
 const getCategories = async (req, res, next) => {
   try {
@@ -25,6 +26,23 @@ const getCategoryBySlug = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: category,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getForumCategories = async (req, res, next) => {
+  try {
+    const categories = await categoryModel.getAllCategories();
+    const subcategories = await subcategoryModel.getAllSubcategories();
+    const formattedCategories = categories.map((cat) => ({
+      ...cat,
+      subcategories: subcategories.filter((sub) => sub.category_id === cat.id),
+    }));
+    res.status(200).json({
+      success: true,
+      data: formattedCategories,
     });
   } catch (error) {
     next(error);
@@ -118,5 +136,6 @@ module.exports = {
   updateCategory,
   deleteCategory,
   reorderCategories,
-  getCategoryBySlug
+  getCategoryBySlug,
+  getForumCategories
 };

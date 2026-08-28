@@ -19,6 +19,7 @@ import FicheDetail from "./pages/FicheDetail";
 import FicheForm from "./pages/FicheForm";
 import UsefulNumberForm from "./pages/UsefulNumberForm";
 import NumberCategoryForm from "./pages/NumberCategoryForm";
+import TopicForm from "./pages/TopicForm";
 
 import './App.css'
 
@@ -50,6 +51,7 @@ function App() {
             <Route path="/numbers/edit/:id" element={<UsefulNumberForm />} />
             <Route path="/numbers/categories/new" element={<NumberCategoryForm />} />
             <Route path="/numbers/categories/edit/:id" element={<NumberCategoryForm />} />
+            <Route path="/topics/new" element={<TopicForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

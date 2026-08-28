@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import Sidebar from "../components/forum/HomeSidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { getCategoryBySlug, getSubcategoriesByCategory } from "../services/categoryService";
 import "./Home.css"; // Réutilise les mêmes styles que Home.jsx
+import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 
 export default function CategoryDetail() {
   const { slug } = useParams();
@@ -79,7 +80,14 @@ export default function CategoryDetail() {
       </main>
 
       {/* Colonne Droite : Sidebar */}
-      <Sidebar />
+      <Sidebar>
+              <ServiceBannerWidget
+                title="SERVICE :"
+                description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
+                icon="🌻"
+              />
+              <CreateTopicButton />
+      </Sidebar>
     </div>
   );
 }

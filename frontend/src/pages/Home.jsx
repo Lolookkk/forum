@@ -1,10 +1,23 @@
 import { useState, useEffect } from "react";
 import TopicRow from "../components/forum/TopicRow";
-import Sidebar from "../components/forum/HomeSidebar";
+import Sidebar from "../components/sidebar/Sidebar";
+import { ServiceBannerWidget, StatsWidget, NewMembersWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 import { getTopics } from "../services/topicService";
 import "./Home.css";
 
 export default function Home() {
+  const stats = {
+  members: 16673,
+  topics: 234,
+  posts: 1819,
+  online: 12,
+};
+const newMembers = [
+  { id: 1, username: "Sarah_M" },
+  { id: 2, username: "Lucas" },
+  { id: 3, username: "Elena88" },
+];
+
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +67,16 @@ export default function Home() {
       </main>
 
       {/* Colonne Droite : Sidebar */}
-      <Sidebar />
+      <Sidebar>
+        <ServiceBannerWidget
+          title="SERVICE :"
+          description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
+          icon="🌻"
+        />
+        <StatsWidget stats={stats} />
+        <NewMembersWidget members={newMembers} />
+        <CreateTopicButton />
+       </Sidebar>
     </div>
   );
 }
