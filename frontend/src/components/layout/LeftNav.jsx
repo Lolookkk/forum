@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import "./LeftNav.css";
+import { useAuth } from "../../hooks/useAuth"; 
 
 export default function LeftNav() {
+  const { user } = useAuth();
   return (
     <aside className="left-nav">
 
@@ -18,6 +20,12 @@ export default function LeftNav() {
         <NavLink to="/resources" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
           Ressources
         </NavLink>
+        {/* 3. Bouton visible uniquement pour les admins */}
+        {user?.role === "admin" && (
+          <NavLink to="/admin" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
+            Admin
+          </NavLink>
+        )}
       </nav>
     </aside>
   );

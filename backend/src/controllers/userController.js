@@ -201,6 +201,20 @@ const toggleUserBan = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req,res,next) => {
+  try {
+    const {id} = req.params;
+
+    const deletedUser = await User.deleteUser(id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "Aucun user à retirer" });
+    }
+    res.status(200).json({ message: "Utilisateur retiré avec succès"});
+  } catch (error) {
+    next(error);
+    }
+}
+
 module.exports = {
   updateUserEmail,
   updateUserUsername,
@@ -209,4 +223,5 @@ module.exports = {
   toggleUserBan,
   getAllUsers,
   getAllActivityOfUser,
+  deleteUser
 };

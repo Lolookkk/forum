@@ -8,7 +8,8 @@ const {
   updateUserRole,
   toggleUserBan,
   getAllUsers,
-  getAllActivityOfUser
+  getAllActivityOfUser,
+  deleteUser
 } = require("../controllers/userController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
@@ -21,7 +22,8 @@ router.put("/me/username", authenticateToken, updateUserUsername);
 router.put("/me/password", authenticateToken, updateUserPassword);
 
 //admin
-router.put("/:id/role",authenticateToken,requireRole('admin'), updateUserRole);
-router.put("/:id/ban",authenticateToken,requireRole('admin'), toggleUserBan)
+router.patch("/:id/role",authenticateToken,requireRole('admin'), updateUserRole);
+router.patch("/:id/ban",authenticateToken,requireRole('admin'), toggleUserBan);
+router.delete("/:id",authenticateToken,requireRole('admin'), deleteUser);
 
 module.exports = router;

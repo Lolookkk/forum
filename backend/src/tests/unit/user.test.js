@@ -153,10 +153,10 @@ describe("API Users & Modèle User", () => {
   /* -------------------------------------------------------------------------- */
   /*            2. TESTS D'INTÉGRATION - PROMOTION DE RÔLE (SCRUM-26)           */
   /* -------------------------------------------------------------------------- */
-  describe("PUT /api/users/:id/role", () => {
+  describe("PATCH /api/users/:id/role", () => {
     it("devrait promouvoir un membre au rôle de modérateur pour un administrateur (200)", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/role`)
+        .patch(`/api/users/${memberUserId}/role`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ role: "moderateur" });
 
@@ -168,7 +168,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait renvoyer une erreur (400) si le champ rôle est manquant ou invalide", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/role`)
+        .patch(`/api/users/${memberUserId}/role`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({});
 
@@ -177,7 +177,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait refuser l'accès (403) si un membre tente d'exécuter la promotion", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/role`)
+        .patch(`/api/users/${memberUserId}/role`)
         .set("Authorization", `Bearer ${memberToken}`)
         .send({ role: "admin" });
 
@@ -186,7 +186,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/role`)
+        .patch(`/api/users/${memberUserId}/role`)
         .send({ role: "moderateur" });
 
       expect(response.statusCode).toBe(401);
@@ -194,7 +194,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait renvoyer un 404 si l'utilisateur cible n'existe pas", async () => {
       const response = await request(app)
-        .put("/api/users/999999/role")
+        .patch("/api/users/999999/role")
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ role: "moderateur" });
 
@@ -205,10 +205,10 @@ describe("API Users & Modèle User", () => {
   /* -------------------------------------------------------------------------- */
   /*            3. TESTS D'INTÉGRATION - BANNISSEMENT UTILISATEUR               */
   /* -------------------------------------------------------------------------- */
-  describe("PUT /api/users/:id/ban", () => {
+  describe("PATCH /api/users/:id/ban", () => {
     it("devrait bannir un utilisateur si la requête est émise par un admin (200)", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/ban`)
+        .patch(`/api/users/${memberUserId}/ban`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ isBanned: true });
 
@@ -225,7 +225,7 @@ describe("API Users & Modèle User", () => {
     it("devrait bloquer (403) les requêtes authentifiées d'un utilisateur banni", async () => {
       // Le membre tente d'effectuer une requête avec son token alors qu'il est banni
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/role`)
+        .patch(`/api/users/${memberUserId}/role`)
         .set("Authorization", `Bearer ${memberToken}`)
         .send({ role: "admin" });
 
@@ -235,7 +235,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait débannir un utilisateur avec succès (200)", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/ban`)
+        .patch(`/api/users/${memberUserId}/ban`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ isBanned: false });
 
@@ -245,7 +245,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait renvoyer une erreur (400) si isBanned n'est pas un booléen", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/ban`)
+        .patch(`/api/users/${memberUserId}/ban`)
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ isBanned: "invalide" });
 
@@ -254,7 +254,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait refuser l'accès (403) si un membre tente de bannir un utilisateur", async () => {
       const response = await request(app)
-        .put(`/api/users/${adminUserId}/ban`)
+        .patch(`/api/users/${adminUserId}/ban`)
         .set("Authorization", `Bearer ${memberToken}`)
         .send({ isBanned: true });
 
@@ -263,7 +263,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait rejeter la requête (401) si aucun token n'est fourni", async () => {
       const response = await request(app)
-        .put(`/api/users/${memberUserId}/ban`)
+        .patch(`/api/users/${memberUserId}/ban`)
         .send({ isBanned: true });
 
       expect(response.statusCode).toBe(401);
@@ -271,7 +271,7 @@ describe("API Users & Modèle User", () => {
 
     it("devrait renvoyer un 404 si l'utilisateur cible n'existe pas", async () => {
       const response = await request(app)
-        .put("/api/users/999999/ban")
+        .patch("/api/users/999999/ban")
         .set("Authorization", `Bearer ${adminToken}`)
         .send({ isBanned: true });
 

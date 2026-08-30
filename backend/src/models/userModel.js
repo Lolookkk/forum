@@ -132,6 +132,12 @@ const setBanStatus = async (userId, isBanned) => {
   return rows[0];
 };
 
+const deleteUser = async (id) => {
+  const query = 'DELETE FROM users WHERE id = $1 RETURNING *;';
+  const { rows } = await db.query(query, [id]);
+  return rows[0];
+};
+
 
 module.exports = {
   findUserByEmailOrUsername,
@@ -145,5 +151,6 @@ module.exports = {
   setBanStatus,
   getAllUsers,
   displayPublicProfilUser,
-  getAllActivityOfUser
+  getAllActivityOfUser,
+  deleteUser
 };

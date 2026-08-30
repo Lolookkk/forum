@@ -1,0 +1,116 @@
+/* ============================================================
+   ADMIN SETTINGS — Design System (index.css)
+   ============================================================ */
+
+/* ---- État global (chargement / erreur) ---- */
+.admin-status {
+  padding: 24px;
+  text-align: center;
+  font-size: var(--fs-base);
+  color: var(--color-text-muted);
+}
+
+.admin-status.error {
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-lg);
+  font-weight: var(--fw-semibold);
+}
+
+/* ---- Messages de succès inline ---- */
+.status-success {
+  width: 100%;
+  padding: var(--space-form-body) 20px;
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-success-text);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base-sm);
+  margin-bottom: var(--space-form-body);
+  text-align: center;
+}
+
+/* ---- Toggle group (paramètres booléens) ---- */
+.setting-toggle-group {
+  width: 100%;
+  margin-bottom: var(--space-form-body);
+}
+
+.setting-toggle-group:last-of-type {
+  margin-bottom: var(--space-card-header-y);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: var(--space-form-body) 20px;
+  background-color: var(--color-bg-beige);
+  border: 1px solid var(--color-beige-light);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.toggle-label:hover {
+  background-color: var(--color-bg-cream);
+  border-color: var(--color-taupe-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-label input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: var(--color-primary-dark);
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.toggle-label span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.toggle-label span strong {
+  font-size: var(--fs-base);
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-semibold);
+}
+
+.toggle-label span small {
+  font-size: var(--fs-sm);
+  color: var(--color-text-subtle);
+  font-weight: var(--fw-regular);
+}
+
+.toggle-danger {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+}
+
+.toggle-danger:hover {
+  background-color: var(--color-error-bg-alt);
+  border-color: var(--color-error-text);
+}
+
+.toggle-danger input[type="checkbox"] {
+  accent-color: var(--color-error-text);
+}
+
+/* ---- Boutons en bas du formulaire ---- */
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: calc(var(--space-form-body) + 4px);
+  padding-top: var(--space-form-body);
+  border-top: 1px solid var(--color-beige-light);
+}

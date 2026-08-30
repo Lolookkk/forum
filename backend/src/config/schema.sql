@@ -7,6 +7,11 @@ DROP TABLE IF EXISTS topics CASCADE;
 DROP TABLE IF EXISTS subcategories CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS announcements CASCADE;
+DROP TABLE IF EXISTS fiches CASCADE;
+DROP TABLE IF EXISTS settings CASCADE;
+DROP TABLE IF EXISTS useful_number_categories CASCADE;
+DROP TABLE IF EXISTS useful_numbers CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -14,6 +19,7 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) DEFAULT 'membre' CHECK(role IN ('membre', 'moderateur', 'admin')),
+    description TEXT DEFAULT '',
     is_banned BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -103,4 +109,54 @@ CREATE TABLE post_likes (
     post_id INT REFERENCES posts(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (user_id, post_id)
+);
+
+-- schema.sql
+CREATE TABLE announcements (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  author_id INT REFERENCES users(id) ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE fiches (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  description TEXT NOT NULL,
+  icon VARCHAR(50) NOT NULL,
+  icon_color VARCHAR(50) NOT NULL,
+  content TEXT, -- Contenu complet au format Markdown ou HTML
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table des catégories de numéros utiles
+CREATE TABLE useful_number_categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  position SERIAL NOT NULL
+);
+
+-- Table des numéros utiles
+CREATE TABLE useful_numbers (
+  id SERIAL PRIMARY KEY,
+  category_id INT NOT NULL REFERENCES useful_number_categories(id) ON DELETE CASCADE,
+  name VARCHAR(100) NOT NULL,
+  number VARCHAR(50) NOT NULL,
+  description TEXT NOT NULL,
+  badge VARCHAR(100) NOT NULL,
+  urgent BOOLEAN DEFAULT FALSE,
+  chat VARCHAR(255),
+  url VARCHAR(255),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS settings (
+  id INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  forum_name VARCHAR(255) NOT NULL DEFAULT 'Safe Space',
+  maintenance_mode BOOLEAN NOT NULL DEFAULT false,
+  topics_per_page INT NOT NULL DEFAULT 10,
+  registration_open BOOLEAN NOT NULL DEFAULT true
 );
