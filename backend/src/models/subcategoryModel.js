@@ -22,7 +22,8 @@ const getAllSubcategoriesByCategory = async (category_id) => {
   return rows;
 };
 
-const createSubCategory = async (category_id, title, slug, description) => {
+const createSubCategory = async (category_id, title, description) => {
+  const slug = slugify(title, { lower: true, strict: true });
   const query = `
     INSERT INTO subcategories (category_id, title, slug, description) 
     VALUES ($1, $2, $3, $4) 
@@ -32,7 +33,8 @@ const createSubCategory = async (category_id, title, slug, description) => {
   return rows[0];
 };
 
-const updateSubCategory = async (id, { category_id, title, description }) => {
+const updateSubCategory = async (id, { category_id, title, slug, description }) => {
+  const finalSlug = slug ? slug : title ? slugify(title, { lower: true, strict: true }) : null;
   const query = `
     UPDATE subcategories 
     SET 
@@ -46,7 +48,7 @@ const updateSubCategory = async (id, { category_id, title, description }) => {
   const { rows } = await db.query(query, [
     category_id || null,
     title || null,
-    slug || null,
+    finalSlug || null,
     description || null,
     id,
   ]);
