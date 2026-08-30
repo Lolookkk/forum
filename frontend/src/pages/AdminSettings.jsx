@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useSettings } from "../hooks/useSettings";
-import { getSettings } from "../services/adminsettingsService";
 import "./AdminSettings.css";
 
 export default function AdminSettings() {
@@ -10,25 +9,15 @@ export default function AdminSettings() {
     useSettings();
 
   const [formData, setFormData] = useState(settings);
+  const [lastAppliedSettings, setLastAppliedSettings] = useState(settings);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      ...settings,
-    }));
-  }, [settings]);
-
-  useEffect(() => {
-    if (!ctxLoading) return;
-    getSettings()
-      .then((data) => {
-        if (data) setFormData(data);
-      })
-      .catch(() => {});
-  }, [ctxLoading]);
+  if (settings !== lastAppliedSettings) {
+    setFormData((prev) => ({ ...prev, ...settings }));
+    setLastAppliedSettings(settings);
+  }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

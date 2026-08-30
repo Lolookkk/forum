@@ -5,7 +5,7 @@ import {
   updateSettings as updateSettingsViaApi,
 } from "../services/adminsettingsService";
 
-export const DEFAULT_SETTINGS = {
+const DEFAULT_SETTINGS = {
   forum_name: "Espace Sécurisé",
   maintenance_mode: false,
   topics_per_page: 10,

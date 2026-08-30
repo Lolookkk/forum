@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser, loginUser } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
 import { useSettings } from "../hooks/useSettings";
@@ -13,14 +13,6 @@ export default function Register() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { settings, hydrated } = useSettings();
-
-  useEffect(() => {
-    if (hydrated && settings?.registration_open === false) {
-      setError(
-        "Les inscriptions sont temporairement fermées. Merci de revenir ultérieurement."
-      );
-    }
-  }, [hydrated, settings?.registration_open]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

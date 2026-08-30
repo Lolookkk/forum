@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useCategories } from "../hooks/useCategories";
@@ -14,19 +14,15 @@ export default function TopicForm() {
 
   const [title, setTitle] = useState("");
   const [subCategoryId, setSubCategoryId] = useState(defaultSubCategory);
+  const [lastDefaultSubCategory, setLastDefaultSubCategory] = useState(defaultSubCategory);
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    if (!defaultSubCategory) return;
+  if (defaultSubCategory !== lastDefaultSubCategory) {
     setSubCategoryId(defaultSubCategory);
-  }, [defaultSubCategory]);
-
-  useEffect(() => {
-    if (!ctxLoading) setHydrated(true);
-  }, [ctxLoading]);
+    setLastDefaultSubCategory(defaultSubCategory);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +68,7 @@ export default function TopicForm() {
               value={subCategoryId}
               onChange={(e) => setSubCategoryId(e.target.value)}
               required
-              disabled={ctxLoading && !hydrated}
+              disabled={ctxLoading}
             >
               <option value="">-- Choisir une sous-catégorie --</option>
               {forumCategories.map((cat) => (
