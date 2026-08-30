@@ -1,4 +1,5 @@
 const db = require("../config/db"); // Ton fichier de connexion PostgreSQL/Supabase
+const slugify = require("slugify");
 
 const getAllCategories = async () => {
   const query = "SELECT * FROM categories ORDER BY display_order ASC;";
@@ -12,25 +13,26 @@ const getCategoryBySlug = async (slug) => {
   return rows[0];
 };
 
-const createCategory = async (name, slug, description) => {
+const createCategory = async (name,slug, description) => {
   const query =
     "INSERT INTO categories (name,slug, description) VALUES ($1, $2, $3) RETURNING *;";
   const { rows } = await db.query(query, [name,slug, description]);
   return rows[0];
 };
 
-const updateCategory = async (id, { name, description }) => {
+const updateCategory = async (id, { name, slug, description }) => {
   const query = `
     UPDATE categories 
     SET 
       name = COALESCE($1, name),
-      description = COALESCE($2, description)
-    WHERE id = $3
+      slug = COALESCE($2, slug),
+      description = COALESCE($3, description)
+    WHERE id = $4
     RETURNING *;
   `;
   
   // Si le champ n'est pas transmis, on passe `null` pour que COALESCE conserve la valeur existante
-  const { rows } = await db.query(query, [name || null, description || null, id]);
+  const { rows } = await db.query(query, [name || null, slug || null, description || null, id]);
   return rows[0];
 };
 

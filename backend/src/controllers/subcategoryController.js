@@ -71,12 +71,12 @@ const createSubCategory = async (req, res, next) => {
 
 const updateSubCategory = async (req, res, next) => {
   const { id } = req.params;
-  const { category_id, title, description } = req.body;
+  const { category_id, title, slug, description } = req.body;
 
-  if (!category_id && !title && !description) {
+  if (!category_id && !title && !description && !slug) {
     return res.status(400).json({
       message:
-        "Au moins un champ (category_id, title ou description) doit être fourni.",
+        "Au moins un champ (category_id, slug, title ou description) doit être fourni.",
     });
   }
 
@@ -84,6 +84,7 @@ const updateSubCategory = async (req, res, next) => {
     const updatedSubCategory = await subCategoryModel.updateSubCategory(id, {
       category_id,
       title,
+      slug,
       description,
     });
 

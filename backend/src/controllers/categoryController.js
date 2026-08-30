@@ -67,17 +67,17 @@ const createCategory = async (req, res, next) => {
 
 const updateCategory = async (req, res, next) => {
   const { id } = req.params;
-  const { name, description } = req.body;
+  const { name, slug, description } = req.body;
 
-  // On vérifie qu'au moins l'un des deux champs est envoyé
-  if (!name && !description) {
+  // On vérifie qu'au moins l'un des 3 champs est envoyé
+  if (!name && !slug && !description) {
     return res.status(400).json({ 
-      message: "Au moins un champ (name ou description) doit être fourni pour la mise à jour." 
+      message: "Au moins un champ (name, description ou slug) doit être fourni pour la mise à jour." 
     });
   }
 
   try {
-    const updatedCategory = await categoryModel.updateCategory(id, { name, description });
+    const updatedCategory = await categoryModel.updateCategory(id, { name, slug, description });
 
     if (!updatedCategory) {
       return res.status(404).json({ message: "Catégorie non trouvée" });

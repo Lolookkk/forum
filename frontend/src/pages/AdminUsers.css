@@ -1,0 +1,188 @@
+/* ============================================================
+   PAGE GESTION DES UTILISATEURS — AdminUsers.css
+   Cohérent avec le Design System (index.css)
+   ============================================================ */
+
+/* ---------- Container Principal ---------- */
+.admin-users-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px 24px;
+}
+
+/* ---------- Statuts (Chargement / Erreur) ---------- */
+.admin-status {
+  padding: 24px;
+  text-align: center;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-2xl);
+  margin: 40px auto;
+  max-width: 600px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-status.error {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error-text);
+}
+
+/* ---------- Sections de tableaux ---------- */
+.user-section {
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-card-header-y) var(--space-card-header-x);
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.user-section h2 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.empty-message {
+  font-size: var(--fs-base-sm);
+  color: var(--color-text-subtle);
+  font-style: italic;
+  padding: 12px 0;
+}
+
+/* ---------- Tableau Admin ---------- */
+.admin-users-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--fs-base-sm);
+}
+
+.admin-users-table th {
+  background-color: var(--color-bg-beige);
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: var(--fs-xs);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--color-border-taupe);
+}
+
+.admin-users-table th:first-child {
+  border-top-left-radius: var(--radius-md);
+}
+
+.admin-users-table th:last-child {
+  border-top-right-radius: var(--radius-md);
+}
+
+.admin-users-table td {
+  padding: 14px 16px;
+  color: var(--color-text-body);
+  border-bottom: 1px solid var(--color-border-taupe);
+  vertical-align: middle;
+}
+
+.admin-users-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-users-table tbody tr:hover {
+  background-color: var(--color-bg-light);
+  transition: background-color var(--transition-fast);
+}
+
+/* ---------- Formulaires & Selects dans le tableau ---------- */
+.role-select {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: var(--fs-base-sm);
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.role-select:focus {
+  border-color: var(--color-accent-yellow);
+  box-shadow: var(--shadow-focus-yellow);
+}
+
+/* ---------- Badges ---------- */
+.badge-banned {
+  display: inline-block;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+}
+
+/* ---------- Boutons d'action ---------- */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              transform var(--transition-fast);
+}
+
+.btn-action:active {
+  transform: translateY(1px);
+}
+
+/* Bouton Bannir */
+.btn-ban {
+  background-color: var(--color-bg-sand);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-sand-light);
+}
+
+.btn-ban:hover {
+  background-color: var(--color-accent-yellow);
+}
+
+/* Bouton Supprimer */
+.btn-delete {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+}
+
+.btn-delete:hover {
+  background-color: var(--color-error-bg-alt);
+  color: #611818;
+}
+
+/* ---------- Adaptabilité Mobile (Responsive) ---------- */
+@media (max-width: 768px) {
+  .user-section {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .admin-users-table {
+    min-width: 550px;
+  }
+}

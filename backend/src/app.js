@@ -12,6 +12,8 @@ const reportRoutes = require('./routes/reportRoute');
 const announcementRoutes = require('./routes/announcementRoutes');
 const usefulnumberRoutes = require('./routes/usefulnumberRoutes');
 const ficheRoutes = require('./routes/ficheRoutes');
+const settingRoutes = require('./routes/settingRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 // 1. Créer l'application Express
 const app = express();
@@ -36,6 +38,8 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/usefulnumbers', usefulnumberRoutes);
 app.use('/api/fiches', ficheRoutes);
+app.use('/api/settings', settingRoutes);
+app.use('/api/stats', statsRoutes);
 
 // 5. Middleware d'erreur centralisé (TOUJOURS en dernier)
 app.use((err, req, res, next) => {

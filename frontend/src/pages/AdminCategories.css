@@ -1,0 +1,189 @@
+/* ============================================================
+   ADMIN CATEGORIES — Design System (index.css)
+   ============================================================ */
+
+.admin-categories-container {
+  width: 100%;
+}
+
+.admin-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-form-body);
+}
+
+.admin-status {
+  padding: 24px;
+  text-align: center;
+  font-size: var(--fs-base);
+  color: var(--color-text-muted);
+}
+
+.admin-status.error {
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-lg);
+  font-weight: var(--fw-semibold);
+}
+
+/* ---- Bouton SUPPRIMER (variante design system) ---- */
+.btn-delete {
+  background-color: var(--color-error-bg-alt);
+  color: var(--color-error-text);
+  border-radius: var(--radius-md);
+  padding: 15px;
+  font-size: var(--fs-base);
+  width: 100%;
+}
+
+.btn-delete:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+/* ============================================================
+   ARBRE DES CATÉGORIES
+   ============================================================ */
+
+.categories-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-form-body);
+}
+
+.cat-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.cat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: var(--space-card-header-y) var(--space-card-header-x);
+  border-bottom: 1px solid var(--color-border-taupe);
+}
+
+.cat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cat-info h3 {
+  margin: 0;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-dark);
+  letter-spacing: -0.01em;
+}
+
+.cat-slug-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 10px;
+  background-color: var(--color-bg-beige);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+}
+
+.cat-desc {
+  margin: 0;
+  margin-top: 4px;
+  font-size: var(--fs-base-sm);
+  line-height: 1.5;
+  color: var(--color-text-subtle);
+}
+
+.cat-actions,
+.subcat-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   SOUS-CATÉGORIES
+   ============================================================ */
+
+.subcat-list {
+  padding: 20px var(--space-card-header-x) var(--space-card-header-x)
+    calc(var(--space-card-header-x) + 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subcat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-beige-light);
+  border-radius: var(--radius-xl);
+}
+
+.subcat-info {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.subcat-name {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-body);
+}
+
+.subcat-slug {
+  font-size: var(--fs-xs);
+  color: var(--color-text-subtle);
+}
+
+.subcat-empty {
+  font-size: var(--fs-base-sm);
+  color: var(--color-text-subtle);
+  font-style: italic;
+  padding: 12px 16px;
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+/* ============================================================
+   MODALE
+   ============================================================ */
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(63, 63, 62, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.admin-modal-box {
+  width: 100%;
+  padding: 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 4px;
+}
