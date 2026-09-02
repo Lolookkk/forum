@@ -106,13 +106,36 @@ describe('API Posts', () => {
       expect(response.statusCode).toBe(400);
     });
 
-    it('devrait renvoyer une erreur (404) si un autre utilisateur tente de modifier le post', async () => {
+    it('devrait renvoyer une erreur (403) si un autre utilisateur tente de modifier le post', async () => {
       const response = await request(app)
         .put(`/api/posts/${testPostId}`)
         .set('Authorization', `Bearer ${otherToken}`)
         .send({ content: 'Tentative de modification non autorisée' });
 
-      expect(response.statusCode).toBe(404);
+      expect(response.statusCode).toBe(403);
+      expect(response.body.message).toMatch(/Vous ne pouvez pas modifier ce post/i);
+    });
+
+    it('devrait bloquer la modification si le post a plus de 15 minutes', async () => {
+      const stalePost = await db.query(
+        `
+          INSERT INTO posts (topic_id, user_id, content, created_at, updated_at)
+          VALUES ($1, $2, 'Contenu ancien post', CURRENT_TIMESTAMP - INTERVAL '16 minutes', CURRENT_TIMESTAMP - INTERVAL '16 minutes')
+          RETURNING id
+        `,
+        [testTopicId, testUserId]
+      );
+      const stalePostId = stalePost.rows[0].id;
+
+      const response = await request(app)
+        .put(`/api/posts/${stalePostId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ content: 'Tentative de modification hors délai' });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body.message).toMatch(/15 minutes/i);
+
+      await db.query('DELETE FROM posts WHERE id = $1', [stalePostId]);
     });
   });
 

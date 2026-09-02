@@ -1,28 +1,53 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTopicBySlug, getTopicInformationById } from "../services/topicService";
 import { getAllPostsWithAuthorByTopic } from "../services/postService";
 import { useAuth } from "../hooks/useAuth";
 import TopicMainPost from "../components/forum/TopicMainPost";
 import ReplyCard from "../components/forum/ReplyCard";
 import ReplyForm from "../components/forum/ReplyForm";
+import EditTopicModal from "../components/modals/EditTopicModal";
 import "./Home.css";
 import Sidebar from "../components/sidebar/Sidebar";
 import ReportModal from "../components/modals/ReportModal";
 import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 
+const isSameUser = (user, topic) => Boolean(
+  user &&
+    topic &&
+    ((user.id != null &&
+      topic.user_id != null &&
+      String(user.id) === String(topic.user_id)) ||
+      (user.username &&
+        topic.author &&
+        String(user.username).toLowerCase() ===
+          String(topic.author).toLowerCase()))
+);
+
 export default function TopicDetail() {
   const { topicSlug } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const isUser = !!user; // 👈 Plus propre : vérifie simplement si l'utilisateur est connecté
+  const isUser = !!user;
 
   const [topic, setTopic] = useState(null);
   const [replies, setReplies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showEditTopicModal, setShowEditTopicModal] = useState(false);
+  const [lastTopicSlug, setLastTopicSlug] = useState(topicSlug);
 
-  // Fonction pour recharger uniquement la liste des réponses
+  if (lastTopicSlug !== topicSlug) {
+    setLastTopicSlug(topicSlug);
+    setTopic(null);
+    setReplies([]);
+    setLoading(true);
+    setError(null);
+    setShowReportModal(false);
+    setShowEditTopicModal(false);
+  }
+
   const loadReplies = useCallback((topicId) => {
     getAllPostsWithAuthorByTopic(topicId)
       .then((postsData) => setReplies(postsData))
@@ -49,6 +74,11 @@ export default function TopicDetail() {
       });
   }, [topicSlug]);
 
+  const canEditTopic =
+    isSameUser(user, topic) &&
+    Boolean(topic?.is_within_edit_window) &&
+    replies.length === 0;
+
   return (
     <div className="home-container">
       <main className="main-content">
@@ -71,13 +101,29 @@ export default function TopicDetail() {
 
         {!loading && !error && topic && (
           <div>
-            <TopicMainPost topic={topic} />
+            <TopicMainPost
+              topic={topic}
+              canEdit={canEditTopic}
+              onEdit={() => setShowEditTopicModal(true)}
+            />
 
             <section className="replies-section">
               <h3>Réponses ({replies.length})</h3>
               {replies.length > 0 ? (
                 replies.map((reply) => (
-                  <ReplyCard key={reply.id} reply={reply} />
+                  <ReplyCard
+                    key={reply.id}
+                    reply={reply}
+                    onPostUpdated={(updatedPost) => {
+                      setReplies((prev) =>
+                        prev.map((p) =>
+                          String(p.id) === String(updatedPost.id)
+                            ? { ...p, ...updatedPost }
+                            : p
+                        )
+                      );
+                    }}
+                  />
                 ))
               ) : (
                 <p className="state-message">
@@ -98,18 +144,31 @@ export default function TopicDetail() {
       </main>
 
       <Sidebar>
-                    <ServiceBannerWidget
-                      title="SERVICE :"
-                      description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
-                      icon="🌻"
-                      />
-                     <CreateTopicButton />
-                  </Sidebar>
+        <ServiceBannerWidget
+          title="SERVICE :"
+          description="DÉCOUVREZ NOS ATELIERS DE BIEN-ÊTRE MENTAL"
+          icon="🌻"
+        />
+        <CreateTopicButton />
+      </Sidebar>
 
-                  {showReportModal && topic && (
+      {showReportModal && topic && (
         <ReportModal 
           topicId={topic.id} 
           onClose={() => setShowReportModal(false)} 
+        />
+      )}
+
+      {showEditTopicModal && topic && (
+        <EditTopicModal
+          topic={topic}
+          onClose={() => setShowEditTopicModal(false)}
+          onUpdated={(updatedTopic) => {
+            setTopic((prev) => ({ ...prev, ...updatedTopic }));
+            if (updatedTopic.slug && updatedTopic.slug !== topicSlug) {
+              navigate(`/topics/${updatedTopic.slug}`, { replace: true });
+            }
+          }}
         />
       )}
     </div>

@@ -47,3 +47,24 @@ export const createTopic = async (topicData, token) => {
 
   return result.topic;
 };
+
+export const updateTopic = async (topicId, topicData, token) => {
+  const response = await fetch(`${API_URL}/topics/${topicId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Cache-Control": "no-store",
+      Pragma: "no-cache",
+    },
+    body: JSON.stringify(topicData),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de modifier le sujet.");
+  }
+
+  return result.topic;
+};

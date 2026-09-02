@@ -64,11 +64,23 @@ const updatePost = async (req, res, next) => {
     return res.status(400).json({ message: "Le champ content est requis" });
   }
   try {
-    const updatedPost = await postModel.updateUserPost(req.params.id, req.user.id, content);
+    const existingPost = await postModel.getPostWithEditWindow(req.params.id);
 
-    if (!updatedPost) {
+    if (!existingPost) {
       return res.status(404).json({ message: "Post non trouvé" });
     }
+
+    if (String(existingPost.user_id) !== String(req.user.id)) {
+      return res.status(403).json({ message: "Vous ne pouvez pas modifier ce post" });
+    }
+
+    if (!existingPost.is_within_edit_window) {
+      return res.status(400).json({
+        message: "Ce post ne peut plus être modifié après 15 minutes",
+      });
+    }
+
+    const updatedPost = await postModel.updateUserPost(req.params.id, req.user.id, content);
 
     res.status(200).json({
       message: "Contenu mis à jour avec succès",

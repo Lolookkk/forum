@@ -341,6 +341,47 @@ textarea {
   padding: 12px 20px;
 }
 
+/* ---- Boutons lien dans les en-têtes (Signaler / Modifier) ---- */
+.btn-report-link,
+.btn-edit-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-taupe);
+  background-color: var(--color-bg-cream);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              border-color var(--transition-base);
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+.btn-report-link:hover,
+.btn-edit-link:hover {
+  background-color: var(--color-bg-beige);
+  border-color: var(--color-primary-dark);
+  color: var(--color-primary-dark);
+}
+
+.btn-edit-link {
+  border-color: var(--color-accent-sage);
+  color: #4a5a40;
+}
+
+.btn-edit-link:hover {
+  background-color: var(--color-accent-sage);
+  border-color: var(--color-accent-sage);
+  color: #ffffff;
+}
+
 /* ============================================================
    ERREURS DE FORMULAIRE — .form-error
    ============================================================ */

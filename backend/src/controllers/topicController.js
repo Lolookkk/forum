@@ -81,6 +81,57 @@ const postTopic = async (req, res, next) => {
   }
 };
 
+const updateTopic = async (req, res, next) => {
+  const { title, content } = req.body;
+  const userId = req.user?.id || req.user?.userId || req.user?.user_id;
+  const trimmedTitle = title?.trim();
+  const trimmedContent = content?.trim();
+
+  if (!trimmedTitle || !trimmedContent) {
+    return res.status(400).json({
+      message: "Les champs title et content sont requis",
+    });
+  }
+
+  try {
+    const existingTopic = await topicModel.getTopicInformationById(req.params.id);
+
+    if (!existingTopic) {
+      return res.status(404).json({ message: "Sujet non trouvé" });
+    }
+
+    if (String(existingTopic.user_id) !== String(userId)) {
+      return res.status(403).json({ message: "Vous ne pouvez pas modifier ce sujet" });
+    }
+
+    if (!existingTopic.is_within_edit_window) {
+      return res.status(400).json({
+        message: "Ce sujet ne peut plus être modifié après 15 minutes",
+      });
+    }
+
+    if (existingTopic.has_replies) {
+      return res.status(400).json({
+        message: "Ce sujet ne peut plus être modifié car il a déjà reçu une réponse",
+      });
+    }
+
+    const updatedTopic = await topicModel.updateOwnTopic(
+      req.params.id,
+      userId,
+      trimmedTitle,
+      trimmedContent,
+    );
+
+    res.status(200).json({
+      message: "Sujet mis à jour avec succès",
+      topic: updatedTopic,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const moveTopic = async (req, res, next) => {
     try {
       const { id } = req.params; // ID du topic transmis dans l'URL
@@ -106,6 +157,7 @@ const moveTopic = async (req, res, next) => {
 module.exports = {
   getTopicsBySubcategory,
   postTopic,
+  updateTopic,
   moveTopic,
   getTwentyFirstTopics,
   getTopicBySlug,

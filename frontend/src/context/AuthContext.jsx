@@ -19,6 +19,10 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
   };
 
+  const updateUser = (partialData) => {
+    setUser((prev) => (prev ? { ...prev, ...partialData } : prev));
+  };
+
   useEffect(() => {
     const isValidJwt = (token) => {
       if (!token || typeof token !== "string") return false;
@@ -59,6 +63,7 @@ export function AuthProvider({ children }) {
         token,
         login,
         logout,
+        updateUser,
         isAuthenticated: !!user,
         loading,
       }}
