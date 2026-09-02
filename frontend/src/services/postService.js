@@ -11,6 +11,15 @@ export async function getAllPostsWithAuthorByTopic(topicId) {
   return result.data; 
 }
 
+export async function getPostById(postId) {
+  const response = await fetch(`${API_URL}/${postId}`);
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération du post.");
+  }
+  const result = await response.json();
+  return result.data;
+}
+
 export const createPost = async (topic_id, content, token) => {
   const response = await fetch(API_URL, {
         method: "POST",

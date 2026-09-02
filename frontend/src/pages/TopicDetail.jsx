@@ -8,6 +8,7 @@ import ReplyCard from "../components/forum/ReplyCard";
 import ReplyForm from "../components/forum/ReplyForm";
 import "./Home.css";
 import Sidebar from "../components/sidebar/Sidebar";
+import ReportModal from "../components/modals/ReportModal";
 import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 
 export default function TopicDetail() {
@@ -19,6 +20,7 @@ export default function TopicDetail() {
   const [replies, setReplies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   // Fonction pour recharger uniquement la liste des réponses
   const loadReplies = useCallback((topicId) => {
@@ -50,7 +52,20 @@ export default function TopicDetail() {
   return (
     <div className="home-container">
       <main className="main-content">
-        {topic && <h1 className="page-title">{topic.title}</h1>}
+        {topic && (
+          <div className="topic-header-actions">
+            <h1 className="page-title">{topic.title}</h1>
+            {/* 👈 Bouton pour signaler le SUJET */}
+            {isUser && (
+              <button 
+                className="btn-report-link" 
+                onClick={() => setShowReportModal(true)}
+              >
+                🚩 Signaler le sujet
+              </button>
+            )}
+          </div>
+        )}
         {loading && <div className="state-message">Chargement du sujet...</div>}
         {error && <div className="form-error form-error--inline">{error}</div>}
 
@@ -90,6 +105,13 @@ export default function TopicDetail() {
                       />
                      <CreateTopicButton />
                   </Sidebar>
+
+                  {showReportModal && topic && (
+        <ReportModal 
+          topicId={topic.id} 
+          onClose={() => setShowReportModal(false)} 
+        />
+      )}
     </div>
   );
 }

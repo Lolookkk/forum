@@ -14,6 +14,7 @@ export default function Topbar() {
   const isHomeSection = ["/", "/announcements", "/members"].includes(location.pathname);
   const isCategoriesSection = location.pathname.startsWith("/categories");
   const isAdminSection = location.pathname.startsWith("/admin");
+  const isModerationSection = location.pathname.startsWith("/moderation");
 
   const isLoading = isCategoriesSection && ctxLoading;
   const error = isCategoriesSection ? ctxError : null;
@@ -100,6 +101,14 @@ export default function Topbar() {
             </NavLink>
             <NavLink to="/admin/settings" className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
               Paramètres
+            </NavLink>
+          </>
+        )}
+
+        {isModerationSection && (
+          <>
+            <NavLink to="/moderation" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
+              Modération
             </NavLink>
           </>
         )}

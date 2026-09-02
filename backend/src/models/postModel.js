@@ -8,6 +8,20 @@ const getAllPostsByTopic = async (topic_id) => {
   return rows;
 };
 
+const getPostById = async (id) => {
+  //const query = "SELECT * FROM posts WHERE id = $1;";
+  const query = `
+    SELECT 
+      p.*,
+      u.username AS author
+    FROM posts p
+    LEFT JOIN users u ON p.user_id = u.id
+    WHERE p.id = $1;
+  `;
+  const { rows } = await db.query(query, [id]);
+  return rows[0];
+}
+
 const getAllPostsWithAuthorByTopic = async (id) => {
   const query = `
     SELECT p.*, u.username AS author 
@@ -61,5 +75,6 @@ module.exports = {
   updateUserPost,
   addLike,
   removeLike,
-  getAllPostsWithAuthorByTopic
+  getAllPostsWithAuthorByTopic,
+  getPostById
 };

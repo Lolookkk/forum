@@ -26,6 +26,12 @@ export default function LeftNav() {
             Admin
           </NavLink>
         )}
+        {/* 3. Bouton visible uniquement pour les admins et modos*/}
+        {user?.role === "admin" || user?.role === "moderator" ? (
+          <NavLink to="/moderation" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
+            Modération
+          </NavLink>
+        ) : null}
       </nav>
     </aside>
   );

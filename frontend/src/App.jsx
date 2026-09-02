@@ -27,6 +27,7 @@ import Admin from "./pages/Admin"; // Le Tableau de bord (/admin)
 import AdminCategories from "./pages/AdminCategories"; // (/admin/categories)
 import AdminUsers from "./pages/AdminUsers"; // (/admin/users)
 import AdminSettings from "./pages/AdminSettings";
+import Moderation from "./pages/Moderation";
 
 import './App.css'
 
@@ -65,6 +66,7 @@ function App() {
                   <Route path="admin/categories" element={<AdminCategories />} />
                   <Route path="admin/users" element={<AdminUsers />} />
                   <Route path="admin/settings" element={<AdminSettings />} />
+                  <Route path="moderation" element={<Moderation />} />
                 </Route>
               </Routes>
             </BrowserRouter>
