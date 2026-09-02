@@ -104,6 +104,33 @@ const updateUserUsername = async (userId, newUsername) => {
   return rows[0];
 };
 
+const updateUserProfile = async (userId, { username, description }) => {
+  const fields = [];
+  const values = [];
+  let idx = 1;
+
+  if (typeof username !== "undefined" && username !== null) {
+    fields.push(`username = $${idx++}`);
+    values.push(username);
+  }
+  if (typeof description !== "undefined" && description !== null) {
+    fields.push(`description = $${idx++}`);
+    values.push(description);
+  }
+
+  if (fields.length === 0) {
+    const query =
+      "SELECT id, username, email, role, description FROM users WHERE id = $1;";
+    const { rows } = await db.query(query, [userId]);
+    return rows[0];
+  }
+
+  values.push(userId);
+  const query = `UPDATE users SET ${fields.join(", ")} WHERE id = $${idx} RETURNING id, username, email, role, description;`;
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
 const updateUserPassword = async (userId, newPasswordHash) => {
   const result = await db.query(
     "UPDATE users SET password_hash = $1 WHERE id = $2 RETURNING id, username, email, role;",
@@ -145,6 +172,7 @@ module.exports = {
   findUserByEmail,
   updateUserEmail,
   updateUserUsername,
+  updateUserProfile,
   updateUserPassword,
   findUserById,
   updateUserRole,

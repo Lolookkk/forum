@@ -4,6 +4,23 @@ import EditPostModal from "../modals/EditPostModal";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
+const formatForumDateTime = (value) => {
+  if (!value) return "Date inconnue";
+
+  return new Date(value).toLocaleString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const hasBeenEdited = (createdAt, updatedAt) => {
+  if (!createdAt || !updatedAt) return false;
+  return new Date(updatedAt).getTime() > new Date(createdAt).getTime();
+};
+
 export default function ReplyCard({ reply, onPostUpdated }) {
   const { user } = useAuth();
   const isUser = !!user;
@@ -42,13 +59,14 @@ export default function ReplyCard({ reply, onPostUpdated }) {
     const createdTime = new Date(createdDate).getTime();
     if (isNaN(createdTime)) return false;
 
-    const TWENTY_FOUR_HOURS_IN_MS = 24 * 60 * 60 * 1000;
+    const FIFTEEN_MINUTES_IN_MS = 15 * 60 * 1000;
     const diff = now - createdTime;
 
-    return diff >= 0 && diff < TWENTY_FOUR_HOURS_IN_MS;
+    return diff >= 0 && diff < FIFTEEN_MINUTES_IN_MS;
   };
 
   const canEdit = isAuthor && isEditableWithinWindow();
+  const wasEdited = hasBeenEdited(reply?.created_at, reply?.updated_at);
 
   if (!reply) return null;
 
@@ -60,15 +78,17 @@ export default function ReplyCard({ reply, onPostUpdated }) {
             Par <strong>{reply.author || "Anonyme"}</strong>
           </span>
           <span className="reply-separator">•</span>
-          <time className="reply-date">
-            {reply.created_at
-              ? new Date(reply.created_at).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })
-              : "Date inconnue"}
+          <time className="reply-date" dateTime={reply.created_at}>
+            Publié le {formatForumDateTime(reply.created_at)}
           </time>
+          {wasEdited && (
+            <>
+              <span className="reply-separator">•</span>
+              <time className="reply-date" dateTime={reply.updated_at}>
+                Modifié le {formatForumDateTime(reply.updated_at)}
+              </time>
+            </>
+          )}
 
           {isUser && (
             <button

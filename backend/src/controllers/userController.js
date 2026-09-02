@@ -116,6 +116,45 @@ const updateUserUsername = async (req, res, next) => {
   }
 };
 
+const updateOwnProfile = async (req, res, next) => {
+  const { username, description } = req.body;
+
+  try {
+    if (typeof username === "string" && username.trim().length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Le nom d'utilisateur ne peut pas être vide." });
+    }
+
+    const existing = username
+      ? await User.findUserByEmailOrUsername("", username)
+      : null;
+    if (existing && String(existing.id) !== String(req.user.id)) {
+      return res
+        .status(409)
+        .json({ message: "Ce nom d'utilisateur est déjà pris." });
+    }
+
+    const updatedUser = await User.updateUserProfile(req.user.id, {
+      username: username !== undefined ? username.trim() : undefined,
+      description,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    res.status(200).json({
+      message: "Profil mis à jour avec succès",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("❌ updateOwnProfile error:", error);
+    res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+    next(error);
+  }
+};
+
 const updateUserPassword = async (req, res, next) => {
   const { currentPassword, newPassword } = req.body;
   if (!currentPassword || !newPassword) {
@@ -218,6 +257,7 @@ const deleteUser = async (req,res,next) => {
 module.exports = {
   updateUserEmail,
   updateUserUsername,
+  updateOwnProfile,
   updateUserPassword,
   updateUserRole,
   toggleUserBan,

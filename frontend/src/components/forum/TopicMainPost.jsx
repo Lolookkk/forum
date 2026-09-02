@@ -1,7 +1,26 @@
 import "./TopicMainPost.css";
 
-export default function TopicMainPost({ topic }) {
+const formatForumDateTime = (value) => {
+  if (!value) return "Date inconnue";
+
+  return new Date(value).toLocaleString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const hasBeenEdited = (createdAt, updatedAt) => {
+  if (!createdAt || !updatedAt) return false;
+  return new Date(updatedAt).getTime() > new Date(createdAt).getTime();
+};
+
+export default function TopicMainPost({ topic, canEdit, onEdit }) {
   if (!topic) return null;
+
+  const wasEdited = hasBeenEdited(topic.created_at, topic.updated_at);
 
   return (
     <article className="topic-main-card">
@@ -12,21 +31,26 @@ export default function TopicMainPost({ topic }) {
             Par <strong>{topic.author || "Anonyme"}</strong>
           </span>
           <span className="topic-separator">•</span>
-          <time className="topic-date">
-            {topic.created_at
-              ? new Date(topic.created_at).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })
-              : "Date inconnue"}
+          <time className="topic-date" dateTime={topic.created_at}>
+            Publié le {formatForumDateTime(topic.created_at)}
           </time>
+          {wasEdited && (
+            <>
+              <span className="topic-separator">•</span>
+              <time className="topic-date" dateTime={topic.updated_at}>
+                Modifié le {formatForumDateTime(topic.updated_at)}
+              </time>
+            </>
+          )}
+          {canEdit && (
+            <button className="btn-edit-link" onClick={onEdit}>
+              ✏️ Modifier
+            </button>
+          )}
         </div>
       </header>
 
-      <div className="topic-content">
-        {topic.content}
-      </div>
+      <div className="topic-content">{topic.content}</div>
     </article>
   );
 }

@@ -42,9 +42,26 @@ const createPost = async (topic_id, user_id, content) => {
 };
 
 const updateUserPost = async (postId, userId, newContent) => {
-  const query = "UPDATE posts SET content = $1 WHERE id = $2 AND user_id = $3 RETURNING *;";
-  // $1 = newContent, $2 = postId, $3 = userId
+  const query = `
+    UPDATE posts
+    SET content = $1, updated_at = CURRENT_TIMESTAMP
+    WHERE id = $2 AND user_id = $3
+      AND created_at >= CURRENT_TIMESTAMP - INTERVAL '15 minutes'
+    RETURNING *;
+  `;
   const { rows } = await db.query(query, [newContent, postId, userId]);
+  return rows[0];
+};
+
+const getPostWithEditWindow = async (postId) => {
+  const query = `
+    SELECT
+      p.*,
+      (p.created_at >= CURRENT_TIMESTAMP - INTERVAL '15 minutes') AS is_within_edit_window
+    FROM posts p
+    WHERE p.id = $1;
+  `;
+  const { rows } = await db.query(query, [postId]);
   return rows[0];
 };
 
@@ -76,5 +93,6 @@ module.exports = {
   addLike,
   removeLike,
   getAllPostsWithAuthorByTopic,
-  getPostById
+  getPostById,
+  getPostWithEditWindow
 };

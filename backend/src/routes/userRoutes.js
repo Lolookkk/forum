@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   updateUserEmail,
   updateUserUsername,
+  updateOwnProfile,
   updateUserPassword,
   updateUserRole,
   toggleUserBan,
@@ -19,6 +20,7 @@ router.get("/:username", getAllActivityOfUser);
 
 router.put("/me/email", authenticateToken, updateUserEmail);
 router.put("/me/username", authenticateToken, updateUserUsername);
+router.patch("/me/profile", authenticateToken, updateOwnProfile);
 router.put("/me/password", authenticateToken, updateUserPassword);
 
 //admin
