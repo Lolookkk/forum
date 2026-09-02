@@ -37,3 +37,24 @@ export const createPost = async (topic_id, content, token) => {
     
     return result.post ; // car result est {message, post} 
 };
+
+export const updatePost = async (postId, content, token) => {
+  const response = await fetch(`${API_URL}/${postId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Cache-Control": "no-store",
+      Pragma: "no-cache",
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Erreur lors de la modification du message.");
+  }
+
+  return result.post;
+};

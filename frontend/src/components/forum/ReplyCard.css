@@ -4,6 +4,7 @@
   border-radius: var(--radius-xl);
   overflow: hidden;
   margin-bottom: 24px;
+  isolation: isolate;
 }
 
 .reply-header {
@@ -17,7 +18,9 @@
   color: var(--color-primary-dark);
   display: flex;
   align-items: center;
-  gap: 6px;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  column-gap: 8px;
 }
 
 .reply-author strong {

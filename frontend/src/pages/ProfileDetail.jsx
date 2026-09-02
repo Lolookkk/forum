@@ -1,14 +1,36 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getPublicProfile } from "../services/userService";
+import { useParams, useNavigate } from "react-router-dom";
+import { getPublicProfile, updateOwnProfile } from "../services/userService";
 import ActivityRow from "../components/forum/ActivityRow";
+import { useAuth } from "../hooks/useAuth";
 import "./ProfileDetail.css";
 
 export default function ProfileDetail() {
   const { username } = useParams();
+  const navigate = useNavigate();
+  const { user: currentUser, token, updateUser } = useAuth();
+
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [lastLoadedUsername, setLastLoadedUsername] = useState(null);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [draftUsername, setDraftUsername] = useState("");
+  const [draftDescription, setDraftDescription] = useState("");
+  const [lastProfileVersion, setLastProfileVersion] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  if (lastLoadedUsername !== username) {
+    setLastLoadedUsername(username);
+    setLoading(true);
+    setError(null);
+    setIsEditing(false);
+    setSubmitError(null);
+    setSuccessMessage(null);
+  }
 
   useEffect(() => {
     getPublicProfile(username)
@@ -25,6 +47,26 @@ export default function ProfileDetail() {
         setLoading(false);
       });
   }, [username]);
+
+  if (
+    profile &&
+    (!lastProfileVersion ||
+      lastProfileVersion.username !== profile.username ||
+      lastProfileVersion.description !== profile.description)
+  ) {
+    setDraftUsername(profile.username || "");
+    setDraftDescription(profile.description || "");
+    setLastProfileVersion({
+      username: profile.username,
+      description: profile.description,
+    });
+  }
+
+  const isOwnProfile =
+    !!currentUser &&
+    currentUser.username &&
+    profile?.username &&
+    currentUser.username === profile.username;
 
   if (loading) {
     return (
@@ -52,13 +94,70 @@ export default function ProfileDetail() {
 
   const totalContributions = Number(profile.topics_count) + Number(profile.posts_count);
 
+  const cancelEdit = () => {
+    setDraftUsername(profile.username || "");
+    setDraftDescription(profile.description || "");
+    setIsEditing(false);
+    setSubmitError(null);
+    setSuccessMessage(null);
+  };
+
+  const submitEdit = async (e) => {
+    e.preventDefault();
+    setSubmitError(null);
+    setSuccessMessage(null);
+
+    if (!draftUsername.trim()) {
+      setSubmitError("Le nom d'utilisateur ne peut pas être vide.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const updatedUser = await updateOwnProfile(
+        {
+          username: draftUsername.trim(),
+          description: draftDescription,
+        },
+        token
+      );
+
+      updateUser({
+        username: updatedUser.username,
+        description: updatedUser.description,
+      });
+
+      setSuccessMessage("Profil mis à jour avec succès.");
+      setIsEditing(false);
+
+      if (updatedUser.username !== profile.username) {
+        setProfile((prev) => ({
+          ...prev,
+          username: updatedUser.username,
+          description: updatedUser.description ?? prev.description,
+        }));
+        navigate(`/profile/${encodeURIComponent(updatedUser.username)}`, {
+          replace: true,
+        });
+      } else {
+        setProfile((prev) => ({
+          ...prev,
+          username: updatedUser.username,
+          description: updatedUser.description ?? prev.description,
+        }));
+      }
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="page-wrapper">
       <h1 className="page-title">Profil de {profile.username}</h1>
 
-      {/* 1. Grille avec les 2 cartes du haut */}
       <div className="profile-grid">
-        {/* Informations du membre */}
         <div className="form-card">
           <div className="form-header form-header--sage">
             <span>À propos du membre</span>
@@ -76,16 +175,90 @@ export default function ProfileDetail() {
               <p className="profile-field-value">{joinedDate}</p>
             </div>
 
-            <div className="profile-field">
-              <span className="profile-field-label">Bio</span>
-              <p className="profile-field-value">
-                {profile.description || "Aucune description renseignée."}
-              </p>
-            </div>
+            {!isEditing ? (
+              <>
+                <div className="profile-field">
+                  <span className="profile-field-label">Nom d'utilisateur</span>
+                  <p className="profile-field-value">{profile.username}</p>
+                </div>
+
+                <div className="profile-field">
+                  <span className="profile-field-label">Bio</span>
+                  <p className="profile-field-value">
+                    {profile.description || "Aucune description renseignée."}
+                  </p>
+                </div>
+
+                {isOwnProfile && (
+                  <div style={{ marginTop: "12px" }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsEditing(true);
+                        setSubmitError(null);
+                        setSuccessMessage(null);
+                      }}
+                      className="btn btn-primary btn--fit"
+                    >
+                      ✏️ Modifier mon profil
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <form onSubmit={submitEdit}>
+                {successMessage && (
+                  <div className="status-success">{successMessage}</div>
+                )}
+                {submitError && (
+                  <div className="form-error form-error--inline">{submitError}</div>
+                )}
+
+                <div className="form-group">
+                  <label htmlFor="editUsername">Nom d'utilisateur</label>
+                  <input
+                    id="editUsername"
+                    type="text"
+                    value={draftUsername}
+                    onChange={(e) => setDraftUsername(e.target.value)}
+                    maxLength={32}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="editDescription">Bio</label>
+                  <textarea
+                    id="editDescription"
+                    rows={5}
+                    value={draftDescription}
+                    onChange={(e) => setDraftDescription(e.target.value)}
+                    placeholder="Parlez de vous..."
+                  />
+                </div>
+
+                <div className="settings-actions">
+                  <button
+                    type="button"
+                    onClick={cancelEdit}
+                    className="btn btn-sage btn--fit"
+                    disabled={submitting}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn--fit"
+                    disabled={submitting}
+                  >
+                    {submitting ? "Enregistrement…" : "Enregistrer"}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
-        {/* Statistiques d'activité */}
         <div className="form-card">
           <div className="form-header form-header--yellow">
             <span>Activité du membre</span>
@@ -111,7 +284,6 @@ export default function ProfileDetail() {
         </div>
       </div>
 
-      {/* 2. Carte des publications (placée sous la grille) */}
       <div className="form-card" style={{ marginTop: "32px" }}>
         <div className="form-header form-header--beige">
           <span>Historique des publications</span>

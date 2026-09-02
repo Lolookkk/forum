@@ -71,3 +71,24 @@ export const deleteUser = async (userId, token) => {
   }
   return true;
 };
+
+export const updateOwnProfile = async ({ username, description }, token) => {
+  const response = await fetch(`${API_URL}/me/profile`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Cache-Control": "no-store",
+      Pragma: "no-cache",
+    },
+    body: JSON.stringify({ username, description }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Impossible de mettre à jour le profil.");
+  }
+
+  return result.user;
+};

@@ -21,6 +21,16 @@ export default function TopicDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [lastTopicSlug, setLastTopicSlug] = useState(null);
+
+  if (lastTopicSlug !== topicSlug) {
+    setLastTopicSlug(topicSlug);
+    setTopic(null);
+    setReplies([]);
+    setLoading(true);
+    setError(null);
+    setShowReportModal(false);
+  }
 
   // Fonction pour recharger uniquement la liste des réponses
   const loadReplies = useCallback((topicId) => {
@@ -77,7 +87,19 @@ export default function TopicDetail() {
               <h3>Réponses ({replies.length})</h3>
               {replies.length > 0 ? (
                 replies.map((reply) => (
-                  <ReplyCard key={reply.id} reply={reply} />
+                  <ReplyCard
+                    key={reply.id}
+                    reply={reply}
+                    onPostUpdated={(updatedPost) => {
+                      setReplies((prev) =>
+                        prev.map((p) =>
+                          String(p.id) === String(updatedPost.id)
+                            ? { ...p, content: updatedPost.content }
+                            : p
+                        )
+                      );
+                    }}
+                  />
                 ))
               ) : (
                 <p className="state-message">
