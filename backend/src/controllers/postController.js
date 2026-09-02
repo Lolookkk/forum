@@ -13,6 +13,21 @@ const getPostsByTopic = async (req, res, next) => {
   }
 };
 
+const getPostById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const post = await postModel.getPostById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Post non trouvé" });
+    }
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getAllPostsWithAuthorByTopic = async (req, res, next) => {
   const { topic_id } = req.params;
@@ -104,5 +119,6 @@ module.exports = {
   updatePost,
   likePost,
   unlikePost,
-  getAllPostsWithAuthorByTopic
+  getAllPostsWithAuthorByTopic,
+  getPostById
 };

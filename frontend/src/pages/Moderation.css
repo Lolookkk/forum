@@ -1,0 +1,192 @@
+/* ============================================================
+   TABLEAU DE BORD DE MODÉRATION — Moderation.css
+   ============================================================ */
+
+/* État de chargement / information */
+.admin-status {
+  text-align: center;
+  padding: 48px 24px;
+  font-size: var(--fs-lg);
+  color: var(--color-text-muted);
+  font-weight: var(--fw-semibold);
+}
+
+/* Liste des cartes de signalement */
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Carte de signalement individuelle */
+.report-card {
+  background-color: var(--color-bg-cream);
+  border: 1px solid var(--color-border-taupe);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.report-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* En-tête de la carte */
+.report-header {
+  background-color: var(--color-bg-beige);
+  border-bottom: 1px solid var(--color-border-taupe);
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--fs-base-sm);
+}
+
+.report-type {
+  background-color: var(--color-accent-sage);
+  color: var(--color-bg-cream);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.report-date {
+  color: var(--color-text-subtle);
+}
+
+.report-author {
+  color: var(--color-text-muted);
+}
+
+.report-author strong {
+  color: var(--color-primary-dark);
+}
+
+/* Corps de la carte */
+.report-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.report-body > p {
+  margin: 0;
+  font-size: var(--fs-base);
+  color: var(--color-text-body);
+}
+
+.report-body > p strong {
+  color: var(--color-primary-dark);
+}
+
+/* Bloc du contenu incriminé */
+.report-target-content {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-taupe-light);
+  border-left: 4px solid var(--color-accent-yellow);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.report-target-content > strong {
+  font-size: var(--fs-base-sm);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.report-text-body,
+.topic-report-body {
+  margin: 0;
+  color: var(--color-primary-dark);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-size: var(--fs-md);
+}
+
+.topic-report-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.topic-report-title {
+  margin: 0;
+  font-size: var(--fs-md);
+  color: var(--color-primary-dark);
+}
+
+/* Zone d'actions en bas de carte */
+.report-actions {
+  background-color: var(--color-bg-page);
+  border-top: 1px solid var(--color-beige-light);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Boutons d'actions spécifiques à la modération */
+.report-actions .btn {
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-base-sm);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-light);
+  color: var(--color-primary-dark);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-taupe-light);
+}
+
+.btn-warning {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-primary-dark);
+}
+
+.btn-warning:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.btn-danger {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-error-bg-alt);
+}
+
+/* Adaptations mobiles */
+@media (max-width: 640px) {
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .report-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .report-actions .btn {
+    width: 100%;
+  }
+}
