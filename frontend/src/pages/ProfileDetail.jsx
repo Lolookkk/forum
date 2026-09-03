@@ -4,6 +4,7 @@ import { getPublicProfile, updateOwnProfile } from "../services/userService";
 import ActivityRow from "../components/forum/ActivityRow";
 import { useAuth } from "../hooks/useAuth";
 import "./ProfileDetail.css";
+import { formatForumDate } from "../utils/dateUtils";
 
 export default function ProfileDetail() {
   const { username } = useParams();
@@ -86,11 +87,7 @@ export default function ProfileDetail() {
     );
   }
 
-  const joinedDate = new Date(profile.created_at).toLocaleDateString("fr-FR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const joinedDate = formatForumDate(profile.created_at);
 
   const totalContributions = Number(profile.topics_count) + Number(profile.posts_count);
 

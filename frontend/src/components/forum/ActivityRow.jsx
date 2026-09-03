@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import "./ActivityRow.css";
+import { parseUTCDate } from "../../utils/dateUtils";
 
 export default function ActivityRow({ publication }) {
-  // Formatage de la date (ex: 23 févr. 2026 à 14:30)
-  const formattedDate = new Date(publication.created_at).toLocaleDateString("fr-FR", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const d = parseUTCDate(publication?.created_at);
+  const formattedDate = d
+    ? d.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "Date inconnue";
 
   const isTopic = publication.type === "topic";
 

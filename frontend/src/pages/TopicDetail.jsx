@@ -11,18 +11,7 @@ import "./Home.css";
 import Sidebar from "../components/sidebar/Sidebar";
 import ReportModal from "../components/modals/ReportModal";
 import { ServiceBannerWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
-
-const isSameUser = (user, topic) => Boolean(
-  user &&
-    topic &&
-    ((user.id != null &&
-      topic.user_id != null &&
-      String(user.id) === String(topic.user_id)) ||
-      (user.username &&
-        topic.author &&
-        String(user.username).toLowerCase() ===
-          String(topic.author).toLowerCase()))
-);
+import { isSameUser, isEditableWithinWindow } from "../utils/dateUtils";
 
 export default function TopicDetail() {
   const { topicSlug } = useParams();
@@ -37,6 +26,12 @@ export default function TopicDetail() {
   const [showReportModal, setShowReportModal] = useState(false);
   const [showEditTopicModal, setShowEditTopicModal] = useState(false);
   const [lastTopicSlug, setLastTopicSlug] = useState(topicSlug);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60 * 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   if (lastTopicSlug !== topicSlug) {
     setLastTopicSlug(topicSlug);
@@ -76,7 +71,7 @@ export default function TopicDetail() {
 
   const canEditTopic =
     isSameUser(user, topic) &&
-    Boolean(topic?.is_within_edit_window) &&
+    isEditableWithinWindow(topic?.created_at, now) &&
     replies.length === 0;
 
   return (
@@ -85,7 +80,6 @@ export default function TopicDetail() {
         {topic && (
           <div className="topic-header-actions">
             <h1 className="page-title">{topic.title}</h1>
-            {/* 👈 Bouton pour signaler le SUJET */}
             {isUser && (
               <button 
                 className="btn-report-link" 
@@ -132,7 +126,6 @@ export default function TopicDetail() {
               )}
             </section>
 
-            {/* Passe la fonction de rechargement au formulaire */}
             {isUser && (
               <ReplyForm
                 topicId={topic.id}

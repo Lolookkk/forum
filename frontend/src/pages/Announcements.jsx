@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { getAnnouncements } from "../services/announcementService";
 import AdminAddAnnonce from "../components/forum/AdminAddAnnounces";
 import "./Announcements.css";
+import { formatForumDate } from "../utils/dateUtils";
 
 export default function Announcements() {
   const { user } = useAuth();
@@ -38,7 +39,7 @@ export default function Announcements() {
               <h2>{item.title}</h2>
               <p>{item.content}</p>
               <small>
-                Publié par {item.author_name} le {new Date(item.created_at).toLocaleDateString()}
+                Publié par {item.author_name} le {formatForumDate(item.created_at)}
               </small>
             </article>
           ))}
