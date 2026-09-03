@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+require("./utils/dateNormalizer");
+const { normalizeResponseMiddleware } = require("./utils/dateNormalizer");
 
 // Import de nos routes
 const categoryRoutes = require("./routes/categoryRoutes");

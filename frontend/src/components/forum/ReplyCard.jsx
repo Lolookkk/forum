@@ -3,23 +3,12 @@ import ReportModal from "../modals/ReportModal";
 import EditPostModal from "../modals/EditPostModal";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
-
-const formatForumDateTime = (value) => {
-  if (!value) return "Date inconnue";
-
-  return new Date(value).toLocaleString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
-const hasBeenEdited = (createdAt, updatedAt) => {
-  if (!createdAt || !updatedAt) return false;
-  return new Date(updatedAt).getTime() > new Date(createdAt).getTime();
-};
+import {
+  formatForumDateTime,
+  hasBeenEdited,
+  isEditableWithinWindow,
+  isSameUser,
+} from "../../utils/dateUtils";
 
 export default function ReplyCard({ reply, onPostUpdated }) {
   const { user } = useAuth();
@@ -33,39 +22,8 @@ export default function ReplyCard({ reply, onPostUpdated }) {
     return () => clearInterval(timer);
   }, []);
 
-  const isAuthor = Boolean(
-    user &&
-      reply &&
-      ((user.id != null &&
-        reply.user_id != null &&
-        String(user.id) === String(reply.user_id)) ||
-        (user.username &&
-          reply.author &&
-          String(user.username).toLowerCase() ===
-            String(reply.author).toLowerCase()))
-  );
-
-  const isEditableWithinWindow = () => {
-    if (!reply?.created_at) return false;
-
-    let createdDate = reply.created_at;
-    if (typeof createdDate === "string") {
-      createdDate = createdDate.replace(" ", "T");
-      if (!/Z|[+-]\d{2}:\d{2}$/.test(createdDate)) {
-        createdDate += "Z";
-      }
-    }
-
-    const createdTime = new Date(createdDate).getTime();
-    if (isNaN(createdTime)) return false;
-
-    const FIFTEEN_MINUTES_IN_MS = 15 * 60 * 1000;
-    const diff = now - createdTime;
-
-    return diff >= 0 && diff < FIFTEEN_MINUTES_IN_MS;
-  };
-
-  const canEdit = isAuthor && isEditableWithinWindow();
+  const isAuthor = isSameUser(user, reply);
+  const canEdit = isAuthor && isEditableWithinWindow(reply?.created_at, now);
   const wasEdited = hasBeenEdited(reply?.created_at, reply?.updated_at);
 
   if (!reply) return null;

@@ -5,6 +5,7 @@ import { getTopicInformationById } from "../services/topicService";
 import { getPostById } from "../services/postService";
 import "./Moderation.css";
 import CensorModal from "../components/modals/CensorModal";
+import { formatForumDate } from "../utils/dateUtils";
 
 export default function ModerationDashboard() {
   const { token } = useAuth();
@@ -122,11 +123,7 @@ export default function ModerationDashboard() {
 
                   <span className="report-date">
                     Signalé le :{" "}
-                    {new Date(report.created_at).toLocaleDateString("fr-FR", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
+                    {formatForumDate(report.created_at)}
                   </span>
 
                   <span className="report-author">

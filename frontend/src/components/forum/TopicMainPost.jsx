@@ -1,21 +1,8 @@
 import "./TopicMainPost.css";
-
-const formatForumDateTime = (value) => {
-  if (!value) return "Date inconnue";
-
-  return new Date(value).toLocaleString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
-const hasBeenEdited = (createdAt, updatedAt) => {
-  if (!createdAt || !updatedAt) return false;
-  return new Date(updatedAt).getTime() > new Date(createdAt).getTime();
-};
+import {
+  formatForumDateTime,
+  hasBeenEdited,
+} from "../../utils/dateUtils";
 
 export default function TopicMainPost({ topic, canEdit, onEdit }) {
   if (!topic) return null;

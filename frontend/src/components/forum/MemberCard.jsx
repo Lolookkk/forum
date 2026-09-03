@@ -1,14 +1,8 @@
 import "./MemberCard.css";
+import { formatForumDate } from "../../utils/dateUtils";
 
 export default function MemberCard({ member }) {
-  // Formatage propre de la date d'inscription
-  const joinedDate = member?.created_at
-    ? new Date(member.created_at).toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "Date inconnue";
+  const joinedDate = formatForumDate(member?.created_at);
 
   return (
     <div className="member-card">
