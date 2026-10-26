@@ -5,6 +5,14 @@ const getAllUsers = async () => {
   const { rows } = await db.query(query);
   return rows; 
 };
+
+//sélectionner les 3 plus récents utilisateurs inscrits (pour la page d'accueil)
+const getNewMembers = async () => {
+  const query = "SELECT * FROM users ORDER BY created_at DESC LIMIT 3;";
+  const { rows } = await db.query(query);
+  return rows; 
+};
+
 //On cherche un utilisateur par son email ou son username (pour vérifier si il existe déjà)
 const findUserByEmailOrUsername = async (email, username) => {
   const query = "SELECT * FROM users WHERE email = $1 OR username = $2;";
@@ -180,5 +188,6 @@ module.exports = {
   getAllUsers,
   displayPublicProfilUser,
   getAllActivityOfUser,
-  deleteUser
+  deleteUser,
+  getNewMembers
 };

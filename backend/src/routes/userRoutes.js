@@ -10,13 +10,16 @@ const {
   toggleUserBan,
   getAllUsers,
   getAllActivityOfUser,
-  deleteUser
+  deleteUser,
+  getNewMembers
 } = require("../controllers/userController");
 const authenticateToken = require("../middlewares/authMiddleware");
 const requireRole = require("../middlewares/roleMiddleware");
 
 router.get("/", getAllUsers);
+router.get("/new", getNewMembers);
 router.get("/:username", getAllActivityOfUser);
+
 
 router.put("/me/email", authenticateToken, updateUserEmail);
 router.put("/me/username", authenticateToken, updateUserUsername);

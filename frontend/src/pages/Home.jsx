@@ -3,6 +3,7 @@ import TopicRow from "../components/forum/TopicRow";
 import Sidebar from "../components/sidebar/Sidebar";
 import { ServiceBannerWidget, StatsWidget, NewMembersWidget, CreateTopicButton }  from "../components/sidebar/Widgets";
 import { getTopics } from "../services/topicService";
+import { getNewMembers } from "../services/userService";
 import "./Home.css";
 
 export default function Home() {
@@ -12,16 +13,29 @@ export default function Home() {
   posts: 1819,
   online: 12,
 };
-const newMembers = [
-  { id: 1, username: "Sarah_M" },
-  { id: 2, username: "Lucas" },
-  { id: 3, username: "Elena88" },
-];
 
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
+  const [newMembers, setNewMembers] = useState([]);
+  const [membersLoading, setMembersLoading] = useState(true);
+  const [membersError, setMembersError] = useState(null);
+
+  useEffect(() => {
+    getNewMembers()
+      .then((data) => {
+        console.log("Données reçues de l'API :", data);
+        setNewMembers(data);
+        setMembersLoading(false);
+      })
+      .catch((err) => {
+        setMembersError(err.message);
+        setMembersLoading(false);
+      });
+  }, []);
+
+
   useEffect(() => {
     getTopics()
       .then((data) => {
@@ -74,7 +88,14 @@ const newMembers = [
           icon="🌻"
         />
         <StatsWidget stats={stats} />
-        <NewMembersWidget members={newMembers} />
+        {membersLoading ? (
+          <div className="state-message">Chargement des nouveaux membres...</div>
+        ) : membersError ? (
+          <div className="state-message error">{membersError}</div>
+        ) : (
+          <NewMembersWidget members={newMembers} />
+        )}
+        
         <CreateTopicButton />
        </Sidebar>
     </div>
