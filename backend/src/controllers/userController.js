@@ -14,6 +14,18 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const getNewMembers = async (req, res, next) => {
+  try {
+    const newMembers = await User.getNewMembers();
+    res.status(200).json({
+      success: true,
+      data: newMembers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // const getAllActivityOfUser = async (req, res, next) => {
 //   try {
 //     const publications = await User.getAllActivityOfUser();
@@ -263,5 +275,6 @@ module.exports = {
   toggleUserBan,
   getAllUsers,
   getAllActivityOfUser,
-  deleteUser
+  deleteUser,
+  getNewMembers
 };
