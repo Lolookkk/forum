@@ -16,6 +16,15 @@ const coerceSettings = (raw) => ({
   forum_name: String(raw?.forum_name || DEFAULT_SETTINGS.forum_name).trim(),
 });
 
+const getPresentation = async (req, res, next) => {
+  try {
+    const content = await settingModel.getPresentation();
+    res.json({ success: true, data: { content } });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getSettings = async (req, res, next) => {
   try {
     const rawSettings = await settingModel.getSettings();
@@ -23,6 +32,59 @@ const getSettings = async (req, res, next) => {
     res.json({ success: true, data: settings });
   } catch (error) {
     res.status(500).json({ success: false, message: "Erreur serveur." });
+    next(error);
+  }
+};
+
+const updatePresentation = async (req, res, next) => {
+  try {
+    const { content } = req.body || {};
+
+    if (typeof content !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Le contenu de la présentation est requis.",
+      });
+    }
+
+    const updated = await settingModel.updatePresentation(content);
+    res.json({
+      success: true,
+      data: { content: updated },
+      message: "Présentation mise à jour.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCharter = async (req, res, next) => {
+  try {
+    const content = await settingModel.getCharter();
+    res.json({ success: true, data: { content } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateCharter = async (req, res, next) => {
+  try {
+    const { content } = req.body || {};
+
+    if (typeof content !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Le contenu de la charte est requis.",
+      });
+    }
+
+    const updated = await settingModel.updateCharter(content);
+    res.json({
+      success: true,
+      data: { content: updated },
+      message: "Charte mise à jour.",
+    });
+  } catch (error) {
     next(error);
   }
 };
@@ -38,4 +100,4 @@ const updateSettings = async (req, res, next) => {
   }
 };
 
-module.exports = { getSettings, updateSettings };
+module.exports = { getSettings, updateSettings, getPresentation, updatePresentation, getCharter, updateCharter };

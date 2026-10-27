@@ -383,6 +383,21 @@ textarea {
 }
 
 /* ============================================================
+   BOUTON SECONDAIRE — .btn-secondary
+   ============================================================ */
+.btn-secondary {
+  background-color: var(--color-bg-light);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-xl);
+  padding: 14px 24px;
+  font-size: var(--fs-base);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-taupe-light);
+}
+
+/* ============================================================
    ERREURS DE FORMULAIRE — .form-error
    ============================================================ */
 .form-error {
@@ -441,4 +456,80 @@ textarea {
   justify-content: flex-end;
   gap: 12px;
   padding-top: 4px;
+}
+
+/* ============================================================
+   ACTIONS DE FORMULAIRE — .form-actions
+   ============================================================ */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   ACTIONS D'ADMINISTRATION SUR LES PAGES DE CONTENU
+   (présentation, fiches, numéros utiles)
+   ============================================================ */
+.admin-actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-admin-edit,
+.btn-admin-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-taupe);
+  background-color: var(--color-bg-cream);
+  color: var(--color-text-muted);
+  font-size: var(--fs-base-sm);
+  font-weight: var(--fw-bold);
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-base),
+              border-color var(--transition-base),
+              color var(--transition-base);
+}
+
+.btn-admin-edit:hover {
+  background-color: var(--color-accent-sage);
+  border-color: var(--color-accent-sage);
+  color: var(--color-bg-white);
+}
+
+.btn-admin-delete:hover {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error-text);
+}
+
+/* ============================================================
+   ÉTATS DE CHARGEMENT ET MESSAGES VIDES
+   ============================================================ */
+.loading-state {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-subtle);
+}
+
+.state-message {
+  font-size: var(--fs-md);
+  color: var(--color-text-subtle);
+  font-weight: var(--fw-semibold);
+  margin-top: 16px;
 }

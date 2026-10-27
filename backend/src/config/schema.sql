@@ -158,5 +158,11 @@ CREATE TABLE IF NOT EXISTS settings (
   forum_name VARCHAR(255) NOT NULL DEFAULT 'Safe Space',
   maintenance_mode BOOLEAN NOT NULL DEFAULT false,
   topics_per_page INT NOT NULL DEFAULT 10,
-  registration_open BOOLEAN NOT NULL DEFAULT true
+  registration_open BOOLEAN NOT NULL DEFAULT true,
+  presentation TEXT NOT NULL DEFAULT '',
+  charter TEXT NOT NULL DEFAULT ''
 );
+
+-- Migration : ajoute les colonnes de contenu éditorial aux bases créées avant leur introduction
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS presentation TEXT NOT NULL DEFAULT '';
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS charter TEXT NOT NULL DEFAULT '';
