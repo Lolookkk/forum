@@ -5,6 +5,32 @@ const getSettings = async () => {
   return result.rows[0];
 };
 
+const getPresentation = async () => {
+  const result = await db.query("SELECT presentation FROM settings WHERE id = 1");
+  return result.rows[0]?.presentation ?? "";
+}
+
+const updatePresentation = async (presentation) => {
+  const result = await db.query(
+    "UPDATE settings SET presentation = $1 WHERE id = 1 RETURNING presentation",
+    [presentation ?? ""]
+  );
+  return result.rows[0]?.presentation ?? "";
+}
+
+const getCharter = async () => {
+  const result = await db.query("SELECT charter FROM settings WHERE id = 1");
+  return result.rows[0]?.charter ?? "";
+}
+
+const updateCharter = async (charter) => {
+  const result = await db.query(
+    "UPDATE settings SET charter = $1 WHERE id = 1 RETURNING charter",
+    [charter ?? ""]
+  );
+  return result.rows[0]?.charter ?? "";
+}
+
 const updateSettings = async ({ forum_name, maintenance_mode, topics_per_page, registration_open }) => {
   const query = `
     UPDATE settings 
@@ -19,5 +45,9 @@ const updateSettings = async ({ forum_name, maintenance_mode, topics_per_page, r
 
 module.exports = { 
     getSettings, 
+    getPresentation,
+    updatePresentation,
+    getCharter,
+    updateCharter,
     updateSettings 
 };

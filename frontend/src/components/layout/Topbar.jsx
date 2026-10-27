@@ -11,7 +11,7 @@ export default function Topbar() {
   const { settings } = useSettings();
   const forumName = settings?.forum_name || "Espace Sécurisé";
 
-  const isHomeSection = ["/", "/announcements", "/members"].includes(location.pathname);
+  const isHomeSection = ["/", "/announcements", "/members", "/presentation", "/charter"].includes(location.pathname);
   const isCategoriesSection = location.pathname.startsWith("/categories");
   const isAdminSection = location.pathname.startsWith("/admin");
   const isModerationSection = location.pathname.startsWith("/moderation");
@@ -33,6 +33,12 @@ export default function Topbar() {
           <>
             <NavLink to="/" end className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
               Vie du forum
+            </NavLink>
+            <NavLink to="/presentation" className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
+              Présentation
+            </NavLink>
+            <NavLink to="/charter" className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
+              Charte
             </NavLink>
             <NavLink to="/announcements" className={({ isActive }) => `subnav-link ${isActive ? "active" : ""}`}>
               Annonces

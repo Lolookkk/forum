@@ -1,6 +1,6 @@
 // src/components/AdminRoute.jsx
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function AdminRoute() {
   const { user } = useAuth();
@@ -9,5 +9,5 @@ export default function AdminRoute() {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return <Outlet />; //si admin, affichage de la page demandée
 }

@@ -28,7 +28,11 @@ import AdminCategories from "./pages/AdminCategories"; // (/admin/categories)
 import AdminUsers from "./pages/AdminUsers"; // (/admin/users)
 import AdminSettings from "./pages/AdminSettings";
 import Moderation from "./pages/Moderation";
-
+import AdminRoute from "./components/security/AdminRoute"; // Route sécurisée pour les admins
+import PresentationForm from "./pages/PresentationForm"; // Formulaire de présentation
+import Presentation from "./pages/Presentation";
+import CharterForm from "./pages/CharterForm"; // Formulaire de charte
+import Charter from "./pages/Charter";
 import './App.css'
 
 function App() {
@@ -62,11 +66,19 @@ function App() {
                   <Route path="/numbers/categories/new" element={<NumberCategoryForm />} />
                   <Route path="/numbers/categories/edit/:id" element={<NumberCategoryForm />} />
                   <Route path="/topics/new" element={<TopicForm />} />
-                  <Route path="admin" element={<Admin />} />
-                  <Route path="admin/categories" element={<AdminCategories />} />
-                  <Route path="admin/users" element={<AdminUsers />} />
-                  <Route path="admin/settings" element={<AdminSettings />} />
                   <Route path="moderation" element={<Moderation />} />
+                  <Route path="presentation" element={<Presentation />} />
+                  <Route path="charter" element={<Charter />} />
+
+                  {/* Section réservée aux administrateurs */}
+                  <Route element={<AdminRoute />}>
+                    <Route path="admin" element={<Admin />} />
+                    <Route path="admin/categories" element={<AdminCategories />} />
+                    <Route path="admin/users" element={<AdminUsers />} />
+                    <Route path="admin/settings" element={<AdminSettings />} />
+                    <Route path="presentation/edit" element={<PresentationForm />} />
+                    <Route path="charter/edit" element={<CharterForm />} />
+                  </Route>
                 </Route>
               </Routes>
             </BrowserRouter>
