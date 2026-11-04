@@ -33,6 +33,7 @@ import PresentationForm from "./pages/PresentationForm"; // Formulaire de prése
 import Presentation from "./pages/Presentation";
 import CharterForm from "./pages/CharterForm"; // Formulaire de charte
 import Charter from "./pages/Charter";
+import AdminLogin from "./pages/AdminLogin";
 import './App.css'
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                   <Route path="moderation" element={<Moderation />} />
                   <Route path="presentation" element={<Presentation />} />
                   <Route path="charter" element={<Charter />} />
+                  <Route path="admin-login" element={<AdminLogin />} />
 
                   {/* Section réservée aux administrateurs */}
                   <Route element={<AdminRoute />}>
