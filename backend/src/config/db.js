@@ -9,8 +9,7 @@ require("dotenv").config();
 // Détecter si c'est une connexion locale (sans SSL)
 const isLocalhost =
   process.env.DATABASE_URL?.includes("localhost") ||
-  process.env.DATABASE_URL?.includes("127.0.0.1") ||
-  process.env.NODE_ENV === "test";
+  process.env.DATABASE_URL?.includes("127.0.0.1");
 
 // Configuration SSL conditionnelle
 const sslConfig = isLocalhost ? false : { rejectUnauthorized: false };
