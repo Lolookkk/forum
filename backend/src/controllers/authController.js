@@ -1,6 +1,8 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const settingModel = require("../models/settingModel");
+
 
 const register = async (req, res, next) => {
   try {
@@ -63,6 +65,9 @@ const login = async (req, res, next) => {
         .status(400)
         .json({ message: "Email et mot de passe sont requis" });
     }
+    
+
+
 
     // 3. Chercher l'utilisateur avec findUserByEmail
     //    Si l'utilisateur n'existe pas -> statut 401 (Identifiants invalides)
@@ -76,6 +81,13 @@ const login = async (req, res, next) => {
     //    Si pas bon -> statut 401 (Identifiants invalides)
     if (!isMatch) {
       return res.status(401).json({ message: "Identifiants invalides" });
+    }
+
+    const settings = await settingModel.getSettings();
+    if (settings?.maintenance_mode && user.role !== "admin") {
+      return res.status(403).json({ 
+        message: "Le forum est actuellement en maintenance. Connexion réservée aux administrateurs." 
+      });
     }
 
     // 5. Générer le token JWT
